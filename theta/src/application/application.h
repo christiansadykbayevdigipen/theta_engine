@@ -2,6 +2,8 @@
 
 #include "core.h"
 
+#include "window/window.h"
+
 /*
 @brief This is the data that theta needs to initialize the user defined application outlined in theta_application_init.
 @param app_name This is the name you wish to give to the application
@@ -19,7 +21,7 @@ typedef struct {
 */
 typedef struct {
     theta_application_descriptor descriptor;
-    void* uninterpreted_data;
+    theta_window* window;
 }theta_application;
 
 THETA_API void theta_application_init(theta_application* app, theta_application_descriptor descriptor);

@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <memory.h>
+#include <assert.h>
 
 void theta_logger_log(theta_logger_severity severity, const char* message, ...){
     char buffer[1024];
@@ -32,4 +33,9 @@ void theta_logger_log(theta_logger_severity severity, const char* message, ...){
     printf(buffer);
 
     vprintf(message, args);
+
+    if(severity == THETA_LOGGER_SEVERITY_FATAL)
+    {
+        assert(!"Theta engine had to terminate because it ran into a fatal error.");
+    }
 }

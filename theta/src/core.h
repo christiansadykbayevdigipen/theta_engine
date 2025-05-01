@@ -43,3 +43,12 @@ THETA_API void theta_logger_log(theta_logger_severity severity, const char* mess
 #define THETA_WARN(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_WARNING, X, ##__VA_ARGS__)
 #define THETA_INFO(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_INFO, X, ##__VA_ARGS__)
 #define THETA_DEBUG(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_DEBUG, X, ##__VA_ARGS__)
+
+#if defined(_WIN32) || defined(WINDOWS) || defined(__POSIX__) || defined(__LINUX__) || defined(__APPLE__)
+#define THETA_PLATFORM_SHARED
+#else
+#error You're platform is not supported
+#endif
+
+// This macro is very useful when platform/api specific information exists. If you have a struct that has a void* uninterpreted data, this macro will cast that to the type you wish.
+#define DATA_CAST(TYPE, VAR) ((TYPE*)VAR->uninterpreted_data)
