@@ -1,3 +1,0 @@
-C:/Users/c.sadykbayev/Desktop/Dev/repos/theta_engine/sandbox/build/CMakeFiles/sandbox.dir
-C:/Users/c.sadykbayev/Desktop/Dev/repos/theta_engine/sandbox/build/CMakeFiles/edit_cache.dir
-C:/Users/c.sadykbayev/Desktop/Dev/repos/theta_engine/sandbox/build/CMakeFiles/rebuild_cache.dir
