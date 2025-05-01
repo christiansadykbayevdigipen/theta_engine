@@ -37,3 +37,9 @@ typedef enum {
 @param ... These are optional arguments that you can include into the message. This works exactly like printf.
 */
 THETA_API void theta_logger_log(theta_logger_severity severity, const char* message, ...);
+
+#define THETA_FATAL(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_FATAL, X, ##__VA_ARGS__)
+#define THETA_ERROR(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_ERROR, X, ##__VA_ARGS__)
+#define THETA_WARN(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_WARNING, X, ##__VA_ARGS__)
+#define THETA_INFO(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_INFO, X, ##__VA_ARGS__)
+#define THETA_DEBUG(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_DEBUG, X, ##__VA_ARGS__)

@@ -6,6 +6,8 @@ link_directories(../../theta/build)
 
 link_libraries(-ltheta)
 
+include_directories(../../theta/src)
+
 #message(STATUS "YES: " ${})
 #target_link_libraries(libtheta.dll.a)
 

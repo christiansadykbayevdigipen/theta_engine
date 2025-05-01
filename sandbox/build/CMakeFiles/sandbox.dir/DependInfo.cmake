@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/c.sadykbayev/Desktop/Dev/repos/theta_engine/sandbox/src/main.c" "CMakeFiles/sandbox.dir/main.c.obj" "gcc" "CMakeFiles/sandbox.dir/main.c.obj.d"
+  "D:/repos/theta_engine/sandbox/src/main.c" "CMakeFiles/sandbox.dir/main.c.obj" "gcc" "CMakeFiles/sandbox.dir/main.c.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

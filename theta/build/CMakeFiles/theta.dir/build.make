@@ -52,10 +52,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\src
+CMAKE_SOURCE_DIR = D:\repos\theta_engine\theta\src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build
+CMAKE_BINARY_DIR = D:\repos\theta_engine\theta\build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/theta.dir/depend.make
@@ -73,32 +73,49 @@ CMakeFiles/theta.dir/codegen:
 
 CMakeFiles/theta.dir/logger/logger.c.obj: CMakeFiles/theta.dir/flags.make
 CMakeFiles/theta.dir/logger/logger.c.obj: CMakeFiles/theta.dir/includes_C.rsp
-CMakeFiles/theta.dir/logger/logger.c.obj: C:/Users/c.sadykbayev/Desktop/Dev/repos/theta_engine/theta/src/logger/logger.c
+CMakeFiles/theta.dir/logger/logger.c.obj: D:/repos/theta_engine/theta/src/logger/logger.c
 CMakeFiles/theta.dir/logger/logger.c.obj: CMakeFiles/theta.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/theta.dir/logger/logger.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/theta.dir/logger/logger.c.obj -MF CMakeFiles\theta.dir\logger\logger.c.obj.d -o CMakeFiles\theta.dir\logger\logger.c.obj -c C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\src\logger\logger.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\repos\theta_engine\theta\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/theta.dir/logger/logger.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/theta.dir/logger/logger.c.obj -MF CMakeFiles\theta.dir\logger\logger.c.obj.d -o CMakeFiles\theta.dir\logger\logger.c.obj -c D:\repos\theta_engine\theta\src\logger\logger.c
 
 CMakeFiles/theta.dir/logger/logger.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/theta.dir/logger/logger.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\src\logger\logger.c > CMakeFiles\theta.dir\logger\logger.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\repos\theta_engine\theta\src\logger\logger.c > CMakeFiles\theta.dir\logger\logger.c.i
 
 CMakeFiles/theta.dir/logger/logger.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/theta.dir/logger/logger.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\src\logger\logger.c -o CMakeFiles\theta.dir\logger\logger.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\repos\theta_engine\theta\src\logger\logger.c -o CMakeFiles\theta.dir\logger\logger.c.s
+
+CMakeFiles/theta.dir/application/application.c.obj: CMakeFiles/theta.dir/flags.make
+CMakeFiles/theta.dir/application/application.c.obj: CMakeFiles/theta.dir/includes_C.rsp
+CMakeFiles/theta.dir/application/application.c.obj: D:/repos/theta_engine/theta/src/application/application.c
+CMakeFiles/theta.dir/application/application.c.obj: CMakeFiles/theta.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\repos\theta_engine\theta\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/theta.dir/application/application.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/theta.dir/application/application.c.obj -MF CMakeFiles\theta.dir\application\application.c.obj.d -o CMakeFiles\theta.dir\application\application.c.obj -c D:\repos\theta_engine\theta\src\application\application.c
+
+CMakeFiles/theta.dir/application/application.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/theta.dir/application/application.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\repos\theta_engine\theta\src\application\application.c > CMakeFiles\theta.dir\application\application.c.i
+
+CMakeFiles/theta.dir/application/application.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/theta.dir/application/application.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\repos\theta_engine\theta\src\application\application.c -o CMakeFiles\theta.dir\application\application.c.s
 
 # Object files for target theta
 theta_OBJECTS = \
-"CMakeFiles/theta.dir/logger/logger.c.obj"
+"CMakeFiles/theta.dir/logger/logger.c.obj" \
+"CMakeFiles/theta.dir/application/application.c.obj"
 
 # External object files for target theta
 theta_EXTERNAL_OBJECTS =
 
 libtheta.dll: CMakeFiles/theta.dir/logger/logger.c.obj
+libtheta.dll: CMakeFiles/theta.dir/application/application.c.obj
 libtheta.dll: CMakeFiles/theta.dir/build.make
 libtheta.dll: CMakeFiles/theta.dir/linkLibs.rsp
 libtheta.dll: CMakeFiles/theta.dir/objects1.rsp
 libtheta.dll: CMakeFiles/theta.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C shared library libtheta.dll"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\repos\theta_engine\theta\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C shared library libtheta.dll"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\theta.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -110,6 +127,6 @@ CMakeFiles/theta.dir/clean:
 .PHONY : CMakeFiles/theta.dir/clean
 
 CMakeFiles/theta.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\src C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\src C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build\CMakeFiles\theta.dir\DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\repos\theta_engine\theta\src D:\repos\theta_engine\theta\src D:\repos\theta_engine\theta\build D:\repos\theta_engine\theta\build D:\repos\theta_engine\theta\build\CMakeFiles\theta.dir\DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/theta.dir/depend
 

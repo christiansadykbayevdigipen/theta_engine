@@ -1,5 +1,7 @@
 #include "application.h"
 
+#include <stdio.h>
+
 void theta_application_init(theta_application* app, theta_application_descriptor descriptor) {
     app->descriptor = descriptor;
 }

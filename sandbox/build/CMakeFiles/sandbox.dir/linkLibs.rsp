@@ -1,1 +1,1 @@
-  -LC:/Users/c.sadykbayev/Desktop/Dev/repos/theta_engine/sandbox/src/../../theta/build  -ltheta -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
+  -LD:/repos/theta_engine/sandbox/src/../../theta/build  -ltheta -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

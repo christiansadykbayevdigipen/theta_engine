@@ -43,7 +43,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/4.0.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/4.0.1/CMakeRCCompiler.cmake"
   "CMakeFiles/4.0.1/CMakeSystem.cmake"
-  "C:/Users/c.sadykbayev/Desktop/Dev/repos/theta_engine/theta/src/CMakeLists.txt"
+  "D:/repos/theta_engine/theta/src/CMakeLists.txt"
   )
 
 # The corresponding makefile is:

@@ -56,10 +56,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\src
+CMAKE_SOURCE_DIR = D:\repos\theta_engine\theta\src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build
+CMAKE_BINARY_DIR = D:\repos\theta_engine\theta\build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build\CMakeFiles C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\repos\theta_engine\theta\build\CMakeFiles D:\repos\theta_engine\theta\build\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\c.sadykbayev\Desktop\Dev\repos\theta_engine\theta\build\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\repos\theta_engine\theta\build\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -128,6 +128,30 @@ theta/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\theta.dir\build.make CMakeFiles/theta.dir/build
 .PHONY : theta/fast
 
+application/application.obj: application/application.c.obj
+.PHONY : application/application.obj
+
+# target to build an object file
+application/application.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\theta.dir\build.make CMakeFiles/theta.dir/application/application.c.obj
+.PHONY : application/application.c.obj
+
+application/application.i: application/application.c.i
+.PHONY : application/application.i
+
+# target to preprocess a source file
+application/application.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\theta.dir\build.make CMakeFiles/theta.dir/application/application.c.i
+.PHONY : application/application.c.i
+
+application/application.s: application/application.c.s
+.PHONY : application/application.s
+
+# target to generate assembly for a file
+application/application.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\theta.dir\build.make CMakeFiles/theta.dir/application/application.c.s
+.PHONY : application/application.c.s
+
 logger/logger.obj: logger/logger.c.obj
 .PHONY : logger/logger.obj
 
@@ -161,6 +185,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... theta
+	@echo ... application/application.obj
+	@echo ... application/application.i
+	@echo ... application/application.s
 	@echo ... logger/logger.obj
 	@echo ... logger/logger.i
 	@echo ... logger/logger.s
