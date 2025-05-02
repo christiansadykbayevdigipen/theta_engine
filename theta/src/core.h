@@ -17,6 +17,9 @@ typedef float f32;
 typedef double f64;
 typedef long double f80;
 
+/*Boolean Type*/
+typedef int BOOL;
+
 typedef enum {
     THETA_LOGGER_SEVERITY_FATAL,
     THETA_LOGGER_SEVERITY_ERROR,
@@ -52,3 +55,8 @@ THETA_API void theta_logger_log(theta_logger_severity severity, const char* mess
 
 // This macro is very useful when platform/api specific information exists. If you have a struct that has a void* uninterpreted data, this macro will cast that to the type you wish.
 #define DATA_CAST(TYPE, VAR) ((TYPE*)VAR->uninterpreted_data)
+
+typedef enum {
+    THETA_API_OPENGL,
+    THETA_API_NONE
+}theta_api;

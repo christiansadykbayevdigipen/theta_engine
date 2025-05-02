@@ -17,6 +17,7 @@ int main() {
     strcpy_s(descriptor.app_name, MAX_STRING, "Sandbox");
     descriptor.start = sb_start;
     descriptor.update = sb_update;
+    descriptor.api = THETA_API_OPENGL;
 
     theta_application_init(&sandbox, descriptor);
     theta_application_run(&sandbox);

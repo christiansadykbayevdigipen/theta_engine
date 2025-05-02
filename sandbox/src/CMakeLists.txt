@@ -4,7 +4,7 @@ project(sandbox)
 
 link_directories(../../theta/build)
 
-link_libraries(-ltheta -lopengl32)
+link_libraries(-ltheta)
 
 include_directories(../../theta/src)
 
