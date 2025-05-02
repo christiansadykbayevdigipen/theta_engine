@@ -1,4 +1,5 @@
 #include "application.h"
+#include "timer/timer.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -15,10 +16,14 @@ void theta_application_init(theta_application* app, theta_application_descriptor
 void theta_application_run(theta_application* app) {
     app->descriptor.start();
 
-    while(!theta_window_close_requested(&app->window)) {
-        // TODO: Fill in an actual value
-        app->descriptor.update(0.0f);
+    theta_timer_reset();
 
+    while(!theta_window_close_requested(&app->window)) {
+        
+        f64 elapsed = theta_timer_get_elapsed();
+        theta_timer_reset();
+
+        app->descriptor.update(elapsed);
         theta_window_update(&app->window);
     }
 }

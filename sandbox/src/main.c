@@ -8,7 +8,7 @@ void sb_start() {
 }
 
 void sb_update(f64 elapsed_time) {
-
+    
 }
 
 int main() {
@@ -18,7 +18,6 @@ int main() {
     descriptor.start = sb_start;
     descriptor.update = sb_update;
     descriptor.api = THETA_API_OPENGL;
-
     theta_application_init(&sandbox, descriptor);
     theta_application_run(&sandbox);
 }
