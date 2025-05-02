@@ -4,6 +4,7 @@
 #include "window/window.h"
 
 #if defined(THETA_PLATFORM_SHARED)
+#include <Windows.h>
 #include <glfw/glfw3.h>
 
 /*
