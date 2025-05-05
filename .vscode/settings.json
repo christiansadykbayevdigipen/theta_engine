@@ -5,6 +5,7 @@
         "posix_thread.h": "c",
         "xutility": "c",
         "initializer_list": "c",
-        "utility": "c"
+        "utility": "c",
+        "algorithm": "c"
     }
 }

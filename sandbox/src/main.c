@@ -6,7 +6,11 @@
 #include <stdlib.h>
 
 void sb_start() {
+    theta_vector3f a = theta_vector3f_create_args(1.0f, 33.0f, 7.0f);
+    
+    a = theta_vector3f_muls(a, 2.0f);
 
+    THETA_DEBUG("Vector %f,%f,%f\n", a.x, a.y, a.z);
 }
 
 void sb_update(f64 elapsed_time) {
