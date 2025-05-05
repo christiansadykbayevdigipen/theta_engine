@@ -35,3 +35,9 @@ void theta_window_update_shared_window(theta_window* window){
         glfwSwapBuffers(DATA_CAST(theta_shared_window_specifics, window)->window_handle);
     }
 }
+
+void theta_window_destroy_shared_window(theta_window* window) {
+    glfwTerminate();
+
+    glfwDestroyWindow(DATA_CAST(theta_shared_window_specifics, window)->window_handle);
+}

@@ -25,7 +25,8 @@ typedef enum {
     THETA_LOGGER_SEVERITY_ERROR,
     THETA_LOGGER_SEVERITY_WARNING,
     THETA_LOGGER_SEVERITY_INFO,
-    THETA_LOGGER_SEVERITY_DEBUG
+    THETA_LOGGER_SEVERITY_DEBUG,
+    THETA_LOGGER_SEVERITY_TRACE
 }theta_logger_severity;
 
 #define THETA_API extern
@@ -60,3 +61,6 @@ typedef enum {
     THETA_API_OPENGL,
     THETA_API_NONE
 }theta_api;
+
+// This macro is useful for general malloc operations with structs.
+#define INIT_STRUCT(TYPE) (TYPE*)(malloc(sizeof(TYPE)))

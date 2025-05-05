@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 project(theta)
 
+add_compile_options(
+  "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
+  "$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>"
+)
+
 # Stole this line from Chat-GPT LOL
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(../../glfw/include)

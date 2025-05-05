@@ -30,3 +30,9 @@ THETA_API BOOL theta_window_close_requested(theta_window* window);
 @param window An initialized theta_window structure.
 */
 THETA_API void theta_window_update(theta_window* window);
+
+/*
+@brief This method terminates the window.
+@param window An initialized theta_window structure.
+*/
+THETA_API void theta_window_destroy(theta_window* window);

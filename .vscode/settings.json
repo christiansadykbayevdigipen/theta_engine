@@ -1,6 +1,10 @@
 {
     "files.associations": {
+        "*.h": "c",
         "window.h": "c",
-        "posix_thread.h": "c"
+        "posix_thread.h": "c",
+        "xutility": "c",
+        "initializer_list": "c",
+        "utility": "c"
     }
 }

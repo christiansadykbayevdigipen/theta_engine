@@ -25,6 +25,12 @@ void theta_logger_log(theta_logger_severity severity, const char* message, ...){
     case THETA_LOGGER_SEVERITY_DEBUG:
         strcat_s(buffer, 1024, "[Theta Debug Log]: ");
         break;
+    case THETA_LOGGER_SEVERITY_TRACE:
+        strcat_s(buffer, 1024, "[Theta Trace]: ");
+        break;
+    default:
+        strcat_s(buffer, 1024, "[Unknown Logging Severity]: ");
+        break;
     }
     
     va_list(args);

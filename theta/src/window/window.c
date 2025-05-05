@@ -10,7 +10,7 @@ void theta_window_init(theta_window* window, u32 width, u32 height, const char* 
     #endif
 }
 
-BOOL theta_window_close_requested(theta_window* window){
+BOOL theta_window_close_requested(theta_window* window) {
     #if defined(THETA_PLATFORM_SHARED)
     return theta_window_close_requested_shared_window(window);
     #endif
@@ -18,8 +18,14 @@ BOOL theta_window_close_requested(theta_window* window){
     return TRUE;
 }
 
-void theta_window_update(theta_window* window){
+void theta_window_update(theta_window* window) {
     #if defined(THETA_PLATFORM_SHARED)
     return theta_window_update_shared_window(window);
+    #endif
+}
+
+void theta_window_destroy(theta_window* window) {
+    #if defined(THETA_PLATFORM_SHARED)
+    return theta_window_destroy_shared_window(window);
     #endif
 }

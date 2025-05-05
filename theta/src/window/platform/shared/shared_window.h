@@ -16,19 +16,24 @@ typedef struct {
 }theta_shared_window_specifics;
 
 /*
-@brief This initializes theta's window as a shared window
+@brief See theta_window_init
 */
 THETA_API void theta_window_init_shared_window(theta_window* window, u32 width, u32 height, const char* title, theta_api api);
 
 /*
-@brief This checks to see if theta's window should be closed as a shared window
+@brief See theta_window_close_requested
 */
 THETA_API BOOL theta_window_close_requested_shared_window(theta_window* window);
 
 /*
-@brief This updates the theta window as a shared window
+@brief See theta_window_update
 */
 THETA_API void theta_window_update_shared_window(theta_window* window);
+
+/*
+@brief See theta_window_destroy
+*/
+THETA_API void theta_window_destroy_shared_window(theta_window* window);
 
 #else
 #error You cannot include this header when you are not on the shared platform (windows, linux, mac).
