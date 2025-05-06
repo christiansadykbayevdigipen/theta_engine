@@ -5,6 +5,7 @@
 #endif
 
 void theta_window_init(theta_window* window, u32 width, u32 height, const char* title, theta_api api) {
+    THETA_PROFILE();
     #if defined(THETA_PLATFORM_SHARED)
     theta_window_init_shared_window(window, width, height, title, api);
     #endif

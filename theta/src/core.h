@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdio.h>
+
 /*Unsigned types*/
 typedef unsigned long u64;
 typedef unsigned int u32;
@@ -47,6 +49,7 @@ THETA_API void theta_logger_log(theta_logger_severity severity, const char* mess
 #define THETA_WARN(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_WARNING, X, ##__VA_ARGS__)
 #define THETA_INFO(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_INFO, X, ##__VA_ARGS__)
 #define THETA_DEBUG(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_DEBUG, X, ##__VA_ARGS__)
+#define THETA_TRACE(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_TRACE, X, ##__VA_ARGS__)
 
 #if defined(_WIN32) || defined(WINDOWS) || defined(__POSIX__) || defined(__LINUX__) || defined(__APPLE__)
 #define THETA_PLATFORM_SHARED
@@ -64,3 +67,16 @@ typedef enum {
 
 // This macro is useful for general malloc operations with structs.
 #define INIT_STRUCT(TYPE) (TYPE*)(malloc(sizeof(TYPE)))
+
+#define THETA_ASSERT(STATEMENT, MESSAGE) if(!STATEMENT) THETA_FATAL("Theta has ran into a failed assertion! Statement: %s, Message: %s\n", #STATEMENT, MESSAGE)
+
+//https://stackoverflow.com/questions/15305310/predefined-macros-for-function-name-func
+#ifndef __FUNCTION_NAME__
+    #ifdef WIN32   //WINDOWS
+        #define __FUNCTION_NAME__   __FUNCTION__  
+    #else          //*NIX
+        #define __FUNCTION_NAME__   __func__ 
+    #endif
+#endif
+
+#define THETA_PROFILE() THETA_TRACE("%s\n", __FUNCTION_NAME__)

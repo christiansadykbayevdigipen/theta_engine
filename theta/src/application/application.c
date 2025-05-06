@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 void theta_application_init(theta_application* app, theta_application_descriptor descriptor) {
+    THETA_PROFILE();
     char full_window_name[MAX_STRING] = "[Powered by Theta] - ";
 
     strcat_s(full_window_name, MAX_STRING, descriptor.app_name);
@@ -14,6 +15,7 @@ void theta_application_init(theta_application* app, theta_application_descriptor
 }
 
 void theta_application_run(theta_application* app) {
+    THETA_PROFILE();
     if(app->descriptor.start != NULL) app->descriptor.start();
 
     theta_timer_reset();

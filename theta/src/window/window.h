@@ -2,11 +2,15 @@
 
 #include "core.h"
 
+struct theta_rendering_context;
+
 /*
 @brief A window in Theta is where all the rendering goes to.
 */
 typedef struct {
     void* uninterpreted_data;
+    theta_api api;
+    struct theta_rendering_context* context;
 }theta_window;
 
 /*
