@@ -41,10 +41,6 @@ BOOL theta_window_close_requested_shared_window(theta_window* window){
 
 void theta_window_update_shared_window(theta_window* window){
     glfwPollEvents();
-    
-    if(window->api == THETA_API_OPENGL) {
-        glfwSwapBuffers(DATA_CAST(theta_shared_window_specifics, window)->window_handle);
-    }
 }
 
 void theta_window_destroy_shared_window(theta_window* window) {
@@ -55,4 +51,10 @@ void theta_window_destroy_shared_window(theta_window* window) {
 
 u32 theta_shared_window_get_proc_address(theta_window* window) {
     return glfwGetProcAddress;
+}
+
+void theta_shared_window_swap_buffers(theta_window *window) {
+    THETA_ASSERT(window->api == THETA_API_OPENGL, "theta_shared_window_swap_buffers has failed. The reason being swap buffers can only be called if OpenGL is being used!");
+
+    glfwSwapBuffers(DATA_CAST(theta_shared_window_specifics, window)->window_handle);
 }

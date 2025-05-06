@@ -5,3 +5,5 @@
 #include "timer/timer.h"
 #include "utils/list.h"
 #include "math/tmath.h"
+#include "renderer/renderer.h"
+#include "renderer/mesh.h"

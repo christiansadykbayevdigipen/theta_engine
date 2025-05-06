@@ -40,6 +40,12 @@ THETA_API void theta_window_destroy_shared_window(theta_window* window);
 */
 THETA_API u32 theta_shared_window_get_proc_address(theta_window* window);
 
+/*
+@brief This swaps the buffers with GLFW. Can only be called if using OpenGL.
+@param window A pointer to an initialized theta_window structure. Must be initialized as a shared window.
+*/
+THETA_API void theta_shared_window_swap_buffers(theta_window* window);
+
 #else
 #error You cannot include this header when you are not on the shared platform (windows, linux, mac).
 #endif

@@ -7,14 +7,19 @@
 /*
 @brief The rendering context is the low level access to things like vertex buffers, vertex arrays, (for OpenGL), swapchains (vulkan and direct x), etc.
 It's the abstraction of these concepts so that the high level renderer can use these as another layer of abstraction
-@param api The api the rendering context has been initialized under.
-@param window The window the context should be displayed on
-@param uninterpreted_data The data that each api has specific information under. 
+@param api The api the context is initialized under
+@param window The window the context is initialize for
+@param uninterpreted_data The API specific data that is used in the APIcontext implementations
+@param clear Clears the screen. Wipes it clean
+@param swap Initiates the swapchain or swaps buffers, depending on what API you use.
 */
 typedef struct theta_rendering_context{
     theta_api api;
     theta_window* window;
     void* uninterpreted_data;
+
+    void (*clear)(struct theta_rendering_context*);
+    void (*swap)(struct theta_rendering_context*);
 }theta_rendering_context;
 
 /*
