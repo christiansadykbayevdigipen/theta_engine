@@ -68,3 +68,5 @@ THETA_API theta_vector3f theta_vector3f_div(theta_vector3f first, theta_vector3f
 @param scalar The scalar value in the operation
 */
 THETA_API theta_vector3f theta_vector3f_divs(theta_vector3f first, f32 scalar);
+
+// TODO: Add the other important vector functions like dot product, cross product, etc.
