@@ -23,3 +23,5 @@ cd ..
 cd ..
 
 copy "%CD%\theta\build\libtheta.dll" "%CD%\sandbox\build\libtheta.dll"
+del "%CD%\sandbox\build\res\*.*"
+xcopy "%CD%\res" "%CD%\sandbox\build\res" /s /e /h /I

@@ -26,6 +26,7 @@ void theta_window_update(theta_window* window) {
 }
 
 void theta_window_destroy(theta_window* window) {
+    THETA_PROFILE();
     #if defined(THETA_PLATFORM_SHARED)
     return theta_window_destroy_shared_window(window);
     #endif

@@ -2,6 +2,7 @@
 
 #include "core.h"
 #include "renderer/context/context.h"
+#include "renderer/shader.h"
 
 #define MAX_VAO_LAYOUT 20
 
@@ -68,4 +69,4 @@ THETA_API void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx
 @brief Draws a particular vertex array (without an Index Buffer)
 @param vertex_count The number of whole vertex positions.
 */
-THETA_API void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count);
+THETA_API void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader);

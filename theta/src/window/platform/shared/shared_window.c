@@ -44,6 +44,7 @@ void theta_window_update_shared_window(theta_window* window){
 }
 
 void theta_window_destroy_shared_window(theta_window* window) {
+    THETA_PROFILE();
     glfwTerminate();
 
     glfwDestroyWindow(DATA_CAST(theta_shared_window_specifics, window)->window_handle);

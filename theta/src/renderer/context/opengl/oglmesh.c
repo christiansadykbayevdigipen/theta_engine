@@ -5,12 +5,15 @@
 
 #include "renderer/context/opengl/oglcontext.h"
 #include "renderer/renderer.h"
+#include "oglshader.h"
 
 typedef struct {
     theta_opengl_vertex_array vao;
 }theta_mesh_opengl_specifics;
 
 void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension) {
+    THETA_PROFILE();
+    
     theta_rendering_context* ctx = theta_renderer_get_context();
 
     theta_dynamic_list_init_args(&mesh->vertices, vertices, sizeof(f32), number_of_vertices);
@@ -37,8 +40,8 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
     mesh->vertex_position_count = number_of_vertices / dimension;
 }
 
-void theta_mesh_render_opengl(theta_mesh* mesh) {
+void theta_mesh_render_opengl(theta_mesh* mesh, theta_shader_program* program) {
     theta_rendering_context* ctx = theta_renderer_get_context();
     theta_mesh_opengl_specifics* self = DATA_CAST(theta_mesh_opengl_specifics, mesh);
-    theta_rendering_context_vao_draw(ctx, &self->vao, mesh->vertex_position_count);
+    theta_rendering_context_vao_draw(ctx, &self->vao, mesh->vertex_position_count, program);
 }

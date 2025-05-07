@@ -4,6 +4,7 @@
 #include "context/context.h"
 
 struct theta_mesh;
+struct theta_shader_program;
 
 /*
 @brief The theta rendering structure. This is only used in renderer.c, and is used staticly. The renderer mainly just holds information about the renderer, rather than doing much of anything. 
@@ -27,7 +28,7 @@ THETA_API void theta_renderer_begin_frame();
 /*
 @brief Submits a mesh to the rendering queue. Gets rendered at theta_renderer_end_frame.
 */
-THETA_API void theta_renderer_submit(struct theta_mesh* mesh);
+THETA_API void theta_renderer_submit(struct theta_mesh* mesh, struct theta_shader_program* program);
 
 /*
 @brief This method should be called AFTER all rendering. Finishes the frame and preps for the next frame.

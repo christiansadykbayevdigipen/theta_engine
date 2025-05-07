@@ -6,6 +6,7 @@
 #include <glad/gl.h>
 
 #include "window/platform/shared/shared_window.h"
+#include "oglshader.h"
 
 void theta_rendering_context_init_opengl(theta_rendering_context* ctx, theta_window* window) {
     THETA_PROFILE();
@@ -57,7 +58,9 @@ void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx, theta_op
     vao->current_layout_length++;
 }
 
-void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count) {
+void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader) {
+    glUseProgram(DATA_CAST(theta_shader_program_opengl_specifics, associated_shader)->programID);
+    
     glBindVertexArray(vao->vertex_array_id);
     
     for(u32 i = 0; i < vao->current_layout_length; i++) {
@@ -71,4 +74,5 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
     }
     
     glBindVertexArray(0);
+    glUseProgram(0);
 }

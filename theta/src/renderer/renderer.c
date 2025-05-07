@@ -19,8 +19,8 @@ void theta_renderer_begin_frame() {
     g_renderer.context->clear(g_renderer.context);
 }
 
-void theta_renderer_submit(struct theta_mesh* mesh) {
-    mesh->render(mesh);
+void theta_renderer_submit(struct theta_mesh* mesh, struct theta_shader_program* program) {
+    mesh->render(mesh, program);
 }
 
 void theta_renderer_end_frame() {

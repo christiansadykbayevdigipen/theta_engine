@@ -11,7 +11,7 @@ typedef struct theta_mesh {
     u32 vertex_position_count;
     void* uninterpreted_data;
 
-    void (*render)(struct theta_mesh*);
+    void (*render)(struct theta_mesh*, struct theta_shader_program*);
 }theta_mesh;
 
 /*

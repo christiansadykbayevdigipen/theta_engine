@@ -7,3 +7,4 @@
 #include "math/tmath.h"
 #include "renderer/renderer.h"
 #include "renderer/mesh.h"
+#include "renderer/shader.h"

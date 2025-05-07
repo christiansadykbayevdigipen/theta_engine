@@ -12,19 +12,15 @@ f32 vertices[] = {
 };
 
 static theta_mesh g_test_mesh;
+static theta_shader_program g_test_shader;
 
 void sb_start() {
-    theta_vector3f a = theta_vector3f_create_args(1.0f, 33.0f, 7.0f);
-    
-    a = theta_vector3f_muls(a, 2.0f);
-
-    THETA_DEBUG("Vector %f,%f,%f\n", a.x, a.y, a.z);
-
     theta_mesh_init(&g_test_mesh, vertices, sizeof(vertices) / sizeof(vertices[0]), 2);
+    theta_shader_program_init(&g_test_shader, "res/basic_shader.shader");
 }
 
 void sb_update(f64 elapsed_time) {
-    theta_renderer_submit(&g_test_mesh);
+    theta_renderer_submit(&g_test_mesh, &g_test_shader);
 }
 
 void sb_terminate() {
