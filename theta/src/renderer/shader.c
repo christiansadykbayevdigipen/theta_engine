@@ -15,3 +15,9 @@ void theta_shader_program_init(theta_shader_program* program, const char* filena
         return;
     }
 }
+
+void theta_shader_program_init_type(theta_shader_program* program, theta_shader_type type) {
+    THETA_PROFILE();
+
+    theta_shader_program_init(program, "res/basic_shader.shader");
+}

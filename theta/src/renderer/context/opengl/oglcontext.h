@@ -28,6 +28,12 @@ typedef struct {
     u32 vertex_buffer_id;
 }theta_opengl_vertex_buffer;
 
+// typedef struct {
+//     u32 uniform_buffer_id;
+//     u32 data_size;
+
+// }theta_opengl_uniform_buffer;
+
 typedef struct {
     u32 vertex_array_id;
     theta_opengl_vao_layout layout[MAX_VAO_LAYOUT];
@@ -70,3 +76,17 @@ THETA_API void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx
 @param vertex_count The number of whole vertex positions.
 */
 THETA_API void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader);
+
+
+/*
+@brief Initializes a uniform buffer for OpenGL.
+@param data_size The size (in bytes) of the raw data in the uniform buffer.
+@param shader The shader associated with this uniform buffer
+@param name_in_shader The name of the uniform buffer in the shader program.
+*/
+// THETA_API void theta_rendering_context_ubo_init(theta_rendering_context* ctx, theta_opengl_uniform_buffer* ubo, u32 data_size, theta_shader_program* shader, const char* name_in_shader);
+
+/*
+@brief Gives data into the uniform buffer
+*/
+// THETA_API void theta_rendering_context_ubo_give_data(theta_rendering_context* ctx, theta_opengl_uniform_buffer* ubo, void* data);

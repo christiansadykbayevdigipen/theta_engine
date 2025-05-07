@@ -1,9 +1,14 @@
 #version 330 core
 layout (location = 0) in vec3 input_position;
 
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+
 void main()
 {
-    gl_Position = vec4(input_position, 1.0);
+    mat4 mvp = projection * view * model;
+    gl_Position = mvp * vec4(input_position, 1.0);
 }
 
 ~NewShader

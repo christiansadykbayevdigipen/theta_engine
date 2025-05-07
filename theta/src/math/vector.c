@@ -23,6 +23,8 @@ theta_vector3f theta_vector3f_add(theta_vector3f first, theta_vector3f second) {
     result.x = first.x + second.x;
     result.y = first.y + second.y;
     result.z = first.z + second.z;
+
+    return result;
 }
 
 theta_vector3f theta_vector3f_sub(theta_vector3f first, theta_vector3f second) {

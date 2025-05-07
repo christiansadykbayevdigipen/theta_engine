@@ -76,3 +76,20 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
     glBindVertexArray(0);
     glUseProgram(0);
 }
+
+// void theta_rendering_context_ubo_init(theta_rendering_context* ctx, theta_opengl_uniform_buffer* ubo, u32 data_size, theta_shader_program* shader, const char* name_in_shader) {
+//     glGenBuffers(1, &ubo->uniform_buffer_id);
+
+//     glBindBuffer(GL_UNIFORM_BUFFER, ubo->uniform_buffer_id);
+//     glBufferData(GL_UNIFORM_BUFFER, data_size, NULL, GL_STATIC_DRAW);
+//     glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+//     ubo->data_size = data_size;
+    
+// }
+
+// void theta_rendering_context_ubo_give_data(theta_rendering_context* ctx, theta_opengl_uniform_buffer* ubo, void* data) {
+//     glBindBuffer(GL_UNIFORM_BUFFER, ubo->uniform_buffer_id);
+//     glBufferSubData(GL_UNIFORM_BUFFER, 0, ubo->data_size, data);
+//     glBindBuffer(GL_UNIFORM_BUFFER, 0);
+// }

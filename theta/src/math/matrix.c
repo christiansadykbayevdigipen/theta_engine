@@ -19,6 +19,8 @@ theta_mat4x4f theta_mat4x4f_identity() {
     matrix.matrix[1][1] = 1.0f;
     matrix.matrix[2][2] = 1.0f;
     matrix.matrix[3][3] = 1.0f;
+
+    return matrix;
 }
 
 theta_mat4x4f theta_mat4x4f_copy(theta_mat4x4f other) {

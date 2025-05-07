@@ -97,6 +97,7 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     THETA_PROFILE();
     
     program->uninterpreted_data = malloc(sizeof(theta_shader_program_opengl_specifics));
+    program->set_mvp = &theta_shader_program_set_mvp_opengl;
 
     u32 current_buffer_size = 1000;
     char* full_source = malloc(sizeof(char) * current_buffer_size);
@@ -137,4 +138,48 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     free(vsource);
     free(fsource);
     free(full_source);
+}
+
+void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection) {
+    u32 p_id = DATA_CAST(theta_shader_program_opengl_specifics, program)->programID;
+
+    u32 model_location = glGetUniformLocation(p_id, "model");
+    u32 view_location = glGetUniformLocation(p_id, "view");
+    u32 proj_location = glGetUniformLocation(p_id, "projection");
+
+    float newmodel[16];
+    for(int y = 0; y < 4; y++) {
+        for(int x = 0; x < 4; x++) {
+            int index1d = (y * 4) + x;
+            newmodel[index1d] = model.matrix[y][x];
+        }
+    }
+
+    float newview[16];
+    for (int y = 0; y < 4; y++)
+    {
+        for (int x = 0; x < 4; x++)
+        {
+            int index1d = (y * 4) + x;
+            newview[index1d] = view.matrix[y][x];
+        }
+    }
+
+    float newproj[16];
+    for (int y = 0; y < 4; y++)
+    {
+        for (int x = 0; x < 4; x++)
+        {
+            int index1d = (y * 4) + x;
+            newproj[index1d] = projection.matrix[y][x];
+        }
+    }
+
+    glUseProgram(p_id);
+
+    glUniformMatrix4fv(model_location, 1, GL_FALSE, newmodel);
+    glUniformMatrix4fv(view_location, 1, GL_FALSE, newview);
+    glUniformMatrix4fv(proj_location, 1, GL_FALSE, newproj);
+
+    glUseProgram(0);
 }

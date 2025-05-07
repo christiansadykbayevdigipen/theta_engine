@@ -13,5 +13,5 @@ f64 theta_timer_get_elapsed() {
 
     f64 total_time = (f64)(current_state - g_system_time) / CLOCKS_PER_SEC;
 
-    return total_time * 1000;
+    return total_time;
 }
