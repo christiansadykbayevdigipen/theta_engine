@@ -4,6 +4,7 @@
 #include <malloc.h>
 
 #include "mesh.h"
+#include "renderable.h"
 
 static theta_renderer g_renderer;
 
@@ -19,8 +20,8 @@ void theta_renderer_begin_frame() {
     g_renderer.context->clear(g_renderer.context);
 }
 
-void theta_renderer_submit(struct theta_mesh* mesh, struct theta_shader_program* program) {
-    mesh->render(mesh, program);
+void theta_renderer_submit(struct theta_renderable* renderable) {
+    renderable->mesh.render(&renderable->mesh, &renderable->material.program);
 }
 
 void theta_renderer_end_frame() {
@@ -33,4 +34,9 @@ theta_rendering_context* theta_renderer_get_context() {
 
 theta_api theta_renderer_get_api() {
     return g_renderer.context->api;
+}
+
+void theta_renderer_destroy() {
+    g_renderer.context->destroy(g_renderer.context);
+    free(g_renderer.context);
 }

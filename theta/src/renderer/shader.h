@@ -20,6 +20,7 @@ typedef struct {
 typedef struct theta_shader_program{
     void* uninterpreted_data;
     void (*set_mvp)(struct theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection);
+    void (*destroy)(struct theta_shader_program* program);
 }theta_shader_program;
 
 /*

@@ -11,16 +11,15 @@ f32 vertices[] = {
     0.0f, 0.5f
 };
 
-static theta_mesh g_test_mesh;
-static theta_shader_program g_test_shader;
+static theta_renderable g_renderable;
 
 static theta_mat4x4f model;
 static theta_mat4x4f view;
 static theta_mat4x4f proj;
 
 void sb_start() {
-    theta_mesh_init(&g_test_mesh, vertices, sizeof(vertices) / sizeof(vertices[0]), 2);
-    theta_shader_program_init(&g_test_shader, "res/basic_shader.shader");
+
+    theta_renderable_init_quad(&g_renderable);
 
     model = theta_mat4x4f_identity();
     view = theta_mat4x4f_identity();
@@ -28,8 +27,8 @@ void sb_start() {
 }
 
 void sb_update(f64 elapsed_time) {
-    g_test_shader.set_mvp(&g_test_shader, model, view, proj);
-    theta_renderer_submit(&g_test_mesh, &g_test_shader);
+    g_renderable.material.program.set_mvp(&g_renderable.material.program, model, view, proj);
+    theta_renderer_submit(&g_renderable);
 }
 
 void sb_terminate() {

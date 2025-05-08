@@ -7,11 +7,11 @@
 @brief The mesh in theta is the rendered object without any material applied. It's the shape of the rendered object.
 */
 typedef struct theta_mesh {
-    theta_dynamic_list vertices;
     u32 vertex_position_count;
     void* uninterpreted_data;
 
     void (*render)(struct theta_mesh*, struct theta_shader_program*);
+    void (*destroy)(struct theta_mesh*);
 }theta_mesh;
 
 /*

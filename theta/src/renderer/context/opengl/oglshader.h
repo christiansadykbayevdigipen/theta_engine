@@ -9,3 +9,5 @@ typedef struct {
 THETA_API void theta_shader_program_init_opengl(theta_shader_program* program, const char* filename);
 
 THETA_API void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection);
+
+THETA_API void theta_shader_program_destroy_opengl(theta_shader_program* program);

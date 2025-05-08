@@ -76,6 +76,9 @@ static u32 create_and_link_program(u32 vertex_shader, u32 fragment_shader) {
 
     glLinkProgram(program);
 
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
+
     s32 status = NULL;
 
     glGetProgramiv(program, GL_LINK_STATUS, &status);
@@ -97,47 +100,51 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     THETA_PROFILE();
     
     program->uninterpreted_data = malloc(sizeof(theta_shader_program_opengl_specifics));
-    program->set_mvp = &theta_shader_program_set_mvp_opengl;
-
+    
     u32 current_buffer_size = 1000;
     char* full_source = malloc(sizeof(char) * current_buffer_size);
-
+    
     FILE* file = NULL;
-
+    
     
     
     THETA_ASSERT(0 == fopen_s(&file, filename, "r"), "theta_shader_program_init_opengl has failed. The reason being, the shader program file that has been requested does not currently exist.");
-
+    
     char character;
     u32 length = 0;
     while((character = fgetc(file)) != EOF) {
         length++;
-
+        
         if(length >= current_buffer_size) {
             current_buffer_size += 1000;
             full_source = realloc(full_source, current_buffer_size * sizeof(char));
         }
-
+        
         full_source[length-1] = character;
     }
     full_source[length] = '\0';
     fclose(file);
-
+    
     char* vsource;
     char* fsource;
-
+    
     tokenize_shader(full_source, length, &vsource, &fsource);
-
+    
     u32 vertex_shader = compile_shader(GL_VERTEX_SHADER, vsource);
     u32 fragment_shader = compile_shader(GL_FRAGMENT_SHADER, fsource);
-
+    
     u32 programID = create_and_link_program(vertex_shader, fragment_shader);
-
+    
     DATA_CAST(theta_shader_program_opengl_specifics, program)->programID = programID;
-
+    
     free(vsource);
     free(fsource);
     free(full_source);
+
+    /*Set Function Pointers*/
+
+    program->set_mvp = &theta_shader_program_set_mvp_opengl;
+    program->destroy = &theta_shader_program_destroy_opengl;
 }
 
 void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection) {
@@ -182,4 +189,8 @@ void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_ma
     glUniformMatrix4fv(proj_location, 1, GL_FALSE, newproj);
 
     glUseProgram(0);
+}
+
+void theta_shader_program_destroy_opengl(theta_shader_program* program) {
+    glDeleteProgram(DATA_CAST(theta_shader_program_opengl_specifics, program)->programID);
 }

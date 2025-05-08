@@ -15,6 +15,7 @@ void theta_rendering_context_init_opengl(theta_rendering_context* ctx, theta_win
     ctx->api = THETA_API_OPENGL;
     ctx->clear = &theta_rendering_context_clear_opengl;
     ctx->swap = &theta_rendering_context_swap_opengl;
+    ctx->destroy = &theta_rendering_context_destroy_opengl;
     
     THETA_ASSERT(gladLoadGL(theta_shared_window_get_proc_address(window)), "theta_rendering_context_init_opengl has failed. The reason being, glad, the opengl loader, has failed to load opengl.");
 }
@@ -77,19 +78,14 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
     glUseProgram(0);
 }
 
-// void theta_rendering_context_ubo_init(theta_rendering_context* ctx, theta_opengl_uniform_buffer* ubo, u32 data_size, theta_shader_program* shader, const char* name_in_shader) {
-//     glGenBuffers(1, &ubo->uniform_buffer_id);
+void theta_rendering_context_vao_destroy(theta_rendering_context* ctx, theta_opengl_vertex_array* vao) {
+    glDeleteVertexArrays(1, &vao->vertex_array_id);
+}
 
-//     glBindBuffer(GL_UNIFORM_BUFFER, ubo->uniform_buffer_id);
-//     glBufferData(GL_UNIFORM_BUFFER, data_size, NULL, GL_STATIC_DRAW);
-//     glBindBuffer(GL_UNIFORM_BUFFER, 0);
+void theta_rendering_context_vbo_destroy(theta_rendering_context* ctx, theta_opengl_vertex_buffer* vbo) {
+    glDeleteBuffers(1, &vbo->vertex_buffer_id);
+}
 
-//     ubo->data_size = data_size;
-    
-// }
+void theta_rendering_context_destroy_opengl(theta_rendering_context* ctx) {
 
-// void theta_rendering_context_ubo_give_data(theta_rendering_context* ctx, theta_opengl_uniform_buffer* ubo, void* data) {
-//     glBindBuffer(GL_UNIFORM_BUFFER, ubo->uniform_buffer_id);
-//     glBufferSubData(GL_UNIFORM_BUFFER, 0, ubo->data_size, data);
-//     glBindBuffer(GL_UNIFORM_BUFFER, 0);
-// }
+}

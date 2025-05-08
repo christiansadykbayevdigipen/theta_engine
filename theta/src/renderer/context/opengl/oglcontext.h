@@ -77,6 +77,18 @@ THETA_API void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx
 */
 THETA_API void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader);
 
+/*
+@brief Destroys and clears the memory of the VAO
+*/
+THETA_API void theta_rendering_context_vao_destroy(theta_rendering_context* ctx, theta_opengl_vertex_array* vao);
+
+/*
+@brief Destroys and clears the memory of the VBO
+*/
+THETA_API void theta_rendering_context_vbo_destroy(theta_rendering_context* ctx, theta_opengl_vertex_buffer* vbo);
+
+THETA_API void theta_rendering_context_destroy_opengl(theta_rendering_context* ctx);
+
 
 /*
 @brief Initializes a uniform buffer for OpenGL.

@@ -16,8 +16,6 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
     
     theta_rendering_context* ctx = theta_renderer_get_context();
 
-    theta_dynamic_list_init_args(&mesh->vertices, vertices, sizeof(f32), number_of_vertices);
-
     mesh->uninterpreted_data = malloc(sizeof(theta_mesh_opengl_specifics));
 
     theta_mesh_opengl_specifics* self = DATA_CAST(theta_mesh_opengl_specifics, mesh);
@@ -36,12 +34,21 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
 
     theta_rendering_context_vao_push_vbo(ctx, &self->vao, &vbo, layout);
 
-    mesh->render = &theta_mesh_render_opengl;
     mesh->vertex_position_count = number_of_vertices / dimension;
+    
+    /*Setup Function Pointers Here*/
+    mesh->render = &theta_mesh_render_opengl;
+    mesh->destroy = &theta_mesh_destroy_opengl;
 }
 
 void theta_mesh_render_opengl(theta_mesh* mesh, theta_shader_program* program) {
     theta_rendering_context* ctx = theta_renderer_get_context();
     theta_mesh_opengl_specifics* self = DATA_CAST(theta_mesh_opengl_specifics, mesh);
     theta_rendering_context_vao_draw(ctx, &self->vao, mesh->vertex_position_count, program);
+}
+
+void theta_mesh_destroy_opengl(theta_mesh* mesh) {
+    theta_rendering_context* ctx = theta_renderer_get_context();
+    theta_mesh_opengl_specifics* self = DATA_CAST(theta_mesh_opengl_specifics, mesh);
+    theta_rendering_context_vao_destroy(ctx, &self->vao);
 }

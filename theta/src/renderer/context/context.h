@@ -20,6 +20,7 @@ typedef struct theta_rendering_context{
 
     void (*clear)(struct theta_rendering_context*);
     void (*swap)(struct theta_rendering_context*);
+    void (*destroy)(struct theta_rendering_context*);
 }theta_rendering_context;
 
 /*
