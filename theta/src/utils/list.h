@@ -53,3 +53,9 @@ THETA_API void* theta_dynamic_list_get(theta_dynamic_list* list, u32 index);
 THETA_API void theta_dynamic_list_pop_back(theta_dynamic_list* list);
 
 // TODO: Add other list functionality. For now, other important parts have to get implemented.
+
+/*
+@brief This pops an element of the front of the list
+@param list A pointer to an initialized dynamic list structure.
+*/
+THETA_API void theta_dynamic_list_pop_front(theta_dynamic_list* list);

@@ -5,12 +5,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-f32 vertices[] = {
-    -0.5f, -0.5f,
-    0.5f, -0.5f,
-    0.0f, 0.5f
-};
-
 static theta_renderable g_renderable;
 
 static theta_mat4x4f model;

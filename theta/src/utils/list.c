@@ -54,3 +54,6 @@ void theta_dynamic_list_pop_back(theta_dynamic_list* list) {
     
     list->length--;
 }
+
+void theta_dynamic_list_pop_front(theta_dynamic_list* list) {
+}
