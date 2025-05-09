@@ -15,7 +15,6 @@ typedef struct {
 }theta_transform;
 
 typedef enum {
-    THETA_COMPONENT_TYPE_TRANSFORM,
     THETA_COMPONENT_TYPE_CAMERA_ATTRIBS,
     THETA_COMPONENT_TYPE_RENDERABLE
 }theta_component_type;
@@ -26,8 +25,16 @@ typedef struct {
 }theta_component;
 
 typedef struct {
-    theta_component components[MAX_COMPONENTS];
+    theta_transform transform;
+    theta_component* components[MAX_COMPONENTS];
     u32 components_length;
 }theta_game_object;
 
-THETA_API void theta_game_object_init(theta_game_object* obj);
+THETA_API void theta_game_object_init(theta_game_object* obj, theta_transform transform);
+
+THETA_API void theta_game_object_add_component(theta_game_object* obj, theta_component* component);
+
+/*
+@brief Beware, this method will also destroy the components in the game object. Do not attempt to use components supplied to the game object after this method is called.
+*/
+THETA_API void theta_game_object_destroy(theta_game_object* obj);

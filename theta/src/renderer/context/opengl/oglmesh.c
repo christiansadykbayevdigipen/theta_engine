@@ -6,12 +6,14 @@
 #include "renderer/context/opengl/oglcontext.h"
 #include "renderer/renderer.h"
 #include "oglshader.h"
+#include "ogltexture.h"
 
 typedef struct {
     theta_opengl_vertex_array vao;
+    theta_opengl_index_buffer ibo;
 }theta_mesh_opengl_specifics;
 
-void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension) {
+void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* tex_coords, u32 number_of_tex_coords) {
     THETA_PROFILE();
     
     theta_rendering_context* ctx = theta_renderer_get_context();
@@ -23,6 +25,7 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
     theta_rendering_context_vao_init(ctx, &self->vao);
 
     theta_opengl_vertex_buffer vbo;
+    theta_opengl_vertex_buffer tex_vbo;
 
     theta_opengl_vao_layout layout;
     layout.dimension = dimension;
@@ -30,11 +33,21 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
     layout.offset = 0;
     layout.stride = sizeof(f32) * dimension;
 
+    theta_opengl_vao_layout tex_layout;
+    tex_layout.dimension = 2;
+    tex_layout.index = 1;
+    tex_layout.offset = 0;
+    tex_layout.stride = sizeof(f32) * 2;
+
     theta_rendering_context_vbo_init(ctx, &vbo, vertices, sizeof(f32) * number_of_vertices);
+    theta_rendering_context_vbo_init(ctx, &tex_vbo, tex_coords, sizeof(f32) * number_of_tex_coords);
 
     theta_rendering_context_vao_push_vbo(ctx, &self->vao, &vbo, layout);
+    theta_rendering_context_vao_push_vbo(ctx, &self->vao, &tex_vbo, tex_layout);
 
     mesh->vertex_position_count = number_of_vertices / dimension;
+
+    theta_rendering_context_ibo_init(ctx, &self->ibo, indices, number_of_indices);
     
     /*Setup Function Pointers Here*/
     mesh->render = &theta_mesh_render_opengl;
@@ -44,7 +57,8 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
 void theta_mesh_render_opengl(theta_mesh* mesh, theta_shader_program* program) {
     theta_rendering_context* ctx = theta_renderer_get_context();
     theta_mesh_opengl_specifics* self = DATA_CAST(theta_mesh_opengl_specifics, mesh);
-    theta_rendering_context_vao_draw(ctx, &self->vao, mesh->vertex_position_count, program);
+
+    theta_rendering_context_vao_draw(ctx, &self->vao, mesh->vertex_position_count, program, &self->ibo);
 }
 
 void theta_mesh_destroy_opengl(theta_mesh* mesh) {

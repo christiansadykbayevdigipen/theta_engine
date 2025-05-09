@@ -13,7 +13,7 @@ static theta_mat4x4f proj;
 
 void sb_start() {
 
-    theta_renderable_init_quad(&g_renderable);
+    theta_renderable_init_quad(&g_renderable, "res/thingymabob/png");
 
     model = theta_mat4x4f_identity();
     view = theta_mat4x4f_identity();

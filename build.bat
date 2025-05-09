@@ -4,9 +4,9 @@ rem Set D to your CMAKE Location
 set D="C:\Program Files\CMake\bin\cmake.exe"
 
 rem Set F to your C Compiler Location
-set F="C:\MinGW\bin\gcc.exe"
+set F="C:/MinGW/bin/gcc.exe"
 
-%D% -G "MinGW Makefiles" -D CMAKE_C_COMPILER=C:\MinGW\bin\gcc.exe -D CMAKE_BUILD_TYPE=Debug -S theta/src -B theta/build
+%D% -G "MinGW Makefiles" -D CMAKE_C_COMPILER=%F% -D CMAKE_BUILD_TYPE=Debug -S theta/src -B theta/build
 
 cd theta
 cd build
@@ -14,7 +14,7 @@ mingw32-make
 cd ..
 cd ..
 
-%D% -G "MinGW Makefiles" -D CMAKE_C_COMPILER=C:\MinGW\bin\gcc.exe -D CMAKE_BUILD_TYPE=Debug -S sandbox/src -B sandbox/build
+%D% -G "MinGW Makefiles" -D CMAKE_C_COMPILER=%F% -D CMAKE_BUILD_TYPE=Debug -S sandbox/src -B sandbox/build
 
 cd sandbox
 cd build

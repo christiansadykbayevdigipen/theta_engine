@@ -28,6 +28,11 @@ typedef struct {
     u32 vertex_buffer_id;
 }theta_opengl_vertex_buffer;
 
+typedef struct {
+    u32 index_buffer_id;
+    u32 indices_count;
+}theta_opengl_index_buffer;
+
 // typedef struct {
 //     u32 uniform_buffer_id;
 //     u32 data_size;
@@ -75,7 +80,7 @@ THETA_API void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx
 @brief Draws a particular vertex array (without an Index Buffer)
 @param vertex_count The number of whole vertex positions.
 */
-THETA_API void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader);
+THETA_API void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, theta_opengl_index_buffer* ibo);
 
 /*
 @brief Destroys and clears the memory of the VAO
@@ -86,6 +91,8 @@ THETA_API void theta_rendering_context_vao_destroy(theta_rendering_context* ctx,
 @brief Destroys and clears the memory of the VBO
 */
 THETA_API void theta_rendering_context_vbo_destroy(theta_rendering_context* ctx, theta_opengl_vertex_buffer* vbo);
+
+THETA_API void theta_rendering_context_ibo_init(theta_rendering_context* ctx, theta_opengl_index_buffer* ibo, u32* indices, u32 index_count);
 
 THETA_API void theta_rendering_context_destroy_opengl(theta_rendering_context* ctx);
 

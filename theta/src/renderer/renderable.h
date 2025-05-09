@@ -16,10 +16,7 @@ typedef struct theta_renderable {
 /*
 @brief Initializes a quad renderable.
 */
-THETA_API void theta_renderable_init_quad(theta_renderable* renderable);
-
-
-
+THETA_API void theta_renderable_init_quad(theta_renderable* renderable, const char* textureFilepath);
 
 
 THETA_API void theta_renderable_destroy(theta_renderable* renderable);

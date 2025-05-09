@@ -6,6 +6,9 @@
 #include <string.h>
 #include <glad/gl.h>
 
+#include "renderer/texture.h"
+#include "renderer/context/opengl/ogltexture.h"
+
 static void tokenize_shader(const char* string, u32 max_length, char** v_source, char** f_source) {
     char* token = strtok(string, "\n");
 
@@ -145,6 +148,7 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
 
     program->set_mvp = &theta_shader_program_set_mvp_opengl;
     program->destroy = &theta_shader_program_destroy_opengl;
+    program->give_albedo = &theta_shader_program_give_albedo_opengl;
 }
 
 void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection) {
@@ -193,4 +197,16 @@ void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_ma
 
 void theta_shader_program_destroy_opengl(theta_shader_program* program) {
     glDeleteProgram(DATA_CAST(theta_shader_program_opengl_specifics, program)->programID);
+}
+
+void theta_shader_program_give_albedo_opengl(theta_shader_program* program, const char* filepath) {
+    program->tex = INIT_STRUCT(theta_texture);
+
+    glUseProgram(DATA_CAST(theta_shader_program_opengl_specifics, program)->programID);
+
+    DATA_CAST(theta_shader_program_opengl_specifics, program)->albedo_unit_id = 0;
+
+    glUniform1i(glGetUniformLocation(DATA_CAST(theta_shader_program_opengl_specifics, program)->programID, "theta_Albedo"), DATA_CAST(theta_shader_program_opengl_specifics, program)->albedo_unit_id);
+    
+    glUseProgram(0);
 }

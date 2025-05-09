@@ -5,12 +5,12 @@
 #include "context/opengl/oglcontext.h"
 #include "context/opengl/oglmesh.h"
 
-void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension) {
+void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* tex_coords, u32 number_of_tex_coords) {
     THETA_PROFILE();
 
     switch(theta_renderer_get_api()) {
     case THETA_API_OPENGL:
-        theta_mesh_init_opengl(mesh, vertices, number_of_vertices, dimension);
+        theta_mesh_init_opengl(mesh, vertices, number_of_vertices, dimension, indices, number_of_indices, tex_coords, number_of_tex_coords);
         break;
     default:
         THETA_FATAL("theta_mesh_init has failed. The reason being, an unsupported or non existent API was supplied to theta_mesh_init.\n");

@@ -3,8 +3,10 @@
 #include "core.h"
 #include "math/tmath.h"
 
+struct theta_texture;
+
 typedef enum {
-    THETA_SHADER_TYPE_BASIC_SHADER
+    THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED
 }theta_shader_type;
 
 /*
@@ -21,6 +23,9 @@ typedef struct theta_shader_program{
     void* uninterpreted_data;
     void (*set_mvp)(struct theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection);
     void (*destroy)(struct theta_shader_program* program);
+    void (*give_albedo)(struct theta_shader_program* program, const char* filepath);
+
+    struct theta_texture* tex;
 }theta_shader_program;
 
 /*
