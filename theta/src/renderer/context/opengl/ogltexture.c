@@ -16,6 +16,7 @@ void theta_texture_init_opengl(theta_texture* texture, const char* filepath) {
     theta_texture_opengl_specifics* self = DATA_CAST(theta_texture_opengl_specifics, texture);
 
     u32 width, height, nrChannels;
+    stbi_set_flip_vertically_on_load(TRUE);
 
     u8* data = stbi_load(filepath, &width, &height, &nrChannels, 0);
 
@@ -34,7 +35,9 @@ void theta_texture_init_opengl(theta_texture* texture, const char* filepath) {
     if(nrChannels > 3)
         default_format = GL_RGBA;
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, default_format, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, default_format, width, height, 0, default_format, GL_UNSIGNED_BYTE, data);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 

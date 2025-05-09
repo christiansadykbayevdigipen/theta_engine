@@ -51,7 +51,6 @@ void theta_rendering_context_init_opengl(theta_rendering_context* ctx, theta_win
 
 void theta_rendering_context_clear_opengl(theta_rendering_context* ctx) {
     glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(1.0, 0.0, 0.0, 1.0);
 }
 
 void theta_rendering_context_swap_opengl(theta_rendering_context* ctx) {
