@@ -4,6 +4,7 @@
 #include <malloc.h>
 
 void theta_renderable_init_quad(theta_renderable* renderable, const char* textureFilepath) {
+    THETA_PROFILE();
     f32 quad[] = {
     // positions          
      0.5f,  0.5f, 0.0f,   

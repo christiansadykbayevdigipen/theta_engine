@@ -200,13 +200,20 @@ void theta_shader_program_destroy_opengl(theta_shader_program* program) {
 }
 
 void theta_shader_program_give_albedo_opengl(theta_shader_program* program, const char* filepath) {
+    THETA_PROFILE();
     program->tex = INIT_STRUCT(theta_texture);
 
-    glUseProgram(DATA_CAST(theta_shader_program_opengl_specifics, program)->programID);
+    theta_texture_init(program->tex, filepath);
+
+    theta_shader_program_opengl_specifics* progspec = DATA_CAST(theta_shader_program_opengl_specifics, program);
+
+    glUseProgram(progspec->programID);
 
     DATA_CAST(theta_shader_program_opengl_specifics, program)->albedo_unit_id = 0;
 
-    glUniform1i(glGetUniformLocation(DATA_CAST(theta_shader_program_opengl_specifics, program)->programID, "theta_Albedo"), DATA_CAST(theta_shader_program_opengl_specifics, program)->albedo_unit_id);
+    s32 loc = glGetUniformLocation(progspec->programID, "theta_Albedo");
+
+    glUniform1i(loc, progspec->albedo_unit_id);
     
     glUseProgram(0);
 }

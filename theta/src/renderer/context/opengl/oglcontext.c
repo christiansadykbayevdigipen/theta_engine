@@ -9,6 +9,32 @@
 #include "oglshader.h"
 #include "ogltexture.h"
 
+#include <string.h>
+
+//https://learnopengl.com/In-Practice/Debugging
+GLenum glCheckError_(const char *file, int line)
+{
+    GLenum errorCode;
+    while ((errorCode = glGetError()) != GL_NO_ERROR)
+    {
+        char error[256];
+        memset(error, 0, sizeof(char) * 256);
+        switch (errorCode)
+        {
+            case GL_INVALID_ENUM:                  strcat(error, "INVALID_ENUM"); break;
+            case GL_INVALID_VALUE:                 strcat(error, "INVALID_VALUE"); break;
+            case GL_INVALID_OPERATION:             strcat(error, "INVALID_OPERATION"); break;
+            case GL_STACK_OVERFLOW:                strcat(error, "STACK_OVERFLOW"); break;
+            case GL_STACK_UNDERFLOW:               strcat(error, "STACK_UNDERFLOW"); break;
+            case GL_OUT_OF_MEMORY:                 strcat(error, "OUT_OF_MEMORY"); break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION: strcat(error, "INVALID_FRAMEBUFFER_OPERATION"); break;
+        }
+        printf("%s | %s (%s)\n", error, file, line);
+    }
+    return errorCode;
+}
+#define glCheckError() glCheckError_(__FILE__, __LINE__) 
+
 void theta_rendering_context_init_opengl(theta_rendering_context* ctx, theta_window* window) {
     THETA_PROFILE();
     ctx->uninterpreted_data = malloc(sizeof(theta_opengl_rendering_context_specifics));
@@ -19,10 +45,13 @@ void theta_rendering_context_init_opengl(theta_rendering_context* ctx, theta_win
     ctx->destroy = &theta_rendering_context_destroy_opengl;
     
     THETA_ASSERT(gladLoadGL(theta_shared_window_get_proc_address(window)), "theta_rendering_context_init_opengl has failed. The reason being, glad, the opengl loader, has failed to load opengl.");
+
+    //glEnable(GL_ALPHA);
 }
 
 void theta_rendering_context_clear_opengl(theta_rendering_context* ctx) {
     glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(1.0, 0.0, 0.0, 1.0);
 }
 
 void theta_rendering_context_swap_opengl(theta_rendering_context* ctx) {
@@ -71,8 +100,11 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
     }
 
     if(associated_shader->tex != NULL) {
-        glActiveTexture(GL_TEXTURE0 + DATA_CAST(theta_shader_program_opengl_specifics, associated_shader)->albedo_unit_id);
-        glBindTexture(GL_TEXTURE_2D, DATA_CAST(theta_texture_opengl_specifics, associated_shader->tex)->texture_id);
+        theta_shader_program_opengl_specifics* shader_spec = DATA_CAST(theta_shader_program_opengl_specifics, associated_shader);
+        theta_texture_opengl_specifics* tex_spec = DATA_CAST(theta_texture_opengl_specifics, associated_shader->tex);
+
+        glActiveTexture(GL_TEXTURE0 + shader_spec->albedo_unit_id);
+        glBindTexture(GL_TEXTURE_2D, tex_spec->texture_id);
     }
 
     glDrawElements(GL_TRIANGLES, ibo->indices_count, GL_UNSIGNED_INT, NULL);

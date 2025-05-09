@@ -9,6 +9,8 @@
 #include <stb_image.h>
 
 void theta_texture_init_opengl(theta_texture* texture, const char* filepath) {
+    THETA_PROFILE();
+
     texture->uninterpreted_data = malloc(sizeof(theta_texture_opengl_specifics));
 
     theta_texture_opengl_specifics* self = DATA_CAST(theta_texture_opengl_specifics, texture);
@@ -27,7 +29,12 @@ void theta_texture_init_opengl(theta_texture* texture, const char* filepath) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);   
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    u32 default_format = GL_RGB;
+
+    if(nrChannels > 3)
+        default_format = GL_RGBA;
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, default_format, GL_UNSIGNED_BYTE, data);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 

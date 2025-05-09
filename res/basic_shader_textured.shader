@@ -25,5 +25,6 @@ uniform sampler2D theta_Albedo;
 
 void main()
 {
+    //FragColor = mix(texture(theta_Albedo, texCoord), vec4(0.5, 0.5, 1.0, 1.0), 0.5);
     FragColor = texture(theta_Albedo, texCoord);
 }

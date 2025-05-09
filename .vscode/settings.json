@@ -6,6 +6,23 @@
         "xutility": "c",
         "initializer_list": "c",
         "utility": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "bit": "c",
+        "compare": "c",
+        "concepts": "c",
+        "cstddef": "c",
+        "cstdint": "c",
+        "cstdio": "c",
+        "cstdlib": "c",
+        "cstring": "c",
+        "cwchar": "c",
+        "exception": "c",
+        "limits": "c",
+        "new": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "xmemory": "c",
+        "xstddef": "c",
+        "xtr1common": "c"
     }
 }
