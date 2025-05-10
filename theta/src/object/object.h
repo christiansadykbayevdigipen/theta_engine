@@ -4,15 +4,9 @@
 
 #include "renderer/renderable.h"
 #include "math/tmath.h"
+#include "transform.h"
 
 #define MAX_COMPONENTS 30
-
-// TODO: Move rotation to a quaternion system.
-typedef struct {
-    theta_vector3f position;
-    theta_vector3f rotation;
-    theta_vector3f scale;
-}theta_transform;
 
 typedef enum {
     THETA_COMPONENT_TYPE_CAMERA_ATTRIBS,
