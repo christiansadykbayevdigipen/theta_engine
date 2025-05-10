@@ -3,7 +3,7 @@
 #include <memory.h>
 #include <malloc.h>
 
-#include <glad/gl.h>
+#include <glad/glad.h>
 
 #include "window/platform/shared/shared_window.h"
 #include "oglshader.h"
@@ -44,7 +44,10 @@ void theta_rendering_context_init_opengl(theta_rendering_context* ctx, theta_win
     ctx->swap = &theta_rendering_context_swap_opengl;
     ctx->destroy = &theta_rendering_context_destroy_opengl;
     
-    THETA_ASSERT(gladLoadGL(theta_shared_window_get_proc_address(window)), "theta_rendering_context_init_opengl has failed. The reason being, glad, the opengl loader, has failed to load opengl.");
+    THETA_DEBUG("here\n");
+
+    
+    THETA_ASSERT(gladLoadGL(), "theta_rendering_context_init_opengl has failed. The reason being, glad, the opengl loader, has failed to load opengl.");
 
     //glEnable(GL_ALPHA);
 }

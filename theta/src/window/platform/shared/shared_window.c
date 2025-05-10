@@ -51,7 +51,7 @@ void theta_window_destroy_shared_window(theta_window* window) {
 }
 
 u32 theta_shared_window_get_proc_address(theta_window* window) {
-    return glfwGetProcAddress;
+    return (u32)glfwGetProcAddress;
 }
 
 void theta_shared_window_swap_buffers(theta_window *window) {

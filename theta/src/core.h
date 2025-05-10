@@ -51,7 +51,7 @@ THETA_API void theta_logger_log(theta_logger_severity severity, const char* mess
 #define THETA_DEBUG(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_DEBUG, X, ##__VA_ARGS__)
 #define THETA_TRACE(X, ...) theta_logger_log(THETA_LOGGER_SEVERITY_TRACE, X, ##__VA_ARGS__)
 
-#if defined(_WIN32) || defined(WINDOWS) || defined(__POSIX__) || defined(__LINUX__) || defined(__APPLE__)
+#if defined(_WIN32) || defined(WINDOWS) || defined(__POSIX__) || defined(__LINUX__) || defined(__APPLE__) || defined(__linux__) || defined(__posix__)
 #define THETA_PLATFORM_SHARED
 #else
 #error You're platform is not supported

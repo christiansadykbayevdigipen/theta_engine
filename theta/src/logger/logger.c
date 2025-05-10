@@ -11,25 +11,25 @@ void theta_logger_log(theta_logger_severity severity, const char* message, ...){
     memset(buffer, 0, 1024);
     switch(severity) {
     case THETA_LOGGER_SEVERITY_FATAL:
-        strcat_s(buffer, 1024, "[Theta Fatal Error]: ");
+        strcat(buffer, "[Theta Fatal Error]: ");
         break;
     case THETA_LOGGER_SEVERITY_ERROR:
-        strcat_s(buffer, 1024, "[Theta Error]: ");
+        strcat(buffer, "[Theta Error]: ");
         break;
     case THETA_LOGGER_SEVERITY_WARNING:
-        strcat_s(buffer, 1024, "[Theta Warning]: ");
+        strcat(buffer, "[Theta Warning]: ");
         break;
     case THETA_LOGGER_SEVERITY_INFO:
-        strcat_s(buffer, 1024, "[Theta Info]: ");
+        strcat(buffer, "[Theta Info]: ");
         break;
     case THETA_LOGGER_SEVERITY_DEBUG:
-        strcat_s(buffer, 1024, "[Theta Debug Log]: ");
+        strcat(buffer, "[Theta Debug Log]: ");
         break;
     case THETA_LOGGER_SEVERITY_TRACE:
-        strcat_s(buffer, 1024, "[Theta Trace]: ");
+        strcat(buffer, "[Theta Trace]: ");
         break;
     default:
-        strcat_s(buffer, 1024, "[Unknown Logging Severity]: ");
+        strcat(buffer, "[Unknown Logging Severity]: ");
         break;
     }
     

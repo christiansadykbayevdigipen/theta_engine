@@ -9,7 +9,7 @@ add_compile_options(
 
 link_directories(../../theta/build)
 
-link_libraries(-ltheta)
+link_libraries(-ltheta -lm)
 
 include_directories(../../theta/src)
 

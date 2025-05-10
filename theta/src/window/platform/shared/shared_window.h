@@ -4,7 +4,7 @@
 #include "window/window.h"
 
 #if defined(THETA_PLATFORM_SHARED)
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 /*
 @brief These are the specifics that will be filled out in theta_window's uninterpreted data. This is platform specific to the "shared platform," which includes windows, mac, and linux.

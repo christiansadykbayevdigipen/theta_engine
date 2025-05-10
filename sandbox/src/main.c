@@ -33,7 +33,7 @@ void sb_terminate() {
 int main() {
     theta_application sandbox;
     theta_application_descriptor descriptor;
-    strcpy_s(descriptor.app_name, MAX_STRING, "Sandbox");
+    strcpy(descriptor.app_name, "Sandbox");
     descriptor.start = sb_start;
     descriptor.update = sb_update;
     descriptor.terminate = sb_terminate;

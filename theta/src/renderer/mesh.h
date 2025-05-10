@@ -3,6 +3,8 @@
 #include "core.h"
 #include "utils/list.h"
 
+struct theta_shader_program;
+
 /*
 @brief The mesh in theta is the rendered object without any material applied. It's the shape of the rendered object.
 */

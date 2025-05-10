@@ -4,7 +4,7 @@
 #include <malloc.h>
 #include <memory.h>
 #include <string.h>
-#include <glad/gl.h>
+#include <glad/glad.h>
 
 #include "renderer/texture.h"
 #include "renderer/context/opengl/ogltexture.h"
@@ -47,14 +47,14 @@ static void tokenize_shader(const char* string, u32 max_length, char** v_source,
 
 }
 
-static u32 compile_shader(u32 type, char* src) {
+static u32 compile_shader(u32 type, const char* src) {
     u32 shaderID = glCreateShader(type);
 
     glShaderSource(shaderID, 1, &src, NULL);
 
     glCompileShader(shaderID);
 
-    s32 compile_status = NULL;
+    s32 compile_status = 0;
 
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compile_status);
 
@@ -65,7 +65,7 @@ static u32 compile_shader(u32 type, char* src) {
         glGetShaderInfoLog(shaderID, 1024, &log_length, message);
 
         THETA_FATAL("compile_shader has failed. The reason being, OpenGL returned this error: %s\n", message);
-        return;
+        return -1;
     }
 
     return shaderID;
@@ -82,7 +82,7 @@ static u32 create_and_link_program(u32 vertex_shader, u32 fragment_shader) {
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
 
-    s32 status = NULL;
+    s32 status = 0;
 
     glGetProgramiv(program, GL_LINK_STATUS, &status);
 
@@ -93,7 +93,7 @@ static u32 create_and_link_program(u32 vertex_shader, u32 fragment_shader) {
         glGetProgramInfoLog(program, 1024, &log_length, message);
 
         THETA_FATAL("create_and_link_program has failed. The reason being, OpenGL returned this error: %s\n", message);
-        return;
+        return -1;
     }
 
     return program;
@@ -109,9 +109,9 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     
     FILE* file = NULL;
     
+    file = fopen(filename, "r");
     
-    
-    THETA_ASSERT(0 == fopen_s(&file, filename, "r"), "theta_shader_program_init_opengl has failed. The reason being, the shader program file that has been requested does not currently exist.");
+    THETA_ASSERT(file != NULL, "theta_shader_program_init_opengl has failed. The reason being, the shader program file that has been requested does not currently exist.");
     
     char character;
     u32 length = 0;
