@@ -9,7 +9,6 @@
 #define MAX_COMPONENTS 30
 
 typedef enum {
-    THETA_COMPONENT_TYPE_CAMERA_ATTRIBS,
     THETA_COMPONENT_TYPE_RENDERABLE
 }theta_component_type;
 
@@ -20,13 +19,19 @@ typedef struct {
 
 typedef struct {
     theta_transform transform;
-    theta_component* components[MAX_COMPONENTS];
+    theta_component components[MAX_COMPONENTS];
     u32 components_length;
 }theta_game_object;
 
-THETA_API void theta_game_object_init(theta_game_object* obj, theta_transform transform);
+THETA_API void theta_game_object_init(theta_game_object* obj, theta_transform transform, theta_renderable* renderable);
 
-THETA_API void theta_game_object_add_component(theta_game_object* obj, theta_component* component);
+THETA_API void theta_game_object_add_component(theta_game_object* obj, theta_component component);
+
+THETA_API BOOL theta_game_object_has_component(theta_game_object* obj, theta_component_type type);
+
+THETA_API theta_component theta_game_object_get_component(theta_game_object* obj, theta_component_type type);
+
+THETA_API theta_mat4x4f theta_game_object_get_model(theta_game_object* obj);
 
 /*
 @brief Beware, this method will also destroy the components in the game object. Do not attempt to use components supplied to the game object after this method is called.
