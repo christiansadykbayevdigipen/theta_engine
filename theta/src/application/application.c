@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "renderer/renderer.h"
+#include "object/scene_manager.h"
 
 void theta_application_init(theta_application* app, theta_application_descriptor descriptor) {
     THETA_PROFILE();
@@ -33,9 +34,12 @@ void theta_application_run(theta_application* app) {
 
         if(app->descriptor.update != NULL) app->descriptor.update(elapsed);
 
-        /*-----Rendering should go here-----*/
-        
-        /*-----!Rendering should go here-----*/
+        theta_scene* scene = theta_scene_manager_get_active_scene();
+
+        if(scene != NULL) {
+            theta_scene_render(scene);
+            theta_scene_update(scene);
+        }
 
         
         theta_window_update(&app->window);

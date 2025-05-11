@@ -11,7 +11,7 @@ typedef struct {
 
 typedef enum {
     THETA_CAMERA_PROJECTION_TYPE_ORTHOGRAPHIC,
-    THETA_CAMERA_PROJECT_TYPE_PERSPECTIVE
+    THETA_CAMERA_PROJECTION_TYPE_PERSPECTIVE
 }theta_camera_projection_type;
 
 /*
@@ -22,5 +22,3 @@ typedef enum {
 THETA_API void theta_camera_init(theta_camera* camera, theta_camera_projection_type type);
 
 THETA_API theta_mat4x4f theta_camera_get_view(theta_camera* camera);
-
-THETA_API theta_mat4x4f theta_camera_get_projection(theta_camera* camera);

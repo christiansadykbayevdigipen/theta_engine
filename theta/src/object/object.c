@@ -4,6 +4,7 @@
 #include <memory.h>
 
 void theta_game_object_init(theta_game_object* obj, theta_transform transform, theta_renderable* renderable) {
+    THETA_PROFILE();
     obj->components_length = 0;
     obj->transform = transform;
 
@@ -15,6 +16,7 @@ void theta_game_object_init(theta_game_object* obj, theta_transform transform, t
 }
 
 void theta_game_object_add_component(theta_game_object* obj, theta_component component) {
+    THETA_PROFILE();
     if(obj->components_length + 1 > MAX_COMPONENTS) {
         THETA_ERROR("theta_game_object_add_component has failed. The reason being, the maximum number of components (%d) on a game object has been exceeded.\n", MAX_COMPONENTS);
         return;

@@ -6,6 +6,12 @@
             "type": "shell",
             "command": "${workspaceFolder}/build.bat",
             "problemMatcher": []
+        },
+        {
+            "label": "BuildLinux",
+            "type": "shell",
+            "command": "${workspaceFolder}/build.sh",
+            "problemMatcher": []
         }
     ]
 }

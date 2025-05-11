@@ -5,25 +5,30 @@
 #include <math.h>
 #include <stdlib.h>
 
-static theta_renderable g_renderable;
-
-static theta_mat4x4f model;
-static theta_mat4x4f view;
-static theta_mat4x4f proj;
-
 void sb_start() {
+    theta_scene* scene = INIT_STRUCT(theta_scene);
 
-    theta_renderable_init_quad(&g_renderable, "res/thingymabob.png");
+    theta_camera* camera = INIT_STRUCT(theta_camera);
+    theta_camera_init(camera, THETA_CAMERA_PROJECTION_TYPE_ORTHOGRAPHIC);
 
-    model = theta_mat4x4f_identity();
-    model = theta_mat4x4f_scales(model, 0.5f);
-    view = theta_mat4x4f_identity();
-    proj = theta_mat4x4f_orthographic();
+    theta_scene_init(scene, camera);
+
+    theta_game_object* obj = INIT_STRUCT(theta_game_object);
+    theta_transform trsf;
+    trsf.position = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
+    trsf.rotation = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
+    trsf.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
+    theta_renderable* renderable = INIT_STRUCT(theta_renderable);
+    theta_renderable_init_quad(renderable, "res/thingymabob.png");
+    theta_game_object_init(obj, trsf, renderable);
+
+    theta_scene_add_game_object(scene, obj);
+
+
+    theta_scene_manager_set_active_scene(scene);
 }
 
 void sb_update(f64 elapsed_time) {
-    g_renderable.material.program.set_mvp(&g_renderable.material.program, model, view, proj);
-    theta_renderer_submit(&g_renderable);
 }
 
 void sb_terminate() {
