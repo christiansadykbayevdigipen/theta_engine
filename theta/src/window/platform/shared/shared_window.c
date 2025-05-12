@@ -6,13 +6,17 @@
 #include <memory.h>
 #include <stdio.h>
 
-void theta_window_init_shared_window(theta_window* window, u32 width, u32 height, const char* title, theta_api api){
+theta_window* theta_window_init_shared_window(u32 width, u32 height, const char* title, theta_api api) {
     THETA_PROFILE();
+    
+    theta_window* window = INIT_STRUCT(theta_window);
+    
     switch(api) {
     case THETA_API_OPENGL:
         break;
     default:
         THETA_FATAL("theta_window_init_shared_window has failed. The reason being, the API you attempted to initialize the window with has not yet been implemented into theta, or the api value is invalid.\n");
+        return NULL;
         break;
     }
     
@@ -20,7 +24,7 @@ void theta_window_init_shared_window(theta_window* window, u32 width, u32 height
 
     if(GLFW_FALSE == glfwInit()) {
         THETA_FATAL("theta_window_init_shared_window has failed. The reason being, glfwInit (the window API used in this game engine) has failed.\n");
-        return;
+        return NULL;
     }
 
     DATA_CAST(theta_shared_window_specifics, window)->window_handle = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -31,8 +35,14 @@ void theta_window_init_shared_window(theta_window* window, u32 width, u32 height
         glfwMakeContextCurrent(DATA_CAST(theta_shared_window_specifics, window)->window_handle);
     }
 
-    window->context = INIT_STRUCT(theta_rendering_context);
-    theta_rendering_context_init(window->context, api, window);
+    window->context = theta_rendering_context_init(api, window);
+
+    /*Initialize Function Pointers*/
+    window->update = &theta_window_update_shared_window;
+    window->close_requested = &theta_window_close_requested_shared_window;
+    window->destroy = &theta_window_destroy_shared_window;
+
+    return window;
 }
 
 BOOL theta_window_close_requested_shared_window(theta_window* window){
@@ -45,9 +55,13 @@ void theta_window_update_shared_window(theta_window* window){
 
 void theta_window_destroy_shared_window(theta_window* window) {
     THETA_PROFILE();
-    glfwTerminate();
+    //glfwDestroyWindow(DATA_CAST(theta_shared_window_specifics, window)->window_handle);
+    //glfwTerminate();
 
-    glfwDestroyWindow(DATA_CAST(theta_shared_window_specifics, window)->window_handle);
+
+    
+    window->context->destroy(window->context);
+    free(window->uninterpreted_data);
 }
 
 u32 theta_shared_window_get_proc_address(theta_window* window) {

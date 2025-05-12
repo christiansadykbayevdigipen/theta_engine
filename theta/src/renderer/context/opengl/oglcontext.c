@@ -35,8 +35,10 @@ GLenum glCheckError_(const char *file, int line)
 }
 #define glCheckError() glCheckError_(__FILE__, __LINE__) 
 
-void theta_rendering_context_init_opengl(theta_rendering_context* ctx, theta_window* window) {
+theta_rendering_context* theta_rendering_context_init_opengl(theta_window* window) {
     THETA_PROFILE();
+    theta_rendering_context* ctx = INIT_STRUCT(theta_rendering_context);
+
     ctx->uninterpreted_data = malloc(sizeof(theta_opengl_rendering_context_specifics));
     ctx->window = window;
     ctx->api = THETA_API_OPENGL;
@@ -44,12 +46,9 @@ void theta_rendering_context_init_opengl(theta_rendering_context* ctx, theta_win
     ctx->swap = &theta_rendering_context_swap_opengl;
     ctx->destroy = &theta_rendering_context_destroy_opengl;
     
-    THETA_DEBUG("here\n");
-
-    
     THETA_ASSERT(gladLoadGL(), "theta_rendering_context_init_opengl has failed. The reason being, glad, the opengl loader, has failed to load opengl.");
 
-    //glEnable(GL_ALPHA);
+    return ctx;
 }
 
 void theta_rendering_context_clear_opengl(theta_rendering_context* ctx) {
@@ -144,5 +143,8 @@ void theta_rendering_context_ibo_init(theta_rendering_context* ctx, theta_opengl
 }
 
 void theta_rendering_context_destroy_opengl(theta_rendering_context* ctx) {
+    THETA_PROFILE();
 
+    free(ctx->uninterpreted_data);
+    free(ctx);
 }

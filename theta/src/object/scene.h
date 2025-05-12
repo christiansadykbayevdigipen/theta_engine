@@ -9,7 +9,7 @@ typedef struct {
     theta_camera* bound_camera;
 }theta_scene;
 
-THETA_API void theta_scene_init(theta_scene* scene, theta_camera* camera);
+THETA_API theta_scene* theta_scene_init(theta_camera* camera);
 THETA_API void theta_scene_add_game_object(theta_scene* scene, theta_game_object* game_object);
 
 THETA_API void theta_scene_update(theta_scene* scene);

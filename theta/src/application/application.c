@@ -3,19 +3,25 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <memory.h>
+#include <malloc.h>
 
 #include "renderer/renderer.h"
 #include "object/scene_manager.h"
 
-void theta_application_init(theta_application* app, theta_application_descriptor descriptor) {
+theta_application* theta_application_init(theta_application_descriptor descriptor) {
+    theta_application* app = INIT_STRUCT(theta_application);
+
     THETA_PROFILE();
     char full_window_name[MAX_STRING] = "[Powered by Theta] - ";
 
     strcat(full_window_name, descriptor.app_name);
 
     app->descriptor = descriptor;
-    theta_window_init(&app->window, 1280, 720, full_window_name, descriptor.api);
-    theta_renderer_init(&app->window);
+    app->window = theta_window_init(1280, 720, full_window_name, descriptor.api);
+    theta_renderer_init(app->window);
+
+    return app;
 }
 
 void theta_application_run(theta_application* app) {
@@ -24,10 +30,8 @@ void theta_application_run(theta_application* app) {
 
     theta_timer_reset();
 
-    while(!theta_window_close_requested(&app->window)) {
+    while(!app->window->close_requested(app->window)) {
         theta_renderer_begin_frame();
-        
-
 
         f64 elapsed = theta_timer_get_elapsed();
         theta_timer_reset();
@@ -40,9 +44,8 @@ void theta_application_run(theta_application* app) {
             theta_scene_render(scene);
             theta_scene_update(scene);
         }
-
         
-        theta_window_update(&app->window);
+        app->window->update(app->window);
         theta_renderer_end_frame();
     }
 }
@@ -50,5 +53,7 @@ void theta_application_run(theta_application* app) {
 void theta_application_destruct(theta_application* app) {
     if(app->descriptor.terminate != NULL) app->descriptor.terminate();
     
-    theta_window_destroy(&app->window);
+    app->window->destroy(app->window);
+
+    free(app);
 }

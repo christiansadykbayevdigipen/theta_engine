@@ -16,7 +16,7 @@ typedef struct {
 /*
 @brief See theta_window_init
 */
-THETA_API void theta_window_init_shared_window(theta_window* window, u32 width, u32 height, const char* title, theta_api api);
+THETA_API theta_window* theta_window_init_shared_window(u32 width, u32 height, const char* title, theta_api api);
 
 /*
 @brief See theta_window_close_requested

@@ -25,15 +25,15 @@ typedef struct {
 */
 typedef struct {
     theta_application_descriptor descriptor;
-    theta_window window;
+    theta_window* window;
 }theta_application;
 
 /*
 @brief This initializes the theta application
-@param app A pointer to the uninitialized theta application structure. This does not preform the malloc operation on the structure itself.
 @param descriptor A descriptor to the parameters of which this application should be initialized as.
+@retuns The initialized application
 */
-THETA_API void theta_application_init(theta_application* app, theta_application_descriptor descriptor);
+THETA_API theta_application* theta_application_init(theta_application_descriptor descriptor);
 
 /*
 @brief This runs the application. This also starts the game loop. This will perform a while loop until the user requests the application to be closed. Hence, no function calls will be called after this in your main function, until the application has been requested to be terminated.

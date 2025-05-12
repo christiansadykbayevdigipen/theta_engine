@@ -44,7 +44,7 @@ theta_api theta_renderer_get_api() {
     return g_renderer.context->api;
 }
 
+// TODO: Remove this function. It's not needed anymore. It was used, but then the application deletes the window and the context.
 void theta_renderer_destroy() {
-    g_renderer.context->destroy(g_renderer.context);
-    free(g_renderer.context);
+    THETA_PROFILE();
 }

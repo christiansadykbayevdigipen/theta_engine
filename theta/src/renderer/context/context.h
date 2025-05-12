@@ -29,4 +29,4 @@ typedef struct theta_rendering_context{
 @param api The api to initialize the rendering context under. This must be the same context given to the window
 @param window A pointer to a heap allocated theta window structure, that also must be initialized before given to this method
 */
-THETA_API void theta_rendering_context_init(theta_rendering_context* ctx, theta_api api, theta_window* window);
+THETA_API theta_rendering_context* theta_rendering_context_init(theta_api api, theta_window* window);

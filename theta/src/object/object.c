@@ -3,8 +3,11 @@
 #include <malloc.h>
 #include <memory.h>
 
-void theta_game_object_init(theta_game_object* obj, theta_transform transform, theta_renderable* renderable) {
+theta_game_object* theta_game_object_init(theta_transform transform, theta_renderable* renderable) {
     THETA_PROFILE();
+
+    theta_game_object* obj = INIT_STRUCT(theta_game_object);
+
     obj->components_length = 0;
     obj->transform = transform;
 
@@ -13,6 +16,8 @@ void theta_game_object_init(theta_game_object* obj, theta_transform transform, t
     c.type = THETA_COMPONENT_TYPE_RENDERABLE;
 
     theta_game_object_add_component(obj, c);
+
+    return obj;
 }
 
 void theta_game_object_add_component(theta_game_object* obj, theta_component component) {
@@ -63,5 +68,5 @@ theta_mat4x4f theta_game_object_get_model(theta_game_object* obj) {
 }
 
 void theta_game_object_destroy(theta_game_object* obj) {
-
+    THETA_PROFILE();
 }

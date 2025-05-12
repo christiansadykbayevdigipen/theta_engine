@@ -1,7 +1,13 @@
 #include "camera.h"
 
-void theta_camera_init(theta_camera* camera, theta_camera_projection_type type) {
+#include <memory.h>
+#include <malloc.h>
+
+theta_camera* theta_camera_init(theta_camera_projection_type type) {
     THETA_PROFILE();
+
+    theta_camera* camera = INIT_STRUCT(theta_camera);
+
     camera->transform.position = theta_vector3f_create();
     camera->transform.rotation = theta_vector3f_create();
     camera->transform.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
@@ -18,6 +24,8 @@ void theta_camera_init(theta_camera* camera, theta_camera_projection_type type) 
         camera->projection_matrix = theta_mat4x4f_orthographic();
         break;
     }
+
+    return camera;
 }
 
 theta_mat4x4f theta_camera_get_view(theta_camera* camera) {

@@ -2,6 +2,9 @@
 # theta_engine
  Engine made at digipen for CS230. Programmed in C.
 
+# Todo
+1. Refactor a lot of code. Make it so that everything that initializes functions is returned rather than passed through. For example, instead of theta_window_init(theta_window*), it will just be theta_window* window = theta_window_init();
+
 # Style guide
 
  1. Functions must be listed by the engine name, theta, then the name of the object, followed by the function purpose, followed by additional information if it is a 'sub-object'. For example, theta_window_init. This outlines the initialize function of the theta_window object. However, theta_window_init_shared_window is the 'override' of theta_window_init, by the 'sub-object' theta_window_shared_window.

@@ -196,6 +196,8 @@ void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_ma
 }
 
 void theta_shader_program_destroy_opengl(theta_shader_program* program) {
+    THETA_PROFILE();
+    
     glDeleteProgram(DATA_CAST(theta_shader_program_opengl_specifics, program)->programID);
 }
 

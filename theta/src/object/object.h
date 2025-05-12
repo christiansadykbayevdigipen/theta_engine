@@ -23,7 +23,7 @@ typedef struct {
     u32 components_length;
 }theta_game_object;
 
-THETA_API void theta_game_object_init(theta_game_object* obj, theta_transform transform, theta_renderable* renderable);
+THETA_API theta_game_object* theta_game_object_init(theta_transform transform, theta_renderable* renderable);
 
 THETA_API void theta_game_object_add_component(theta_game_object* obj, theta_component component);
 

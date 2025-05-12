@@ -11,5 +11,7 @@ void theta_material_init(theta_material* material, theta_shader_type type, const
 }
 
 void theta_material_destroy(theta_material* material) {
+    THETA_PROFILE();
+
     material->program.destroy(&material->program);
 }

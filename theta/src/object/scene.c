@@ -2,11 +2,18 @@
 
 #include "renderer/renderer.h"
 
-void theta_scene_init(theta_scene* scene, theta_camera* camera) {
+#include <memory.h>
+#include <malloc.h>
+
+theta_scene* theta_scene_init(theta_camera* camera) {
     THETA_PROFILE();
+
+    theta_scene* scene = INIT_STRUCT(theta_scene);
 
     theta_dynamic_list_init(&scene->game_objects, sizeof(theta_game_object*));
     scene->bound_camera = camera;
+
+    return scene;
 }
 
 void theta_scene_add_game_object(theta_scene* scene, theta_game_object* game_object) {
