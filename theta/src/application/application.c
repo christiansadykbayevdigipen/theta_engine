@@ -21,6 +21,10 @@ theta_application* theta_application_init(theta_application_descriptor descripto
     app->window = theta_window_init(1280, 720, full_window_name, descriptor.api);
     theta_renderer_init(app->window);
 
+    app->input = theta_input_system_init();
+
+    app->window->create_input_callbacks(app->window, app->input);
+
     return app;
 }
 
@@ -54,6 +58,8 @@ void theta_application_destruct(theta_application* app) {
     if(app->descriptor.terminate != NULL) app->descriptor.terminate();
     
     app->window->destroy(app->window);
+
+    theta_input_system_destroy(app->input);
 
     free(app);
 }

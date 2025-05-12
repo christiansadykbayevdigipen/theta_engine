@@ -3,6 +3,7 @@
 #include "core.h"
 
 #include "window/window.h"
+#include "input/input.h"
 
 /*
 @brief This is the data that theta needs to initialize the user defined application outlined in theta_application_init.
@@ -26,6 +27,7 @@ typedef struct {
 typedef struct {
     theta_application_descriptor descriptor;
     theta_window* window;
+    theta_input_system* input;
 }theta_application;
 
 /*

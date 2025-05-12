@@ -5,6 +5,7 @@
 // TODO: Migrate window system to use function pointer type system.
 
 struct theta_rendering_context;
+struct theta_input_system;
 
 /*
 @brief A window in Theta is where all the rendering goes to.
@@ -17,6 +18,7 @@ typedef struct theta_window{
     BOOL (*close_requested)(struct theta_window*);
     void (*update)(struct theta_window*);
     void (*destroy)(struct theta_window*);
+    void (*create_input_callbacks)(struct theta_window*, struct theta_input_system* input_system);
 }theta_window;
 
 /*

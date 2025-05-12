@@ -8,14 +8,14 @@ add_compile_options(
 
 set(CMAKE_C_STANDARD 11)
 
-find_package(glfw3 REQUIRED)
+#find_package(glfw3 REQUIRED)
 
 # Stole this line from Chat-GPT LOL
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(../../glfw/include)
 include_directories(../include)
 link_directories(../../glfw_build/src)
-link_libraries(-lglfw3 -lm -lGL)
+link_libraries(-lglfw3 -lm)
 
 add_definitions(-D_GLFW_WIN32)
 

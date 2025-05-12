@@ -46,6 +46,8 @@ THETA_API u32 theta_shared_window_get_proc_address(theta_window* window);
 */
 THETA_API void theta_shared_window_swap_buffers(theta_window* window);
 
+THETA_API void theta_window_create_input_callbacks_shared_window(theta_window* window, struct theta_input_system* input_system);
+
 #else
 #error You cannot include this header when you are not on the shared platform (windows, linux, mac).
 #endif
