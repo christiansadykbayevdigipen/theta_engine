@@ -37,6 +37,7 @@ typedef struct {
     theta_input_layout layout[MAX_LAYOUTS];
     u32 layout_count;
     void (*input_callback)(theta_vector3f);
+    s32 status; // Either -1, 0, or 1. Basically, the last direction it headed.
 }theta_input_descriptor;
 
 typedef struct theta_input_system{

@@ -14,6 +14,7 @@ static void _theta_window_shared_key_callback(GLFWwindow* window, int key, int s
         theta_input_system_on_key_up(g_input_system, key);
     if(action == GLFW_PRESS)
         theta_input_system_on_key_down(g_input_system, key);
+
 }
 
 theta_window* theta_window_init_shared_window(u32 width, u32 height, const char* title, theta_api api) {

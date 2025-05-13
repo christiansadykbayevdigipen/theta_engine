@@ -12,6 +12,8 @@ theta_application* sandbox;
 static f32 g_player_movement = 0.0f;
 
 void on_walk(theta_vector3f axis) {
+    THETA_DEBUG("%f,%f,%f: Axis\n", axis.x, axis.y, axis.z);
+    
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
     theta_game_object* o = theta_dynamic_list_get(&scene->game_objects, 0);
