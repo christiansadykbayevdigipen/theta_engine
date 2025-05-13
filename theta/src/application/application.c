@@ -40,6 +40,12 @@ void theta_application_run(theta_application* app) {
         f64 elapsed = theta_timer_get_elapsed();
         theta_timer_reset();
 
+        #ifndef NDEBUG
+        char new_title[MAX_STRING] = "";
+        sprintf(new_title, "[Powered by Theta] - %s ----- %f FPS", app->descriptor.app_name, 1.0f/elapsed);
+        app->window->change_title(app->window, new_title);
+        #endif
+
         if(app->descriptor.update != NULL) app->descriptor.update(elapsed);
 
         theta_scene* scene = theta_scene_manager_get_active_scene();

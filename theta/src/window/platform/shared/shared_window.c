@@ -52,6 +52,7 @@ theta_window* theta_window_init_shared_window(u32 width, u32 height, const char*
     window->close_requested = &theta_window_close_requested_shared_window;
     window->destroy = &theta_window_destroy_shared_window;
     window->create_input_callbacks = &theta_window_create_input_callbacks_shared_window;
+    window->change_title = &theta_window_change_title_shared_window;
 
     return window;
 }
@@ -89,4 +90,8 @@ void theta_window_create_input_callbacks_shared_window(theta_window* window, str
     g_input_system = input_system;
     
     glfwSetKeyCallback(DATA_CAST(theta_shared_window_specifics, window)->window_handle, _theta_window_shared_key_callback);
+}
+
+void theta_window_change_title_shared_window(theta_window* window, const char* new_title) {
+    glfwSetWindowTitle(DATA_CAST(theta_shared_window_specifics, window)->window_handle, new_title);
 }

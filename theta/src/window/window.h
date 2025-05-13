@@ -19,6 +19,7 @@ typedef struct theta_window{
     void (*update)(struct theta_window*);
     void (*destroy)(struct theta_window*);
     void (*create_input_callbacks)(struct theta_window*, struct theta_input_system* input_system);
+    void (*change_title)(struct theta_window*, const char* new_title);
 }theta_window;
 
 /*
