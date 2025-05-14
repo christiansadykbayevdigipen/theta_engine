@@ -9,9 +9,16 @@ void theta_timer_reset() {
 }
 
 f64 theta_timer_get_elapsed() {
+
     clock_t current_state = clock();
 
-    f64 total_time = (f64)(current_state - g_system_time) / CLOCKS_PER_SEC;
+    clock_t new = current_state - g_system_time;
+
+    f64 new_float = (f64)new;
+
+    f64 divisor = (f64)CLOCKS_PER_SEC;
+
+    f64 total_time = new_float / divisor;
 
     return total_time;
 }

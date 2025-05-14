@@ -42,7 +42,8 @@ void theta_application_run(theta_application* app) {
 
         #ifndef NDEBUG
         char new_title[MAX_STRING] = "";
-        sprintf(new_title, "[Powered by Theta] - %s ----- %f FPS", app->descriptor.app_name, 1.0f/elapsed);
+        //sprintf(new_title, "[Powered by Theta] - %s ----- %f FPS", app->descriptor.app_name, 1.0f/elapsed);
+        sprintf(new_title, "[Powered by Theta] - %s ----- %f elapsed", app->descriptor.app_name, elapsed);
         app->window->change_title(app->window, new_title);
         #endif
 
