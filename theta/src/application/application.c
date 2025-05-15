@@ -28,24 +28,35 @@ theta_application* theta_application_init(theta_application_descriptor descripto
     return app;
 }
 
+static void _theta_application_update(theta_application* app, f64 elapsed) {
+    if(app->descriptor.update != NULL) app->descriptor.update(elapsed);
+    theta_scene* scene = theta_scene_manager_get_active_scene();
+    if(scene != NULL) {
+        theta_scene_update(scene);
+    }
+    
+    app->window->update(app->window);
+}
+
+static void _theta_application_render(theta_application* app) {
+    theta_scene* scene = theta_scene_manager_get_active_scene();
+    if(scene != NULL) {
+        theta_scene_render(scene);
+    }
+}
+
 void theta_application_run(theta_application* app) {
     THETA_PROFILE();
     if(app->descriptor.start != NULL) app->descriptor.start();
 
     theta_timer_reset();
 
+    /*Old deprecated broken stupid game loop*/
     while(!app->window->close_requested(app->window)) {
         theta_renderer_begin_frame();
 
         f64 elapsed = theta_timer_get_elapsed();
         theta_timer_reset();
-
-        #ifndef NDEBUG
-        char new_title[MAX_STRING] = "";
-        //sprintf(new_title, "[Powered by Theta] - %s ----- %f FPS", app->descriptor.app_name, 1.0f/elapsed);
-        sprintf(new_title, "[Powered by Theta] - %s ----- %f elapsed", app->descriptor.app_name, elapsed);
-        app->window->change_title(app->window, new_title);
-        #endif
 
         if(app->descriptor.update != NULL) app->descriptor.update(elapsed);
 

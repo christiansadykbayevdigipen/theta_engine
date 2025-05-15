@@ -5,6 +5,8 @@
 #include "window/window.h"
 #include "input/input.h"
 
+#define SEC_PER_UPDATE 0.016
+
 /*
 @brief This is the data that theta needs to initialize the user defined application outlined in theta_application_init.
 @param app_name This is the name you wish to give to the application
