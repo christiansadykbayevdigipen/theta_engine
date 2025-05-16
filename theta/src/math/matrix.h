@@ -79,6 +79,8 @@ THETA_API theta_mat4x4f theta_mat4x4f_orthographic();
 */
 THETA_API theta_mat4x4f theta_mat4x4f_orthographic_args(f32 left, f32 right, f32 bottom, f32 top, f32 near, f32 far);
 
+THETA_API theta_mat4x4f theta_mat4x4f_perspective();
+
 // TODO: Add perspective projection matricies
 
 /*

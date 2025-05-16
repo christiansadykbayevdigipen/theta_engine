@@ -125,6 +125,12 @@ theta_mat4x4f theta_mat4x4f_orthographic_args(f32 left, f32 right, f32 bottom, f
     return result;
 }
 
+theta_mat4x4f theta_mat4x4f_perspective() {
+    theta_mat4x4f result = theta_mat4x4f_identity();
+
+    return result;
+}
+
 theta_mat4x4f theta_mat4x4f_translate(theta_mat4x4f first, theta_vector3f vector) {
     theta_mat4x4f result = theta_mat4x4f_copy(first);
 

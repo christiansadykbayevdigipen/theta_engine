@@ -6,7 +6,8 @@
 struct theta_texture;
 
 typedef enum {
-    THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED
+    THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED,
+    THETA_SHADER_TYPE_BASIC_SHADER_COLORED
 }theta_shader_type;
 
 /*
@@ -24,6 +25,7 @@ typedef struct theta_shader_program{
     void (*set_mvp)(struct theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection);
     void (*destroy)(struct theta_shader_program* program);
     void (*give_albedo)(struct theta_shader_program* program, const char* filepath);
+    void (*set_color)(struct theta_shader_program* program, theta_vector3f color);
 
     struct theta_texture* tex;
 }theta_shader_program;

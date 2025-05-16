@@ -48,6 +48,9 @@ theta_rendering_context* theta_rendering_context_init_opengl(theta_window* windo
     
     THETA_ASSERT(gladLoadGL(), "theta_rendering_context_init_opengl has failed. The reason being, glad, the opengl loader, has failed to load opengl.");
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     return ctx;
 }
 

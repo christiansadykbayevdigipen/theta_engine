@@ -48,6 +48,10 @@ static void tokenize_shader(const char* string, u32 max_length, char** v_source,
 }
 
 static u32 compile_shader(u32 type, const char* src) {
+    char shader_type_name[MAX_STRING] = "";
+
+    (type == GL_VERTEX_SHADER) ? (strcat(shader_type_name, "Vertex Shader")) : (strcat(shader_type_name, "Fragment Shader"));
+
     u32 shaderID = glCreateShader(type);
 
     glShaderSource(shaderID, 1, &src, NULL);
@@ -64,7 +68,7 @@ static u32 compile_shader(u32 type, const char* src) {
 
         glGetShaderInfoLog(shaderID, 1024, &log_length, message);
 
-        THETA_FATAL("compile_shader has failed. The reason being, OpenGL returned this error: %s\n", message);
+        THETA_FATAL("compile_shader for %s has failed. The reason being, OpenGL returned this error: %s\n", shader_type_name, message);
         return -1;
     }
 
@@ -103,6 +107,7 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     THETA_PROFILE();
     
     program->uninterpreted_data = malloc(sizeof(theta_shader_program_opengl_specifics));
+    program->tex = NULL;
     
     u32 current_buffer_size = 1000;
     char* full_source = malloc(sizeof(char) * current_buffer_size);
@@ -149,6 +154,7 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     program->set_mvp = &theta_shader_program_set_mvp_opengl;
     program->destroy = &theta_shader_program_destroy_opengl;
     program->give_albedo = &theta_shader_program_give_albedo_opengl;
+    program->set_color = &theta_shader_program_set_color_opengl;
 }
 
 void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection) {
@@ -216,6 +222,20 @@ void theta_shader_program_give_albedo_opengl(theta_shader_program* program, cons
     s32 loc = glGetUniformLocation(progspec->programID, "theta_Albedo");
 
     glUniform1i(loc, progspec->albedo_unit_id);
+    
+    glUseProgram(0);
+}
+
+void theta_shader_program_set_color_opengl(theta_shader_program* program, theta_vector3f color) {
+    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+
+    u32 location = glGetUniformLocation(self->programID, "color");
+
+    THETA_ASSERT(location, "theta_shader_program_set_color_opengl has failed. The reason being, the shader that you are using does not have a uniform vec4 color!");
+
+    glUseProgram(self->programID);
+
+    glUniform4f(location, color.x, color.y, color.z, 1.0f);
     
     glUseProgram(0);
 }

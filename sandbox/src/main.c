@@ -7,13 +7,11 @@
 
 theta_application* sandbox;
 
-#define PLAYER_WALKING_SPEED 8.0f
+#define PLAYER_WALKING_SPEED 2.0f
 
 static f32 g_player_movement = 0.0f;
 
 void on_walk(theta_vector3f axis) {
-    THETA_DEBUG("%f,%f,%f: Axis\n", axis.x, axis.y, axis.z);
-    
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
     theta_game_object* o = theta_dynamic_list_get(&scene->game_objects, 0);
@@ -29,7 +27,7 @@ void on_walk(theta_vector3f axis) {
 }
 
 void sb_start() {
-    theta_camera* camera = theta_camera_init(THETA_CAMERA_PROJECTION_TYPE_ORTHOGRAPHIC);
+    theta_camera* camera = theta_camera_init(THETA_CAMERA_PROJECTION_TYPE_PERSPECTIVE);
 
     theta_scene* scene = theta_scene_init(camera);
 
@@ -37,7 +35,12 @@ void sb_start() {
     trsf.position = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
     trsf.rotation = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
     trsf.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);;
-    theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init_quad("res/steve.png"));
+
+    theta_transform trsf2;
+    trsf2.position = theta_vector3f_create_args(1.0f, 0.0f, 0.0f);
+    trsf2.rotation = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
+    trsf2.scale = theta_vector3f_create_args(1.0f, 2.0f, 1.0f);;
+    theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init_quad_colored(theta_vector3f_create_args(0.5f, 0.25f, 1.0f)));
 
     theta_scene_add_game_object(scene, obj);
 
@@ -57,7 +60,9 @@ void sb_update(f64 elapsed_time) {
 
     theta_game_object* obj = (theta_game_object*)theta_dynamic_list_get(&scene->game_objects, 0);
 
-    obj->transform.position.x += g_player_movement * elapsed_time;
+    //obj->transform.position.x += g_player_movement * elapsed_time;
+    obj->transform.rotation.y += 4.0f * elapsed_time;
+    obj->transform.rotation.x += 4.0f * elapsed_time;
 }
 
 void sb_terminate() {

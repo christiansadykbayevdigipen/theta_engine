@@ -18,5 +18,9 @@ typedef struct theta_renderable {
 */
 THETA_API theta_renderable* theta_renderable_init_quad(const char* textureFilepath);
 
+// Initializes a quad with a color supplied
+THETA_API theta_renderable* theta_renderable_init_quad_colored(theta_vector3f color);
+
+THETA_API theta_renderable* theta_renderable_init_cube_colored(theta_vector3f color);
 
 THETA_API void theta_renderable_destroy(theta_renderable* renderable);

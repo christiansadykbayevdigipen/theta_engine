@@ -14,3 +14,5 @@ THETA_API void theta_shader_program_set_mvp_opengl(theta_shader_program* program
 THETA_API void theta_shader_program_destroy_opengl(theta_shader_program* program);
 
 THETA_API void theta_shader_program_give_albedo_opengl(theta_shader_program* program, const char* filepath);
+
+THETA_API void theta_shader_program_set_color_opengl(theta_shader_program* program, theta_vector3f color);

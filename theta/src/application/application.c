@@ -51,30 +51,27 @@ void theta_application_run(theta_application* app) {
 
     theta_timer_reset();
 
-    /*Old deprecated broken stupid game loop*/
-    while(!app->window->close_requested(app->window)) {
-        theta_renderer_begin_frame();
+    f64 t = 0.0;
+    const f64 dt = 0.0166; // 60 Ticks per second
 
-        f64 elapsed = theta_timer_get_elapsed();
+    theta_timer_reset();
+    f64 accumulator = 0.0;
+    while(!app->window->close_requested(app->window)) {
+        f64 frame_time = theta_timer_get_elapsed();
         theta_timer_reset();
 
-        if(app->descriptor.update != NULL) app->descriptor.update(elapsed);
+        accumulator += frame_time;
 
-        #ifndef NDEBUG
-        char new_title[MAX_STRING] = "";
-        //sprintf(new_title, "[Powered by Theta] - %s ----- %f FPS", app->descriptor.app_name, 1.0f/elapsed);
-        sprintf(new_title, "[Powered by Theta] - %s ----- %f elapsed", app->descriptor.app_name, elapsed);
-        app->window->change_title(app->window, new_title);
-        #endif
+        theta_renderer_begin_frame();
 
-        theta_scene* scene = theta_scene_manager_get_active_scene();
-
-        if(scene != NULL) {
-            theta_scene_render(scene);
-            theta_scene_update(scene);
+        while(accumulator >= dt) {
+            _theta_application_update(app, dt);
+            accumulator -= dt;
+            t += dt;
         }
-        
-        app->window->update(app->window);
+
+        _theta_application_render(app);
+
         theta_renderer_end_frame();
     }
 }

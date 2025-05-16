@@ -14,7 +14,7 @@ theta_camera* theta_camera_init(theta_camera_projection_type type) {
     
     switch(type) {
     case THETA_CAMERA_PROJECTION_TYPE_PERSPECTIVE: // TODO: Make this actually perspective
-        camera->projection_matrix = theta_mat4x4f_orthographic();
+        camera->projection_matrix = theta_mat4x4f_perspective();
         break;
     case THETA_CAMERA_PROJECTION_TYPE_ORTHOGRAPHIC:
         camera->projection_matrix = theta_mat4x4f_orthographic();
