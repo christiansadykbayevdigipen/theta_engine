@@ -50,12 +50,13 @@ theta_rendering_context* theta_rendering_context_init_opengl(theta_window* windo
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
 
     return ctx;
 }
 
 void theta_rendering_context_clear_opengl(theta_rendering_context* ctx) {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void theta_rendering_context_swap_opengl(theta_rendering_context* ctx) {
@@ -103,9 +104,9 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
         glEnableVertexAttribArray(i);
     }
 
-    if(associated_shader->tex != NULL) {
+    if(associated_shader->albedo_texture != NULL) {
         theta_shader_program_opengl_specifics* shader_spec = DATA_CAST(theta_shader_program_opengl_specifics, associated_shader);
-        theta_texture_opengl_specifics* tex_spec = DATA_CAST(theta_texture_opengl_specifics, associated_shader->tex);
+        theta_texture_opengl_specifics* tex_spec = DATA_CAST(theta_texture_opengl_specifics, associated_shader->albedo_texture);
 
         glActiveTexture(GL_TEXTURE0 + shader_spec->albedo_unit_id);
         glBindTexture(GL_TEXTURE_2D, tex_spec->texture_id);
@@ -113,7 +114,7 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
 
     glDrawElements(GL_TRIANGLES, ibo->indices_count, GL_UNSIGNED_INT, NULL);
 
-    if(associated_shader->tex != NULL) {
+    if(associated_shader->albedo_texture != NULL) {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 

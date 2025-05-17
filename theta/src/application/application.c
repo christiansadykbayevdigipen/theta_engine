@@ -10,9 +10,9 @@
 #include "object/scene_manager.h"
 
 theta_application* theta_application_init(theta_application_descriptor descriptor) {
+    THETA_PROFILE();
     theta_application* app = INIT_STRUCT(theta_application);
 
-    THETA_PROFILE();
     char full_window_name[MAX_STRING] = "[Powered by Theta] - ";
 
     strcat(full_window_name, descriptor.app_name);

@@ -4,6 +4,7 @@
 
 #include "material.h"
 #include "mesh.h"
+#include "texture.h"
 
 /*
 @brief The full renderer attached to an object. 
@@ -21,6 +22,10 @@ THETA_API theta_renderable* theta_renderable_init_quad(const char* textureFilepa
 // Initializes a quad with a color supplied
 THETA_API theta_renderable* theta_renderable_init_quad_colored(theta_vector3f color);
 
+THETA_API theta_renderable* theta_renderable_init_cube(const char* textureFilepath, theta_texture_wrap_type wrap_type);
+
 THETA_API theta_renderable* theta_renderable_init_cube_colored(theta_vector3f color);
+
+THETA_API theta_renderable* theta_renderable_init(const char* mesh_location, const char* texture_filepath, theta_texture_wrap_type wrap_type);
 
 THETA_API void theta_renderable_destroy(theta_renderable* renderable);

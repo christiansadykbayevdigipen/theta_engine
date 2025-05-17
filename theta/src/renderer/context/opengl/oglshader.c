@@ -107,7 +107,7 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     THETA_PROFILE();
     
     program->uninterpreted_data = malloc(sizeof(theta_shader_program_opengl_specifics));
-    program->tex = NULL;
+    program->albedo_texture = NULL;
     
     u32 current_buffer_size = 1000;
     char* full_source = malloc(sizeof(char) * current_buffer_size);
@@ -207,13 +207,11 @@ void theta_shader_program_destroy_opengl(theta_shader_program* program) {
     glDeleteProgram(DATA_CAST(theta_shader_program_opengl_specifics, program)->programID);
 }
 
-void theta_shader_program_give_albedo_opengl(theta_shader_program* program, const char* filepath) {
+void theta_shader_program_give_albedo_opengl(theta_shader_program* program, theta_texture* albedo_texture) {
     THETA_PROFILE();
-    program->tex = INIT_STRUCT(theta_texture);
-
-    theta_texture_init(program->tex, filepath);
-
     theta_shader_program_opengl_specifics* progspec = DATA_CAST(theta_shader_program_opengl_specifics, program);
+
+    program->albedo_texture = albedo_texture;
 
     glUseProgram(progspec->programID);
 

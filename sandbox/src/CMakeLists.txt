@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 
 project(sandbox)
 
-add_compile_options(
-  "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
-  "$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>"
-)
+# add_compile_options(
+#   "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
+#   "$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>"
+# )
 
 link_directories(../../theta/build)
 

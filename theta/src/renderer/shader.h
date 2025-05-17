@@ -24,10 +24,10 @@ typedef struct theta_shader_program{
     void* uninterpreted_data;
     void (*set_mvp)(struct theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection);
     void (*destroy)(struct theta_shader_program* program);
-    void (*give_albedo)(struct theta_shader_program* program, const char* filepath);
+    void (*give_albedo)(struct theta_shader_program* program, struct theta_texture* albedo);
     void (*set_color)(struct theta_shader_program* program, theta_vector3f color);
 
-    struct theta_texture* tex;
+    struct theta_texture* albedo_texture;
 }theta_shader_program;
 
 /*

@@ -131,6 +131,17 @@ theta_renderable* theta_renderable_init_quad_colored(theta_vector3f color) {
     return renderable;
 }
 
+theta_renderable* theta_renderable_init_cube(const char* textureFilepath, theta_texture_wrap_type wrap_type) {
+    THETA_PROFILE();
+
+    theta_renderable* renderable = INIT_STRUCT(theta_renderable);
+
+    theta_mesh_init(&renderable->mesh, g_cube_vertices, sizeof(g_cube_vertices) / sizeof(f32), 3, g_cube_indices, sizeof(g_cube_indices) / sizeof(u32), g_cube_tex_coords, sizeof(g_cube_tex_coords) / sizeof(f32));
+    theta_material_init(&renderable->material, THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED, textureFilepath);
+
+    return renderable;
+}
+
 theta_renderable* theta_renderable_init_cube_colored(theta_vector3f color) {
     THETA_PROFILE();
 
@@ -140,6 +151,27 @@ theta_renderable* theta_renderable_init_cube_colored(theta_vector3f color) {
     theta_material_init_colored(&renderable->material, THETA_SHADER_TYPE_BASIC_SHADER_COLORED, color);
 
     return renderable;
+}
+
+theta_renderable* theta_renderable_init(const char* mesh_location, const char* texture_filepath, theta_texture_wrap_type wrap_type) {
+    /*Initialize all of the lists.*/
+    
+    theta_dynamic_list vertex_indices;
+    theta_dynamic_list_init(&vertex_indices, sizeof(u32));
+    theta_dynamic_list uv_indices;
+    theta_dynamic_list_init(&uv_indices, sizeof(u32));
+    theta_dynamic_list normal_indices;
+    theta_dynamic_list_init(&normal_indices, sizeof(u32));
+
+    theta_dynamic_list temp_vertices;
+    theta_dynamic_list_init(&temp_vertices, sizeof(f32));
+    theta_dynamic_list temp_uvs;
+    theta_dynamic_list_init(&temp_uvs, sizeof(f32));
+    theta_dynamic_list temp_normals;
+    theta_dynamic_list_init(&temp_normals, sizeof(f32));
+
+
+    
 }
 
 void theta_renderable_destroy(theta_renderable* renderable) {

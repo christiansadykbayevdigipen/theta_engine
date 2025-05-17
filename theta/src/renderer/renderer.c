@@ -46,6 +46,4 @@ theta_api theta_renderer_get_api() {
 
 void theta_renderer_destroy() {
     THETA_PROFILE();
-
-    
 }

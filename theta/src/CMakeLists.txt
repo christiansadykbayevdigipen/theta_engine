@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(theta)
 
-add_compile_options(
-  "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
-  "$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>"
-)
+# add_compile_options(
+#   "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
+#   "$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>"
+# )
 
 set(CMAKE_C_STANDARD 11)
 

@@ -7,7 +7,7 @@
 typedef struct {
     theta_shader_program program;
     BOOL albedo_in_use;
-    theta_texture albedo;
+    theta_texture* albedo;
     theta_vector3f color;
 }theta_material;
 

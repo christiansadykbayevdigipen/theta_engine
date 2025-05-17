@@ -8,8 +8,14 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-void theta_texture_init_opengl(theta_texture* texture, const char* filepath) {
+theta_texture* theta_texture_init_opengl(const char* filepath) {
     THETA_PROFILE();
+    return theta_texture_initw_opengl(filepath, THETA_TEXTURE_WRAP_TYPE_REPEAT);
+}
+
+theta_texture* theta_texture_initw_opengl(const char* filepath, theta_texture_wrap_type wrap_type) {
+    THETA_PROFILE();
+    theta_texture* texture = INIT_STRUCT(theta_texture);
 
     texture->uninterpreted_data = malloc(sizeof(theta_texture_opengl_specifics));
 
@@ -25,8 +31,28 @@ void theta_texture_init_opengl(theta_texture* texture, const char* filepath) {
     glGenTextures(1, &self->texture_id);
     glBindTexture(GL_TEXTURE_2D, self->texture_id);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);   
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);   
+    u32 wrap_type_ogl = GL_REPEAT;
+
+    switch(wrap_type) {
+    case THETA_TEXTURE_WRAP_TYPE_REPEAT:
+        wrap_type_ogl = GL_REPEAT;
+        break;
+    case THETA_TEXTURE_WRAP_TYPE_MIRROR_CLAMP_TO_EDGE:
+        wrap_type_ogl = GL_MIRROR_CLAMP_TO_EDGE;
+        break;
+    case THETA_TEXTURE_WRAP_TYPE_MIRROR:
+        wrap_type_ogl = GL_MIRRORED_REPEAT;
+        break;
+    case THETA_TEXTURE_WRAP_TYPE_CLAMP:
+        wrap_type_ogl = GL_CLAMP;
+        break;
+    default:
+        THETA_WARN("theta_texture_initw_opengl has an issue. The reason being, the texture wrap type given to this method does not exist! Defaulting to repeat\n");
+        break;
+    }
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_type_ogl);   
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_type_ogl);   
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);   
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -42,4 +68,6 @@ void theta_texture_init_opengl(theta_texture* texture, const char* filepath) {
     glBindTexture(GL_TEXTURE_2D, 0);
 
     stbi_image_free(data); 
+
+    return texture;
 }
