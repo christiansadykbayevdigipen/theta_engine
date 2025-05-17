@@ -7,6 +7,8 @@ project(sandbox)
 #   "$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>"
 # )
 
+set(CMAKE_BUILD_TYPE Debug)
+
 link_directories(../../theta/build)
 
 link_libraries(-ltheta -lm)

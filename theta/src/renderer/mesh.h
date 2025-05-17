@@ -25,4 +25,4 @@ typedef struct theta_mesh {
 @param indices The list of indices that refer to the vertices
 @param number_of_indices The number of indices in the array
 */
-THETA_API void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* tex_coords, u32 number_of_tex_coords);
+THETA_API void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices);

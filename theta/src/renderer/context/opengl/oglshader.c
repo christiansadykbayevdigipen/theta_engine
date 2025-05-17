@@ -229,7 +229,7 @@ void theta_shader_program_set_color_opengl(theta_shader_program* program, theta_
 
     u32 location = glGetUniformLocation(self->programID, "color");
 
-    THETA_ASSERT(location, "theta_shader_program_set_color_opengl has failed. The reason being, the shader that you are using does not have a uniform vec4 color!");
+    THETA_ASSERT(location == -1, "theta_shader_program_set_color_opengl has failed. The reason being, the shader that you are using does not have a uniform vec4 color!");
 
     glUseProgram(self->programID);
 

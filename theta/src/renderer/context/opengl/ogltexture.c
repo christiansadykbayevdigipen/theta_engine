@@ -24,7 +24,7 @@ theta_texture* theta_texture_initw_opengl(const char* filepath, theta_texture_wr
     u32 width, height, nrChannels;
     stbi_set_flip_vertically_on_load(TRUE);
 
-    u8* data = stbi_load(filepath, &width, &height, &nrChannels, 0);
+    u8* data = stbi_load(filepath, &width, &height, &nrChannels, 4);
 
     THETA_ASSERT(data, "theta_texture_init_opengl has failed. The reason being, filepath does not exist for texture");
 
@@ -53,13 +53,15 @@ theta_texture* theta_texture_initw_opengl(const char* filepath, theta_texture_wr
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_type_ogl);   
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_type_ogl);   
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);   
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);   
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    u32 default_format = GL_RGB;
+    //u32 default_format = GL_RGB;
 
-    if(nrChannels > 3)
-        default_format = GL_RGBA;
+    // if(nrChannels > 3)
+    //     default_format = GL_RGBA;
+
+    u32 default_format = GL_RGBA;
 
     glTexImage2D(GL_TEXTURE_2D, 0, default_format, width, height, 0, default_format, GL_UNSIGNED_BYTE, data);
 

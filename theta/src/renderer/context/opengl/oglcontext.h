@@ -74,7 +74,7 @@ THETA_API void theta_rendering_context_vbo_init(theta_rendering_context* ctx, th
 @param A pointer to an initialized VBO object.
 @param layout How the VBO should be treated in the VAO. Denotes the size of each vertex position, the stride (how many bytes it takes to get to the next position), the offset (how many bytes it takes to get to the position from the beginning), and index, which is just an identifier. Because you can have multiple VBOs in a VAO.
 */
-THETA_API void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, theta_opengl_vertex_buffer* vbo, theta_opengl_vao_layout layout);
+THETA_API void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, theta_opengl_vertex_buffer* vbo, theta_opengl_vao_layout* layout, u32 layout_count);
 
 /*
 @brief Draws a particular vertex array (without an Index Buffer)

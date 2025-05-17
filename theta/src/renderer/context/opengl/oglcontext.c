@@ -78,20 +78,24 @@ void theta_rendering_context_vbo_init(theta_rendering_context* ctx, theta_opengl
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, theta_opengl_vertex_buffer* vbo, theta_opengl_vao_layout layout) {
-    glBindBuffer(GL_ARRAY_BUFFER, vbo->vertex_buffer_id);
+void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, theta_opengl_vertex_buffer* vbo, theta_opengl_vao_layout* layout, u32 layout_count) {
 
-    glBindVertexArray(vao->vertex_array_id);
+    for(u32 i = 0; i < layout_count; i++) {
+        glBindBuffer(GL_ARRAY_BUFFER, vbo->vertex_buffer_id);
     
-    glVertexAttribPointer(layout.index, layout.dimension, GL_FLOAT, GL_FALSE, layout.stride, (const void*)(layout.offset));
+        glBindVertexArray(vao->vertex_array_id);
+        
+        glVertexAttribPointer(layout[i].index, layout[i].dimension, GL_FLOAT, GL_FALSE, layout[i].stride, (const void*)(layout[i].offset));
+        
+        glBindVertexArray(0);
     
-    glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+        vao->layout[vao->current_layout_length] = layout[i];
+    
+        vao->current_layout_length++;
+    }
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    vao->layout[vao->current_layout_length] = layout;
-
-    vao->current_layout_length++;
 }
 
 void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, theta_opengl_index_buffer* ibo) {

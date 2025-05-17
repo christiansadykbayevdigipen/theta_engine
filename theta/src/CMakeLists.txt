@@ -8,6 +8,8 @@ project(theta)
 
 set(CMAKE_C_STANDARD 11)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 #find_package(glfw3 REQUIRED)
 
 # Stole this line from Chat-GPT LOL

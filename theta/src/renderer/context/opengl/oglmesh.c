@@ -13,7 +13,7 @@ typedef struct {
     theta_opengl_index_buffer ibo;
 }theta_mesh_opengl_specifics;
 
-void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* tex_coords, u32 number_of_tex_coords) {
+void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices) {
     THETA_PROFILE();
     
     theta_rendering_context* ctx = theta_renderer_get_context();
@@ -31,19 +31,19 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
     layout.dimension = dimension;
     layout.index = 0;
     layout.offset = 0;
-    layout.stride = sizeof(f32) * dimension;
+    layout.stride = sizeof(f32) * (dimension+2);
 
     theta_opengl_vao_layout tex_layout;
     tex_layout.dimension = 2;
     tex_layout.index = 1;
-    tex_layout.offset = 0;
-    tex_layout.stride = sizeof(f32) * 2;
+    tex_layout.offset = sizeof(f32) * 3;
+    tex_layout.stride = sizeof(f32) * 5;
+
+    theta_opengl_vao_layout layouts[2] = {layout, tex_layout};
 
     theta_rendering_context_vbo_init(ctx, &vbo, vertices, sizeof(f32) * number_of_vertices);
-    theta_rendering_context_vbo_init(ctx, &tex_vbo, tex_coords, sizeof(f32) * number_of_tex_coords);
 
-    theta_rendering_context_vao_push_vbo(ctx, &self->vao, &vbo, layout);
-    theta_rendering_context_vao_push_vbo(ctx, &self->vao, &tex_vbo, tex_layout);
+    theta_rendering_context_vao_push_vbo(ctx, &self->vao, &vbo, layouts, 2);
 
     mesh->vertex_position_count = number_of_vertices / dimension;
 
