@@ -3,9 +3,6 @@
 #include <memory.h>
 #include <malloc.h>
 
-#define TINYOBJ_LOADER_C_IMPLEMENTATION
-#include "tinyobj_loader_c.h"
-
 static f32 g_quad_vertices[] = {
     // positions           // texture coords
      0.5f,  0.5f, 0.0f,    1.0f, 1.0f,   // top right
@@ -70,25 +67,6 @@ static u32 g_cube_indices[] = {
 
 static const char* g_obj_dir = "res/";
 
-static void _get_file_data(const char* filename, char** data, u64* len) {
-    const char *ext = strrchr(filename, '.');
-
-    size_t data_len = 0;
-
-    if (strcmp(ext, ".gz") == 0) {
-        assert(0); /* todo */
-    }
-    else if (strcmp(ext, ".mtl") == 0) {
-        const char *filepath = concat_str(g_obj_dir, filename);
-        *data = mmap_file(&data_len, filepath);
-    }
-    else {
-        *data = mmap_file(&data_len, filename);
-    }
-
-    (*len) = data_len;
-}
-
 theta_renderable* theta_renderable_init_quad(const char* textureFilepath) {
     THETA_PROFILE();
 
@@ -135,11 +113,6 @@ theta_renderable* theta_renderable_init_cube_colored(theta_vector3f color) {
 
 theta_renderable* theta_renderable_init(const char* mesh_location, const char* texture_filepath, theta_texture_wrap_type wrap_type) {
     theta_renderable* renderable = INIT_STRUCT(theta_renderable);
-
-    tinyobj_attrib_t attrib;
-    tinyobj_shape_t* shapes;
-    tinyobj_material_t* materials;
-    u64 num_shapes, num_mats;
 
     
 }
