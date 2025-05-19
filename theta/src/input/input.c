@@ -16,7 +16,7 @@ theta_input_system* theta_input_system_init() {
 
     theta_input_system* input = INIT_STRUCT(theta_input_system);
 
-    theta_dynamic_list_init(&input->inputs, sizeof(theta_input_descriptor));
+    theta_dynamic_list_init(&input->inputs, sizeof(theta_input_descriptor*));
 
     return input;
 }

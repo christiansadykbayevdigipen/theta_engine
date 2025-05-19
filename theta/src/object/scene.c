@@ -11,6 +11,7 @@ theta_scene* theta_scene_init(theta_camera* camera) {
     theta_scene* scene = INIT_STRUCT(theta_scene);
 
     theta_dynamic_list_init(&scene->game_objects, sizeof(theta_game_object*));
+    theta_dynamic_list_init(&scene->lights, sizeof(theta_light_descriptor));
     scene->bound_camera = camera;
 
     return scene;
@@ -19,6 +20,11 @@ theta_scene* theta_scene_init(theta_camera* camera) {
 void theta_scene_add_game_object(theta_scene* scene, theta_game_object* game_object) {
     THETA_PROFILE();
     theta_dynamic_list_push_back(&scene->game_objects, &game_object);
+}
+
+void theta_scene_add_light(theta_scene* scene, theta_light_descriptor light_point) {
+    THETA_PROFILE();
+    theta_dynamic_list_push_back(&scene->lights, &light_point);
 }
 
 void theta_scene_update(theta_scene* scene) { // Update won't really do anything for now.
@@ -45,7 +51,9 @@ void theta_scene_render(theta_scene *scene) {
         theta_mat4x4f model = theta_game_object_get_model(working_obj);
         theta_mat4x4f view = theta_camera_get_view(scene->bound_camera);
         theta_mat4x4f proj = scene->bound_camera->projection_matrix;
-        renderable->material.program.set_mvp(&renderable->material.program, model, view, proj);
+        theta_light_descriptor* scene_light = ((theta_light_descriptor*)theta_dynamic_list_get(&scene->lights, 0));
+        //renderable->program.set_light_position(&renderable->program, scene_light.transform.position);
+        renderable->program.set_mvp(&renderable->program, model, view, proj);
         theta_renderer_submit(renderable);
     }
 }

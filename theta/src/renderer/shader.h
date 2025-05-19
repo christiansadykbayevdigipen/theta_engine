@@ -10,22 +10,13 @@ typedef enum {
     THETA_SHADER_TYPE_BASIC_SHADER_COLORED
 }theta_shader_type;
 
-/*
-@brief This is the typical information that is sent into the uniform/constant buffer area in the shader. This is set to VS_INPUT in HLSL or uniform struct is GLSL.
-*/
-typedef struct {
-    theta_mat4x4f projection;
-    theta_mat4x4f view;
-    theta_mat4x4f model;
-    theta_vector3f color;
-}theta_program_uniform;
-
 typedef struct theta_shader_program{
     void* uninterpreted_data;
     void (*set_mvp)(struct theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection);
     void (*destroy)(struct theta_shader_program* program);
     void (*give_albedo)(struct theta_shader_program* program, struct theta_texture* albedo);
     void (*set_color)(struct theta_shader_program* program, theta_vector3f color);
+    void (*set_light_position)(struct theta_shader_program* program, theta_vector3f location);
 
     struct theta_texture* albedo_texture;
 }theta_shader_program;

@@ -67,13 +67,17 @@ static u32 g_cube_indices[] = {
 
 static const char* g_obj_dir = "res/";
 
-theta_renderable* theta_renderable_init_quad(const char* textureFilepath) {
+theta_renderable* theta_renderable_init_quad(const char* texture_filepath) {
     THETA_PROFILE();
 
     theta_renderable* renderable = INIT_STRUCT(theta_renderable);
 
     theta_mesh_init(&renderable->mesh, g_quad_vertices, sizeof(g_quad_vertices) / sizeof(f32), 3, g_quad_indices, sizeof(g_quad_indices) / sizeof(u32));
-    theta_material_init(&renderable->material, THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED, textureFilepath);
+    theta_shader_program_init_type(&renderable->program, THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED);
+    renderable->material.uses_albedo = TRUE;
+    renderable->material.uses_color = FALSE;
+    renderable->material.albedo = theta_texture_init(texture_filepath);
+    theta_material_bind_to_shader(&renderable->material, &renderable->program);
 
     return renderable;
 }
@@ -84,18 +88,26 @@ theta_renderable* theta_renderable_init_quad_colored(theta_vector3f color) {
     theta_renderable* renderable = INIT_STRUCT(theta_renderable);
 
     theta_mesh_init(&renderable->mesh, g_quad_vertices, sizeof(g_quad_vertices) / sizeof(f32), 3, g_quad_indices, sizeof(g_quad_indices) / sizeof(u32));
-    theta_material_init_colored(&renderable->material, THETA_SHADER_TYPE_BASIC_SHADER_COLORED, color);
+    theta_shader_program_init_type(&renderable->program, THETA_SHADER_TYPE_BASIC_SHADER_COLORED);
+    renderable->material.uses_albedo = FALSE;
+    renderable->material.uses_color = TRUE;
+    renderable->material.color = color;
+    theta_material_bind_to_shader(&renderable->material, &renderable->program);
 
     return renderable;
 }
 
-theta_renderable* theta_renderable_init_cube(const char* textureFilepath, theta_texture_wrap_type wrap_type) {
+theta_renderable* theta_renderable_init_cube(const char* texture_filepath, theta_texture_wrap_type wrap_type) {
     THETA_PROFILE();
 
     theta_renderable* renderable = INIT_STRUCT(theta_renderable);
 
     theta_mesh_init(&renderable->mesh, g_cube_vertices, sizeof(g_cube_vertices) / sizeof(f32), 3, g_cube_indices, sizeof(g_cube_indices) / sizeof(u32));
-    theta_material_init(&renderable->material, THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED, textureFilepath);
+    theta_shader_program_init_type(&renderable->program, THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED);
+    renderable->material.uses_albedo = TRUE;
+    renderable->material.uses_color = FALSE;
+    renderable->material.albedo = theta_texture_init(texture_filepath);
+    theta_material_bind_to_shader(&renderable->material, &renderable->program);
 
     return renderable;
 }
@@ -106,7 +118,11 @@ theta_renderable* theta_renderable_init_cube_colored(theta_vector3f color) {
     theta_renderable* renderable = INIT_STRUCT(theta_renderable);
 
     theta_mesh_init(&renderable->mesh, g_cube_vertices, sizeof(g_cube_vertices) / sizeof(f32), 3, g_cube_indices, sizeof(g_cube_indices) / sizeof(u32));
-    theta_material_init_colored(&renderable->material, THETA_SHADER_TYPE_BASIC_SHADER_COLORED, color);
+    theta_shader_program_init_type(&renderable->program, THETA_SHADER_TYPE_BASIC_SHADER_COLORED);
+    renderable->material.uses_albedo = FALSE;
+    renderable->material.uses_color = TRUE;
+    renderable->material.color = color;
+    theta_material_bind_to_shader(&renderable->material, &renderable->program);
 
     return renderable;
 }
@@ -114,12 +130,13 @@ theta_renderable* theta_renderable_init_cube_colored(theta_vector3f color) {
 theta_renderable* theta_renderable_init(const char* mesh_location, const char* texture_filepath, theta_texture_wrap_type wrap_type) {
     theta_renderable* renderable = INIT_STRUCT(theta_renderable);
 
-    
+    // TODO: Implement function
+
+    return renderable;
 }
 
 void theta_renderable_destroy(theta_renderable* renderable) {
     THETA_PROFILE();
 
     renderable->mesh.destroy(&renderable->mesh);
-    theta_material_destroy(&renderable->material);
 }

@@ -2,8 +2,6 @@
 
 #include "core.h"
 
-// TODO: Migrate window system to use function pointer type system.
-
 struct theta_rendering_context;
 struct theta_input_system;
 

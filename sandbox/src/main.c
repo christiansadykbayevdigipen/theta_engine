@@ -41,9 +41,17 @@ void sb_start() {
     trsf2.rotation = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
     trsf2.scale = theta_vector3f_create_args(1.0f, 2.0f, 1.0f);
     //theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init_cube_colored(theta_vector3f_create_args(0.5f, 0.25f, 1.0f)));
-    theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init_cube("res/steve.png", THETA_TEXTURE_WRAP_TYPE_CLAMP));
+    theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init_cube("res/quarter.jpeg", THETA_TEXTURE_WRAP_TYPE_CLAMP));
+    //theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init_quad("res/steve.png"));
 
     theta_scene_add_game_object(scene, obj);
+
+    theta_light_descriptor light_point1;
+    light_point1.transform.position = theta_vector3f_create();
+    light_point1.transform.rotation = theta_vector3f_create();
+    light_point1.transform.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
+
+    theta_scene_add_light(scene, light_point1);
 
     theta_scene_manager_set_active_scene(scene);
 
@@ -60,8 +68,9 @@ void sb_update(f64 elapsed_time) {
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
     theta_game_object* obj = (theta_game_object*)theta_dynamic_list_get(&scene->game_objects, 0);
+    theta_camera* cam = scene->bound_camera;
 
-    //obj->transform.position.x += g_player_movement * elapsed_time;
+    cam->transform.position.x += g_player_movement * elapsed_time;
     obj->transform.rotation.y += 1.5f * elapsed_time;
     obj->transform.rotation.x += 1.5f * elapsed_time;
 }

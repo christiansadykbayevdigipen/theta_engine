@@ -29,7 +29,7 @@ void theta_renderer_end_frame() {
     // Render everything in the stack
     for(s32 i = g_renderer.rendering_list.length-1; i >= 0; i--) {
         theta_renderable* r = ((theta_renderable*)theta_dynamic_list_get(&g_renderer.rendering_list, i));
-        r->mesh.render(&r->mesh, &r->material.program);
+        r->mesh.render(&r->mesh, &r->program);
         theta_dynamic_list_pop_back(&g_renderer.rendering_list);
     }
 

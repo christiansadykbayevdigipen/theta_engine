@@ -155,6 +155,7 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     program->destroy = &theta_shader_program_destroy_opengl;
     program->give_albedo = &theta_shader_program_give_albedo_opengl;
     program->set_color = &theta_shader_program_set_color_opengl;
+    program->set_light_position = &theta_shader_program_set_light_position_opengl;
 }
 
 void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection) {
@@ -219,6 +220,11 @@ void theta_shader_program_give_albedo_opengl(theta_shader_program* program, thet
 
     s32 loc = glGetUniformLocation(progspec->programID, "theta_Albedo");
 
+    if(loc == -1) {
+        THETA_WARN("theta_shader_program_give_albedo_opengl has failed. The reason being, the shader you are using does not have a proper albedo texture property! Be sure that there is a Uniform Sampler2D called 'theta_Albedo' in your vertex shader!\n");
+        return;
+    }
+
     glUniform1i(loc, progspec->albedo_unit_id);
     
     glUseProgram(0);
@@ -227,13 +233,34 @@ void theta_shader_program_give_albedo_opengl(theta_shader_program* program, thet
 void theta_shader_program_set_color_opengl(theta_shader_program* program, theta_vector3f color) {
     theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
 
-    u32 location = glGetUniformLocation(self->programID, "color");
+    s32 location = glGetUniformLocation(self->programID, "color");
 
-    THETA_ASSERT(location == -1, "theta_shader_program_set_color_opengl has failed. The reason being, the shader that you are using does not have a uniform vec4 color!");
+    //THETA_ASSERT(location == -1, "");
+    if(location == -1) {
+        THETA_WARN("theta_shader_program_set_color_opengl has failed. The reason being, the shader that you are using does not have a uniform vec4 named 'color'!\n");
+        return;
+    }
 
     glUseProgram(self->programID);
 
     glUniform4f(location, color.x, color.y, color.z, 1.0f);
     
+    glUseProgram(0);
+}
+
+void theta_shader_program_set_light_position_opengl(theta_shader_program* program, theta_vector3f location) {
+    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+
+    s32 loc = glGetUniformLocation(self->programID, "theta_SceneLightPos");
+
+    if(loc == -1) {
+        THETA_WARN("theta_shader_program_set_light_position_opengl has failed. The reason being, the shader you are using does not have a proper light positon property! Be sure that there is a Vec3 in your vertex shader called 'theta_SceneLightPos'!\n");
+        return;
+    }
+
+    glUseProgram(self->programID);
+
+    glUniform3f(loc, location.x, location.y, location.z);
+
     glUseProgram(0);
 }

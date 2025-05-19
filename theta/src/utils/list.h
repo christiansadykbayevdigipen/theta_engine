@@ -59,3 +59,29 @@ THETA_API void theta_dynamic_list_pop_back(theta_dynamic_list* list);
 @param list A pointer to an initialized dynamic list structure.
 */
 THETA_API void theta_dynamic_list_pop_front(theta_dynamic_list* list);
+
+
+
+
+
+/*Linked List*/
+
+typedef struct theta_node{
+    void* data;
+    struct theta_node* next;
+}theta_node;
+
+// Creates a new node of a linked list!
+THETA_API theta_node* theta_node_init(void* data, u32 data_size);
+
+// Inserts a new node before the head of the linked list.
+THETA_API theta_node* theta_node_insert_at_head(theta_node* head, void* data, u32 data_size);
+
+// Removes the head node of the linked list and returns a new head.
+THETA_API theta_node* theta_node_delete_at_head(theta_node* head);
+
+// Pushes new data at the end of the list. The return value of this function doesn't really matter but it just returns the head. Obviously the head is not modified in this function, so it's just redundent data in case you are passing this function into another function.
+THETA_API theta_node* theta_node_push_back(theta_node* head, void* data, u32 data_size);
+
+// Pops the end of the list off. Again, same thing with the return value as with theta_node_push_back.
+THETA_API theta_node* theta_node_pop_back(theta_node* head);
