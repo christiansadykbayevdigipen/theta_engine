@@ -14,7 +14,7 @@ struct theta_renderable;
 typedef struct {
     theta_window* window;
     theta_rendering_context* context;
-    theta_dynamic_list rendering_list;
+    theta_node* rendering_list;
 }theta_renderer;
 
 /*

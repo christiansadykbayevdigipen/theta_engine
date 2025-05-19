@@ -55,3 +55,11 @@ THETA_API theta_mat4x4f theta_mat4x4f_scales(theta_mat4x4f first, f32 scalar);
 
 // Transforms a matrix by a vector
 THETA_API theta_vector3f theta_mat4x4f_transform_vector(theta_mat4x4f matrix, theta_vector3f vector);
+
+// Transforms a matrix into echelon form
+THETA_API theta_mat4x4f theta_mat4x4f_guassian_elimination(theta_mat4x4f matrix);
+
+// Find the determinant of a 4x4 matrix
+THETA_API f32 theta_mat4x4f_determinant(theta_mat4x4f matrix);
+
+THETA_API theta_mat4x4f theta_mat4x4f_inverse(theta_mat4x4f matrix);

@@ -42,9 +42,10 @@ void sb_start() {
     trsf2.scale = theta_vector3f_create_args(1.0f, 2.0f, 1.0f);
     //theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init_cube_colored(theta_vector3f_create_args(0.5f, 0.25f, 1.0f)));
     theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init_cube("res/quarter.jpeg", THETA_TEXTURE_WRAP_TYPE_CLAMP));
-    //theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init_quad("res/steve.png"));
+    theta_game_object* obj2 = theta_game_object_init(trsf2, theta_renderable_init_quad("res/steve.png"));
 
     theta_scene_add_game_object(scene, obj);
+    theta_scene_add_game_object(scene, obj2);
 
     theta_light_descriptor light_point1;
     light_point1.transform.position = theta_vector3f_create();
@@ -80,13 +81,24 @@ void sb_terminate() {
 }
 
 int main() {
-    theta_application_descriptor descriptor;
-    strcpy(descriptor.app_name, "Sandbox");
-    descriptor.start = sb_start;
-    descriptor.update = sb_update;
-    descriptor.terminate = sb_terminate;
-    descriptor.api = THETA_API_OPENGL;
-    sandbox = theta_application_init(descriptor);
-    theta_application_run(sandbox);
-    theta_application_destruct(sandbox);
+    // theta_application_descriptor descriptor;
+    // strcpy(descriptor.app_name, "Sandbox");
+    // descriptor.start = sb_start;
+    // descriptor.update = sb_update;
+    // descriptor.terminate = sb_terminate;
+    // descriptor.api = THETA_API_OPENGL;
+    // sandbox = theta_application_init(descriptor);
+    // theta_application_run(sandbox);
+    // theta_application_destruct(sandbox);
+
+    theta_mat4x4f test1 = {
+        {
+            {2.0f, 1.0f, -1.0f, -3.0f},
+            {-3.0f, -1.0f, 2.0f, -1.0f},
+            {-2.0f, 1.0f, 2.0f, -3.0f},
+            {1.0f, 2.0f, -1.0f, 1.0f}
+        }
+    };
+
+    test1 = theta_mat4x4f_reduced_row(test1);
 }

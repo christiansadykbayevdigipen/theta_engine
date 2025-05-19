@@ -220,3 +220,74 @@ theta_vector3f theta_mat4x4f_transform_vector(theta_mat4x4f matrix, theta_vector
 
     return result;
 }
+
+// With the help of Chat-GPT and Wikipedia, anything is possible!
+// https://en.wikipedia.org/wiki/Gaussian_elimination#Gauss%E2%80%93Jordan_elimination
+theta_mat4x4f theta_mat4x4f_guassian_elimination(theta_mat4x4f matrix) {
+    theta_mat4x4f temp_matrix = theta_mat4x4f_copy(matrix);
+    
+    s32 h = 1; // Pivot Row
+    s32 k = 1; // Pivot Column
+
+    s32 m = 4; s32 n = 4; // The rows and columns of the matrix
+
+    while(h <= m && k <= n) {
+
+        // Find the arg max of i = h ... m, abs(A[i, k]). Assume i and k are 1-indexed integers
+        f32 highest = 0.0f;
+        s32 highest_index = 0;
+        for(s32 i = h; i <= m; i++) {
+            f32 temp = fabs(temp_matrix.matrix[i-1][k-1]);
+            if(temp > highest) {
+                highest = temp;
+                highest_index = i;
+            }
+        }
+
+        if(temp_matrix.matrix[highest_index-1][k-1] == 0) {
+            k++;
+        }
+        else {
+            // Swap rows 'h' and 'i_max'
+            f32 h_a = temp_matrix.matrix[h-1][0]; f32 h_b = temp_matrix.matrix[h-1][1]; f32 h_c = temp_matrix.matrix[h-1][2]; f32 h_d = temp_matrix.matrix[h-1][3];
+            f32 imax_a = temp_matrix.matrix[highest_index-1][0]; f32 imax_b = temp_matrix.matrix[highest_index-1][1]; f32 imax_c = temp_matrix.matrix[highest_index-1][2]; f32 imax_d = temp_matrix.matrix[highest_index-1][3];
+
+            temp_matrix.matrix[h-1][0] = imax_a;
+            temp_matrix.matrix[h-1][1] = imax_b;
+            temp_matrix.matrix[h-1][2] = imax_c;
+            temp_matrix.matrix[h-1][3] = imax_d;
+
+            temp_matrix.matrix[highest_index-1][0] = h_a;
+            temp_matrix.matrix[highest_index-1][1] = h_b;
+            temp_matrix.matrix[highest_index-1][2] = h_c;
+            temp_matrix.matrix[highest_index-1][3] = h_d;
+
+
+            // Do for all rows below pivot
+            for(s32 i = h + 1; i <= m; i++) {
+                f32 f = temp_matrix.matrix[i-1][k-1] / temp_matrix.matrix[h-1][k-1];
+
+                // Fill with zeros the lower part of pivot column
+                temp_matrix.matrix[i-1][k-1] = 0;
+
+                // Do for all remaining elements in the current row
+                for(s32 j = k + 1; j <= n; j++) {
+                    temp_matrix.matrix[i-1][j-1] = temp_matrix.matrix[i-1][j-1] - temp_matrix.matrix[h-1][j-1] * f;
+
+                }
+            }
+
+            // Increase pivot row and column
+            h++;
+            k++;
+        }
+    }
+
+    return temp_matrix;
+}
+
+f32 theta_mat4x4f_determinant(theta_mat4x4f matrix) {
+}
+
+theta_mat4x4f theta_mat4x4f_inverse(theta_mat4x4f matrix) {
+}
