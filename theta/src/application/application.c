@@ -82,6 +82,10 @@ void theta_application_destruct(theta_application* app) {
     app->window->destroy(app->window);
 
     theta_input_system_destroy(app->input);
+    
+    theta_renderer_destroy();
+
+    theta_scene_manager_destroy();
 
     free(app);
 }

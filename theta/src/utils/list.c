@@ -142,3 +142,30 @@ theta_node* theta_node_pop_back(theta_node* head) {
 
     return head;
 }
+
+void theta_node_free_all(theta_node* head) {
+    theta_node* temp_node = head;
+
+    // Gets the second to last node in the list.
+    while(TRUE) {
+        if(temp_node == NULL) break;
+        if(temp_node->next == NULL) break;
+        if(temp_node->next->next == NULL) break;
+
+        temp_node = temp_node->next;
+    }
+
+    if(temp_node->next == NULL) {
+        // This is the last node.
+        // Just free this one and be done with everything
+        free(temp_node->data);
+        free(temp_node);
+        return;
+    }
+
+    free(temp_node->next->data);
+    free(temp_node->next);
+    temp_node->next = NULL;
+    
+    theta_node_free_all(head);
+}

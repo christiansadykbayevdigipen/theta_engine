@@ -37,3 +37,7 @@ theta_mat4x4f theta_camera_get_view(theta_camera* camera) {
 
     return view_matrix;
 }
+
+void theta_camera_destroy(theta_camera* camera) {
+    free(camera);
+}

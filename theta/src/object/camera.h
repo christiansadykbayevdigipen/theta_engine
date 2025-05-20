@@ -21,3 +21,5 @@ typedef enum {
 THETA_API theta_camera* theta_camera_init(theta_camera_projection_type type);
 
 THETA_API theta_mat4x4f theta_camera_get_view(theta_camera* camera);
+
+THETA_API void theta_camera_destroy(theta_camera* camera);

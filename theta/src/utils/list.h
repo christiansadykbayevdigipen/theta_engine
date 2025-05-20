@@ -85,3 +85,5 @@ THETA_API theta_node* theta_node_push_back(theta_node* head, void* data, u32 dat
 
 // Pops the end of the list off. Again, same thing with the return value as with theta_node_push_back.
 THETA_API theta_node* theta_node_pop_back(theta_node* head);
+
+THETA_API void theta_node_free_all(theta_node* head);

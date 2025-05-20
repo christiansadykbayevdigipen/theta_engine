@@ -31,11 +31,12 @@ void sb_start() {
 
     theta_scene* scene = theta_scene_init(camera);
     camera->transform.rotation.x += 1.0f/3.0f*THETA_PI;
+    
 
     theta_transform trsf;
-    trsf.position = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
+    trsf.position = theta_vector3f_create_args(-0.5f, 0.0f, 0.0f);
     trsf.rotation = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
-    trsf.scale = theta_vector3f_create_args(0.5f, 0.5f, 0.5f);
+    trsf.scale = theta_vector3f_create_args(1.5f, 0.5f, 1.5f);
     
     theta_mesh mesh1;
     theta_mesh_init_cube(&mesh1);
@@ -56,7 +57,7 @@ void sb_start() {
     theta_scene_add_game_object(scene, obj);
 
     theta_light_descriptor light_point1;
-    light_point1.transform.position = theta_vector3f_create_args(2.0f, 2.0f, 0.0f);
+    light_point1.transform.position = theta_vector3f_create_args(5.0f, 3.0f, 0.0f);
     light_point1.transform.rotation = theta_vector3f_create();
     light_point1.transform.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
     light_point1.light_color = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
