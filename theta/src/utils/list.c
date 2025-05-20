@@ -21,7 +21,7 @@ void theta_dynamic_list_init(theta_dynamic_list* list, u32 element_size) {
 void theta_dynamic_list_init_args(theta_dynamic_list* list, void** elements, u32 element_size, u32 length) {
     list->element_size = element_size;
     list->length = length;
-    list->current_buffer_length = element_size;
+    list->current_buffer_length = length;
     list->elements = malloc(element_size * list->current_buffer_length);
 
     memcpy(list->elements, elements, element_size);
@@ -29,7 +29,7 @@ void theta_dynamic_list_init_args(theta_dynamic_list* list, void** elements, u32
 
 void theta_dynamic_list_push_back(theta_dynamic_list* list, void* element) {
     // Check to see if there is not enough memory for the operation
-    if(list->current_buffer_length*list->element_size <= (list->length+1) * list->element_size) {
+    if(list->current_buffer_length*list->element_size < (list->length+1) * list->element_size) {
         list->current_buffer_length *= 2;
         list->elements = realloc(list->elements, list->current_buffer_length * list->element_size);
     }
@@ -141,6 +141,23 @@ theta_node* theta_node_pop_back(theta_node* head) {
     temp_node->next = NULL;
 
     return head;
+}
+
+u32 theta_node_get_length(theta_node* head) {
+    u32 i = 0;
+
+    theta_node* temp_node = head;
+
+    while(temp_node != NULL) {
+        temp_node = temp_node->next;
+        i++;
+    }
+
+    return i;
+}
+
+void* theta_node_create_array(theta_node* head, u32 data_size) {
+    
 }
 
 void theta_node_free_all(theta_node* head) {

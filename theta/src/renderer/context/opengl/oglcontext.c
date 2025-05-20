@@ -98,11 +98,12 @@ void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx, theta_op
 
 }
 
-void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, theta_opengl_index_buffer* ibo) {
+void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, BOOL uses_ibo, theta_opengl_index_buffer* ibo) {
     glUseProgram(DATA_CAST(theta_shader_program_opengl_specifics, associated_shader)->programID);
     
     glBindVertexArray(vao->vertex_array_id);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo->index_buffer_id);
+    if(uses_ibo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo->index_buffer_id);
     
     for(u32 i = 0; i < vao->current_layout_length; i++) {
         glEnableVertexAttribArray(i);
@@ -115,8 +116,10 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
         glActiveTexture(GL_TEXTURE0 + shader_spec->albedo_unit_id);
         glBindTexture(GL_TEXTURE_2D, tex_spec->texture_id);
     }
-
-    glDrawElements(GL_TRIANGLES, ibo->indices_count, GL_UNSIGNED_INT, NULL);
+    if(uses_ibo)
+        glDrawElements(GL_TRIANGLES, ibo->indices_count, GL_UNSIGNED_INT, NULL);
+    else
+        glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 
     if(associated_shader->albedo_texture != NULL) {
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -126,7 +129,8 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
         glDisableVertexAttribArray(i);
     }
     
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    if(uses_ibo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     glBindVertexArray(0);
     glUseProgram(0);

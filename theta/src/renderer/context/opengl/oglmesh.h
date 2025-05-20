@@ -5,7 +5,7 @@
 
 struct theta_shader_program;
 
-THETA_API void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals);
+THETA_API void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals, f32* uvs, u32 number_of_uvs);
 
 THETA_API void theta_mesh_render_opengl(theta_mesh* mesh, struct theta_shader_program* program);
 

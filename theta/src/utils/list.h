@@ -86,4 +86,10 @@ THETA_API theta_node* theta_node_push_back(theta_node* head, void* data, u32 dat
 // Pops the end of the list off. Again, same thing with the return value as with theta_node_push_back.
 THETA_API theta_node* theta_node_pop_back(theta_node* head);
 
+// Gets the length of a linked list starting from the head
+THETA_API u32 theta_node_get_length(theta_node* head);
+
+// TODO: Implement
+THETA_API void* theta_node_create_array(theta_node* head, u32 data_size);
+
 THETA_API void theta_node_free_all(theta_node* head);

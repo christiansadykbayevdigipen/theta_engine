@@ -34,12 +34,12 @@ void sb_start() {
     
 
     theta_transform trsf;
-    trsf.position = theta_vector3f_create_args(-0.5f, 0.0f, 0.0f);
+    trsf.position = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
     trsf.rotation = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
-    trsf.scale = theta_vector3f_create_args(1.5f, 0.5f, 1.5f);
+    trsf.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
     
     theta_mesh mesh1;
-    theta_mesh_init_cube(&mesh1);
+    theta_mesh_init_from_file(&mesh1, "res/thing.obj");
 
     theta_material mat1;
     mat1.albedo = theta_texture_initw("res/quarter.jpeg", THETA_TEXTURE_WRAP_TYPE_CLAMP);
