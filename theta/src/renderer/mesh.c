@@ -156,9 +156,25 @@ void theta_mesh_init_from_file(theta_mesh* mesh, const char* filename) {
 
     THETA_ASSERT(m, "theta_mesh_init_from_file has failed. The reason being, the filename does not exist!");
 
+    theta_dynamic_list poss; theta_dynamic_list_init(&poss, sizeof(f32*));
+    theta_dynamic_list norms; theta_dynamic_list_init(&norms, sizeof(f32*));
+    theta_dynamic_list texs; theta_dynamic_list_init(&texs, sizeof(f32*));
+
     for(s32 i = 0; i < m->index_count; i++) {
+        fastObjIndex mi = m->indices[i];
+
+        theta_dynamic_list_push_back(&poss, &m->positions[3 * mi.p + 0]);
+        theta_dynamic_list_push_back(&poss, &m->positions[3 * mi.p + 1]);
+        theta_dynamic_list_push_back(&poss, &m->positions[3 * mi.p + 2]);
+
+        theta_dynamic_list_push_back(&norms, &m->normals[3 * mi.n + 0]);
+        theta_dynamic_list_push_back(&norms, &m->normals[3 * mi.n + 1]);
+        theta_dynamic_list_push_back(&norms, &m->normals[3 * mi.n + 2]);
         
-        u32 test = m->position_count;
-        m->indices[i].p;
+        
+        theta_dynamic_list_push_back(&texs, &m->texcoords[2 * mi.t + 0]);
+        theta_dynamic_list_push_back(&texs, &m->texcoords[2 * mi.t + 1]);
     }
+
+    theta_mesh_init(mesh, (f32*)poss.elements, poss.length, 3, NULL, 0, (f32*)norms.elements, norms.length, (f32*)texs.elements, texs.length);
 }

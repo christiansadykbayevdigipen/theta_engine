@@ -36,8 +36,7 @@ THETA_API theta_mat4x4f theta_mat4x4f_orthographic();
 // Creates an orthographic projection matrix with specified parameters
 THETA_API theta_mat4x4f theta_mat4x4f_orthographic_args(f32 left, f32 right, f32 bottom, f32 top, f32 near, f32 far);
 
-// Creates a perspective projection matrix with default parameters
-THETA_API theta_mat4x4f theta_mat4x4f_perspective();
+THETA_API theta_mat4x4f theta_mat4x4f_perspective_args(f32 FOV, f32 far, f32 near);
 
 // TODO: Add perspective projection matricies
 

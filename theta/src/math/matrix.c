@@ -125,8 +125,18 @@ theta_mat4x4f theta_mat4x4f_orthographic_args(f32 left, f32 right, f32 bottom, f
     return result;
 }
 
-theta_mat4x4f theta_mat4x4f_perspective() {
-    theta_mat4x4f result = theta_mat4x4f_identity();
+//https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/building-basic-perspective-projection-matrix.html
+theta_mat4x4f theta_mat4x4f_perspective_args(f32 FOV, f32 far, f32 near) {
+    f32 S = 1 / (tan((FOV/2.0f) * (3.14/180.0f)));
+    
+    theta_mat4x4f result = {
+        {
+            {S, 0.0f, 0.0f, 0.0f},
+            {0.0f, S, 0.0f, 0.0f},
+            {0.0f, 0.0f, -((far)/(far-near)), -1},
+            {0.0f, 0.0f, -((far*near) / (far-near)), 0.0f}
+        }
+    };
 
     return result;
 }

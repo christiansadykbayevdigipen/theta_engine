@@ -27,7 +27,7 @@ void on_walk(theta_vector3f axis) {
 }
 
 void sb_start() {
-    theta_camera* camera = theta_camera_init(THETA_CAMERA_PROJECTION_TYPE_PERSPECTIVE);
+    theta_camera* camera = theta_camera_init(theta_mat4x4f_perspective_args(90, 1000, 0.01f));
 
     theta_scene* scene = theta_scene_init(camera);
     camera->transform.rotation.x += 1.0f/3.0f*THETA_PI;
@@ -39,10 +39,11 @@ void sb_start() {
     trsf.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
     
     theta_mesh mesh1;
+    //theta_mesh_init_cube(&mesh1);
     theta_mesh_init_from_file(&mesh1, "res/thing.obj");
 
     theta_material mat1;
-    mat1.albedo = theta_texture_initw("res/quarter.jpeg", THETA_TEXTURE_WRAP_TYPE_CLAMP);
+    mat1.albedo = theta_texture_initw("res/quarter.jpeg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
     mat1.lighted = TRUE;
     mat1.uses_albedo = TRUE;
     mat1.uses_color = FALSE;
@@ -87,9 +88,9 @@ void sb_update(f64 elapsed_time) {
     //theta_game_object* obj1 = (theta_game_object*)theta_dynamic_list_get(&scene->game_objects, 1);
     theta_camera* cam = scene->bound_camera;
 
-    cam->transform.position.y += g_player_movement * elapsed_time;
-    //obj->transform.rotation.y += 1.5f * elapsed_time;
-    //obj->transform.rotation.x += 1.5f * elapsed_time;
+    cam->transform.position.z += g_player_movement * elapsed_time;
+    obj->transform.rotation.y += 1.5f * elapsed_time;
+    obj->transform.rotation.x += 1.5f * elapsed_time;
     //obj1->transform.rotation.y -= 1.5f * elapsed_time;
     //obj1->transform.rotation.x -= 1.5f * elapsed_time;
 }
