@@ -11,8 +11,9 @@ theta_scene* theta_scene_init(theta_camera* camera) {
     theta_scene* scene = INIT_STRUCT(theta_scene);
 
     theta_dynamic_list_init(&scene->game_objects, sizeof(theta_game_object*));
-    theta_dynamic_list_init(&scene->lights, sizeof(theta_light_descriptor));
     scene->bound_camera = camera;
+    scene->ambient_lighting_set = FALSE;
+    scene->lights = NULL;
 
     return scene;
 }
@@ -24,7 +25,13 @@ void theta_scene_add_game_object(theta_scene* scene, theta_game_object* game_obj
 
 void theta_scene_add_light(theta_scene* scene, theta_light_descriptor light_point) {
     THETA_PROFILE();
-    theta_dynamic_list_push_back(&scene->lights, &light_point);
+    
+    if(scene->lights == NULL) {
+        scene->lights = theta_node_init(&light_point, sizeof(theta_light_descriptor));
+        return;
+    }
+
+    scene->lights = theta_node_push_back(scene->lights, &light_point, sizeof(theta_light_descriptor));
 }
 
 void theta_scene_update(theta_scene* scene) { // Update won't really do anything for now.
@@ -51,9 +58,22 @@ void theta_scene_render(theta_scene *scene) {
         theta_mat4x4f model = theta_game_object_get_model(working_obj);
         theta_mat4x4f view = theta_camera_get_view(scene->bound_camera);
         theta_mat4x4f proj = scene->bound_camera->projection_matrix;
-        theta_light_descriptor* scene_light = ((theta_light_descriptor*)theta_dynamic_list_get(&scene->lights, 0));
         //renderable->program.set_light_position(&renderable->program, scene_light.transform.position);
         renderable->program.set_mvp(&renderable->program, model, view, proj);
+
+        if(renderable->material.lighted) {
+            if(scene->lights != NULL) { // Just use the first light source in the lights list. We don't have multiple light source capability yet.
+                theta_light_descriptor* light_src = scene->lights->data;
+                renderable->program.set_light(&renderable->program, *light_src, scene->bound_camera->transform.position);
+                renderable->program.set_ambient_light(&renderable->program, scene->ambient_lighting);
+            }
+        }
+
         theta_renderer_submit(renderable);
     }
+}
+
+void theta_scene_set_ambient_light(theta_scene* scene, theta_light_ambient_descriptor ambient_lighting) {
+    scene->ambient_lighting_set = TRUE;
+    scene->ambient_lighting = ambient_lighting;
 }

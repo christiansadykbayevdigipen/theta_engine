@@ -25,4 +25,10 @@ typedef struct theta_mesh {
 @param indices The list of indices that refer to the vertices
 @param number_of_indices The number of indices in the array
 */
-THETA_API void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices);
+THETA_API void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals);
+
+// Creates a basic quad mesh with basic vertices, and UV coordinates
+THETA_API void theta_mesh_init_quad(theta_mesh* mesh);
+
+// Creates a basic cube mesh with basic vertices, UV coordinates, and normal coordinates
+THETA_API void theta_mesh_init_cube(theta_mesh* mesh);

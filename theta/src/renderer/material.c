@@ -13,4 +13,11 @@ void theta_material_bind_to_shader(theta_material* material, theta_shader_progra
     if(material->uses_color){
         shader_program->set_color(shader_program, material->color);
     }
+
+    if(material->lighted) {
+        // All the lighting stuff goes here
+
+        shader_program->set_specular(shader_program, material->specular_strength);
+        shader_program->set_specular_highlight(shader_program, material->specular_highlight);
+    }
 }

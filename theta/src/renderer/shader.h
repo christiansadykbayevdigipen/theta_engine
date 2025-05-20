@@ -2,12 +2,14 @@
 
 #include "core.h"
 #include "math/tmath.h"
+#include "object/light.h"
 
 struct theta_texture;
 
 typedef enum {
     THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED,
-    THETA_SHADER_TYPE_BASIC_SHADER_COLORED
+    THETA_SHADER_TYPE_BASIC_SHADER_COLORED,
+    THETA_SHADER_TYPE_LIGHTING_SHADER_TEXTURED
 }theta_shader_type;
 
 typedef struct theta_shader_program{
@@ -16,8 +18,10 @@ typedef struct theta_shader_program{
     void (*destroy)(struct theta_shader_program* program);
     void (*give_albedo)(struct theta_shader_program* program, struct theta_texture* albedo);
     void (*set_color)(struct theta_shader_program* program, theta_vector3f color);
-    void (*set_light_position)(struct theta_shader_program* program, theta_vector3f location);
-
+    void (*set_light)(struct theta_shader_program* program, theta_light_descriptor light, theta_vector3f viewing_position);
+    void (*set_ambient_light)(struct theta_shader_program* program, theta_light_ambient_descriptor light);
+    void (*set_specular)(struct theta_shader_program* program, f32 specular_strength);
+    void (*set_specular_highlight)(struct theta_shader_program* program, f32 specular_highlight);
     struct theta_texture* albedo_texture;
 }theta_shader_program;
 

@@ -19,4 +19,10 @@ THETA_API void theta_shader_program_give_albedo_opengl(theta_shader_program* pro
 
 THETA_API void theta_shader_program_set_color_opengl(theta_shader_program* program, theta_vector3f color);
 
-THETA_API void theta_shader_program_set_light_position_opengl(theta_shader_program* program, theta_vector3f location);
+THETA_API void theta_shader_program_set_light_opengl(theta_shader_program* program, theta_light_descriptor light, theta_vector3f viewing_position);
+
+THETA_API void theta_shader_program_set_ambient_light_opengl(theta_shader_program* program, theta_light_ambient_descriptor light);
+
+THETA_API void theta_shader_program_set_specular_opengl(theta_shader_program* program, f32 specular_strength);
+
+THETA_API void theta_shader_program_set_specular_highlight_opengl(theta_shader_program* program, f32 specular_highlight);

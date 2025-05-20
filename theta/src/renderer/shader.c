@@ -26,6 +26,9 @@ void theta_shader_program_init_type(theta_shader_program* program, theta_shader_
     case THETA_SHADER_TYPE_BASIC_SHADER_COLORED:
         theta_shader_program_init(program, "res/basic_shader_colored.shader");
         break;
+    case THETA_SHADER_TYPE_LIGHTING_SHADER_TEXTURED:
+        theta_shader_program_init(program, "res/lighting_shader_textured.shader");    
+        break;
     default:
         THETA_ERROR("theta_shader_program_init_type has failed. The reason being, the shader type given to theta_shader_program_init_type either does not exist, or has not been implemented yet!\n");
         return;

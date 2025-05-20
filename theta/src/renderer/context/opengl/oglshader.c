@@ -5,6 +5,7 @@
 #include <memory.h>
 #include <string.h>
 #include <glad/glad.h>
+#include <math.h>
 
 #include "renderer/texture.h"
 #include "renderer/context/opengl/ogltexture.h"
@@ -155,7 +156,10 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     program->destroy = &theta_shader_program_destroy_opengl;
     program->give_albedo = &theta_shader_program_give_albedo_opengl;
     program->set_color = &theta_shader_program_set_color_opengl;
-    program->set_light_position = &theta_shader_program_set_light_position_opengl;
+    program->set_light = &theta_shader_program_set_light_opengl;
+    program->set_ambient_light = &theta_shader_program_set_ambient_light_opengl;
+    program->set_specular = &theta_shader_program_set_specular_opengl;
+    program->set_specular_highlight = &theta_shader_program_set_specular_highlight_opengl;
 }
 
 void theta_shader_program_set_mvp_opengl(theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection) {
@@ -248,19 +252,81 @@ void theta_shader_program_set_color_opengl(theta_shader_program* program, theta_
     glUseProgram(0);
 }
 
-void theta_shader_program_set_light_position_opengl(theta_shader_program* program, theta_vector3f location) {
+void theta_shader_program_set_light_opengl(theta_shader_program* program, theta_light_descriptor light, theta_vector3f viewing_position) {
     theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
 
     s32 loc = glGetUniformLocation(self->programID, "theta_SceneLightPos");
-
+    
     if(loc == -1) {
-        THETA_WARN("theta_shader_program_set_light_position_opengl has failed. The reason being, the shader you are using does not have a proper light positon property! Be sure that there is a Vec3 in your vertex shader called 'theta_SceneLightPos'!\n");
-        return;
+        THETA_WARN("theta_shader_program_set_light_position_opengl has failed. The reason being, the shader you are using does not have a proper light positon property! Be sure that there is a Vec3 in your shader called 'theta_SceneLightPos'!\n");
+    }
+
+    s32 color_loc = glGetUniformLocation(self->programID, "theta_SceneLightColor");
+    if(color_loc == -1) {
+        THETA_WARN("theta_shader_program_set_light_position_opengl has failed. The reason being, the shader you are using does not have a proper light color property! Be sure that there is a Vec3 in your shader called 'theta_SceneLightColor'!\n");
+    }
+
+    s32 viewing_loc = glGetUniformLocation(self->programID, "theta_CameraViewingLocation");
+    if(viewing_loc == -1) {
+        THETA_WARN("theta_shader_program_set_light_position_opengl has failed. The reason being, the shader you are using does not have a proper viewing camera property! Be sure that there is a Vec3 in your shader called 'theta_CameraViewingLocation'!\n");
+    }
+    
+    glUseProgram(self->programID);
+
+    glUniform3f(loc, light.transform.position.x, light.transform.position.y, light.transform.position.z);
+    glUniform3f(color_loc, light.light_color.x, light.light_color.y, light.light_color.z);
+    glUniform3f(viewing_loc, viewing_position.x, viewing_position.y, viewing_position.z);
+
+    glUseProgram(0);
+}
+
+void theta_shader_program_set_ambient_light_opengl(theta_shader_program* program, theta_light_ambient_descriptor light) {
+    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+
+    s32 ambient_strength_loc = glGetUniformLocation(self->programID, "theta_AmbientStrength");
+    
+    if(ambient_strength_loc == -1) {
+        THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper ambien light property! Be sure that there is a float in your vertex shader called 'theta_AmbientStrength'!\n");
+    }
+
+    s32 ambient_color_loc = glGetUniformLocation(self->programID, "theta_AmbientColor");
+    
+    if(ambient_color_loc == -1) {
+        THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper ambient light property! Be sure that there is a vec3 in your vertex shader called 'theta_AmbientColor'!\n");
+    }
+    
+    glUseProgram(self->programID);
+
+    glUniform1f(ambient_strength_loc, light.ambient_strength);
+    glUniform3f(ambient_color_loc, light.light_color.x, light.light_color.y, light.light_color.z);
+
+    glUseProgram(0);
+}
+
+void theta_shader_program_set_specular_opengl(theta_shader_program* program, f32 specular_strength) {
+    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+
+    s32 specular_loc = glGetUniformLocation(self->programID, "theta_MaterialSpecularStrength");
+
+    if(specular_loc == -1) {
+        THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper specular property! Be sure that there is a float in your vertex shader called 'theta_MaterialSpecularStrength'!\n");
     }
 
     glUseProgram(self->programID);
+    glUniform1f(specular_loc, specular_strength);
+    glUseProgram(0);
+}
 
-    glUniform3f(loc, location.x, location.y, location.z);
+void theta_shader_program_set_specular_highlight_opengl(theta_shader_program* program, f32 specular_highlight) {
+    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
 
+    s32 specular_loc = glGetUniformLocation(self->programID, "theta_MaterialSpecularHighlight");
+
+    if(specular_loc == -1) {
+        THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper specular highlight property! Be sure that there is a float in your vertex shader called 'theta_MaterialSpecularHighlight'!\n");
+    }
+
+    glUseProgram(self->programID);
+    glUniform1f(specular_loc, powf(2.0f, specular_highlight));
     glUseProgram(0);
 }
