@@ -35,9 +35,10 @@ GLenum glCheckError_(const char *file, int line)
 }
 #define glCheckError() glCheckError_(__FILE__, __LINE__) 
 
-theta_rendering_context* theta_rendering_context_init_opengl(theta_window* window) {
+theta_rendering_context* theta_rendering_context_init_opengl(theta::Ref<theta::IWindow> window) {
     THETA_PROFILE();
     theta_rendering_context* ctx = INIT_STRUCT(theta_rendering_context);
+    memset(ctx, 0, sizeof(theta_rendering_context));
 
     ctx->uninterpreted_data = malloc(sizeof(theta_opengl_rendering_context_specifics));
     ctx->window = window;
@@ -61,7 +62,7 @@ void theta_rendering_context_clear_opengl(theta_rendering_context* ctx) {
 
 void theta_rendering_context_swap_opengl(theta_rendering_context* ctx) {
 #if defined(THETA_PLATFORM_SHARED)
-    theta_shared_window_swap_buffers(ctx->window);
+    std::dynamic_pointer_cast<theta::SharedWindow>(ctx->window)->OpenGLSwapBuffers();
 #endif
 }
 

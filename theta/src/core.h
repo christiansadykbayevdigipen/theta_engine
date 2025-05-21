@@ -40,9 +40,9 @@ typedef enum {
 #endif
 
 #if defined(THETA_BUILD_SHARED)
-#define THETA_API EXPORT
+#define THETA_API
 #else
-#define THETA_API IMPORT
+#define THETA_API
 #endif
 
 
@@ -68,7 +68,7 @@ THETA_API void theta_logger_log(theta_logger_severity severity, const char* mess
 #if defined(_WIN32) || defined(WINDOWS) || defined(__POSIX__) || defined(__LINUX__) || defined(__APPLE__) || defined(__linux__) || defined(__posix__)
 #define THETA_PLATFORM_SHARED
 #else
-#error You're platform is not supported
+#error Your platform is not supported
 #endif
 
 #if defined(_WIN32) || defined(WINDOWS)
@@ -102,3 +102,28 @@ typedef enum {
 #endif
 
 #define THETA_PROFILE() THETA_TRACE("%s\n", __FUNCTION_NAME__)
+
+// Honestly, I loved the way that Hazel does this. Sooo... Basically copied and pasted it into my engine
+// But here's the credit: https://github.com/TheCherno/Hazel/blob/master/Hazel/src/Hazel/Core/Base.h
+// Hazel is made by Yan Chernikov.
+#include <memory>
+#include <utility>
+
+namespace theta
+{
+    template <typename T>
+    using Scope = std::unique_ptr<T>;
+    template<typename T, typename ... Args>
+    constexpr Scope<T> CreateScope(Args&& ... args)
+    {
+        return std::make_unique<T>(std::forward<Args>(args)...);
+    }
+
+    template <typename T>
+    using Ref = std::shared_ptr<T>;
+    template<typename T, typename ... Args>
+    constexpr Ref<T> CreateRef(Args&& ... args)
+    {
+        return std::make_shared<T>(std::forward<Args>(args)...);
+    }
+}

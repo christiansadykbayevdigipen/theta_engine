@@ -8,10 +8,10 @@
 
 static theta_renderer g_renderer;
 
-void theta_renderer_init(theta_window* window) {
+void theta_renderer_init(theta::Ref<theta::IWindow> window) {
     THETA_PROFILE();
     g_renderer.window = window;
-    g_renderer.context = window->context;
+    g_renderer.context = theta_rendering_context_init(window->GetApi(), window);
 
     g_renderer.rendering_list = NULL;
 }

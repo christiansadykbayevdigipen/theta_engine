@@ -45,7 +45,7 @@ typedef struct {
     u32 current_layout_length;
 }theta_opengl_vertex_array;
 
-THETA_API theta_rendering_context* theta_rendering_context_init_opengl(theta_window* window);
+THETA_API theta_rendering_context* theta_rendering_context_init_opengl(theta::Ref<theta::IWindow> window);
 
 THETA_API void theta_rendering_context_clear_opengl(theta_rendering_context* ctx);
 THETA_API void theta_rendering_context_swap_opengl(theta_rendering_context* ctx);

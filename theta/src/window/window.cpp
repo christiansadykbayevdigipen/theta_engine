@@ -4,9 +4,17 @@
 #include "platform/shared/shared_window.h"
 #endif
 
-theta_window* theta_window_init(u32 width, u32 height, const char* title, theta_api api) {
-    THETA_PROFILE();
-    #if defined(THETA_PLATFORM_SHARED)
-    return theta_window_init_shared_window(width, height, title, api);
-    #endif
+namespace theta
+{
+    Ref<IWindow> IWindow::CreateWindow(u32 width, u32 height, const std::string& title, theta_api api)
+    {
+        THETA_PROFILE();
+        #if defined(THETA_PLATFORM_SHARED)
+        auto ref = CreateRef<SharedWindow>();
+        ref->Init(width, height, title, api);
+        return ref;
+        #endif
+
+        return nullptr;
+    }
 }

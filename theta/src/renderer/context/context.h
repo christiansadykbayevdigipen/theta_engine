@@ -15,7 +15,7 @@ It's the abstraction of these concepts so that the high level renderer can use t
 */
 typedef struct theta_rendering_context{
     theta_api api;
-    theta_window* window;
+    theta::Ref<theta::IWindow> window;
     void* uninterpreted_data;
 
     void (*clear)(struct theta_rendering_context*);
@@ -29,4 +29,4 @@ typedef struct theta_rendering_context{
 @param api The api to initialize the rendering context under. This must be the same context given to the window
 @param window A pointer to a heap allocated theta window structure, that also must be initialized before given to this method
 */
-THETA_API theta_rendering_context* theta_rendering_context_init(theta_api api, theta_window* window);
+THETA_API theta_rendering_context* theta_rendering_context_init(theta_api api, theta::Ref<theta::IWindow> window);

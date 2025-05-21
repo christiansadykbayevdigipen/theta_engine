@@ -81,7 +81,7 @@ namespace theta
         void _Update(f64 elapsedTime);
         void _Render();
     private:
-        theta_window* m_Window;
+        Ref<IWindow> m_Window;
         theta_input_system* m_Input;
         ApplicationDescriptor m_Descriptor;
     };

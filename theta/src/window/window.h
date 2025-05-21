@@ -2,6 +2,8 @@
 
 #include "core.h"
 
+#include <string>
+
 struct theta_rendering_context;
 struct theta_input_system;
 
@@ -20,11 +22,20 @@ typedef struct theta_window{
     void (*change_title)(struct theta_window*, const char* new_title);
 }theta_window;
 
-/*
-@brief This initializes the theta windowing system.
-@param width The width you would like the window to be (in pixels).
-@param height The height you would like the window to be (in pixels).
-@param title The title you wish to give the window.
-@param api The api that you wish to initialize the window as
-*/
-THETA_API theta_window* theta_window_init(u32 width, u32 height, const char* title, theta_api api);
+namespace theta
+{
+    class IWindow 
+    {
+    public:
+        virtual ~IWindow() = default;
+
+        virtual void Init(u32 width, u32 height, const std::string& title, theta_api api) = 0;
+        virtual bool CloseRequested() = 0;
+        virtual void Update() = 0;
+        virtual void CreateInputCallbacks(struct theta_input_system* inputSystem) = 0;
+        virtual void ChangeTitle(const std::string& newTitle) = 0;
+        virtual theta_api GetApi()=0;
+
+        static Ref<IWindow> CreateWindow(u32 width, u32 height, const std::string& title, theta_api api);
+    };
+}

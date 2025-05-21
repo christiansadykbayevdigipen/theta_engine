@@ -2,7 +2,7 @@
 
 #include "opengl/oglcontext.h"
 
-theta_rendering_context* theta_rendering_context_init(theta_api api, theta_window* window) {
+theta_rendering_context* theta_rendering_context_init(theta_api api, theta::Ref<theta::IWindow> window) {
     THETA_PROFILE();
     switch(api) {
     case THETA_API_OPENGL:

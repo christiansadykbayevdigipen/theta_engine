@@ -12,7 +12,7 @@ struct theta_renderable;
 @brief The theta rendering structure. This is only used in renderer.c, and is used staticly. The renderer mainly just holds information about the renderer, rather than doing much of anything. 
 */
 typedef struct {
-    theta_window* window;
+    theta::Ref<theta::IWindow> window;
     theta_rendering_context* context;
     theta_node* rendering_list;
 }theta_renderer;
@@ -21,7 +21,7 @@ typedef struct {
 @brief This initializes the theta renderer.
 @param window The window that the renderer should initialize with. Uses the API that the window is initialized with.
 */
-THETA_API void theta_renderer_init(theta_window* window);
+THETA_API void theta_renderer_init(theta::Ref<theta::IWindow> window);
 
 /*
 @brief This method should be called BEFORE any rendering. Preps the frame for rendering.
