@@ -31,7 +31,21 @@ typedef enum {
     THETA_LOGGER_SEVERITY_TRACE
 }theta_logger_severity;
 
-#define THETA_API extern
+#if defined(_WIN32)
+#define EXPORT __declspec(dllexport)
+#define IMPORT __declspec(dllimport)
+#else
+#define EXPORT __attribute__ ((dllexport))
+#define IMPORT __attribute__ ((dllimport))
+#endif
+
+#if defined(THETA_BUILD_SHARED)
+#define THETA_API EXPORT
+#else
+#define THETA_API IMPORT
+#endif
+
+
 #define MAX_STRING 512
 #define TRUE 1
 #define FALSE 0

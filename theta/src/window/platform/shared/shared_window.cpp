@@ -32,6 +32,7 @@ theta_window* theta_window_init_shared_window(u32 width, u32 height, const char*
     }
     
     window->uninterpreted_data = malloc(sizeof(theta_shared_window_specifics));
+    window->api = api;
 
     if(GLFW_FALSE == glfwInit()) {
         THETA_FATAL("theta_window_init_shared_window has failed. The reason being, glfwInit (the window API used in this game engine) has failed.\n");
@@ -45,7 +46,6 @@ theta_window* theta_window_init_shared_window(u32 width, u32 height, const char*
     }
 
     DATA_CAST(theta_shared_window_specifics, window)->window_handle = glfwCreateWindow(width, height, title, NULL, NULL);
-    window->api = api;
 
     // If the API is OpenGL, make OpenGL Context current.
     if(window->api == THETA_API_OPENGL) {
@@ -84,7 +84,8 @@ void theta_window_destroy_shared_window(theta_window* window) {
 }
 
 u32 theta_shared_window_get_proc_address(theta_window* window) {
-    return (u32)glfwGetProcAddress;
+    //return (u32)glfwGetProcAddress;
+    return 0;
 }
 
 void theta_shared_window_swap_buffers(theta_window *window) {

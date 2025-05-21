@@ -41,7 +41,7 @@ void theta_renderer_end_frame() {
     // Render everything in the queue
     theta_node* temp_node = g_renderer.rendering_list;
     while(temp_node != NULL) {
-        theta_renderable* renderable = temp_node->data;
+        theta_renderable* renderable = (theta_renderable*)temp_node->data;
         renderable->mesh.render(&renderable->mesh, &renderable->program);
         
         temp_node = temp_node->next; // Set the node to the next node in the list

@@ -41,7 +41,7 @@ typedef struct {
 }theta_input_descriptor;
 
 typedef struct theta_input_system{
-    theta_dynamic_list inputs;
+    theta_node* inputs;
 }theta_input_system;
 
 THETA_API theta_input_system* theta_input_system_init();

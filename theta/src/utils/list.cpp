@@ -15,14 +15,14 @@ void theta_dynamic_list_init(theta_dynamic_list* list, u32 element_size) {
     list->element_size = element_size;
     list->length = 0;
     list->current_buffer_length = 1;
-    list->elements = malloc(element_size * list->current_buffer_length);
+    list->elements = (void**)malloc(element_size * list->current_buffer_length);
 }
 
 void theta_dynamic_list_init_args(theta_dynamic_list* list, void** elements, u32 element_size, u32 length) {
     list->element_size = element_size;
     list->length = length;
     list->current_buffer_length = length;
-    list->elements = malloc(element_size * list->current_buffer_length);
+    list->elements = (void**)malloc(element_size * list->current_buffer_length);
 
     memcpy(list->elements, elements, element_size);
 }
@@ -31,7 +31,7 @@ void theta_dynamic_list_push_back(theta_dynamic_list* list, void* element) {
     // Check to see if there is not enough memory for the operation
     if(list->current_buffer_length*list->element_size < (list->length+1) * list->element_size) {
         list->current_buffer_length *= 2;
-        list->elements = realloc(list->elements, list->current_buffer_length * list->element_size);
+        list->elements = (void**)realloc(list->elements, list->current_buffer_length * list->element_size);
     }
 
     memcpy(list->elements + list->length, element, list->element_size);

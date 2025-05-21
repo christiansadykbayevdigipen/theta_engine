@@ -21,7 +21,7 @@ theta_texture* theta_texture_initw_opengl(const char* filepath, theta_texture_wr
 
     theta_texture_opengl_specifics* self = DATA_CAST(theta_texture_opengl_specifics, texture);
 
-    u32 width, height, nrChannels;
+    s32 width, height, nrChannels;
     stbi_set_flip_vertically_on_load(TRUE);
 
     u8* data = stbi_load(filepath, &width, &height, &nrChannels, 4);

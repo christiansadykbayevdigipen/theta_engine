@@ -11,10 +11,10 @@
 #include "renderer/context/opengl/ogltexture.h"
 
 static void tokenize_shader(const char* string, u32 max_length, char** v_source, char** f_source) {
-    char* token = strtok(string, "\n");
+    char* token = strtok((char*)string, "\n");
 
-    char* vertex_source = malloc(max_length * 2 * sizeof(char));
-    char* fragment_source = malloc(max_length * 2 * sizeof(char));
+    char* vertex_source = (char*)malloc(max_length * 2 * sizeof(char));
+    char* fragment_source = (char*)malloc(max_length * 2 * sizeof(char));
 
     memset(vertex_source, 0, sizeof(max_length) * 2 * sizeof(char));
     memset(fragment_source, 0, sizeof(max_length) * 2 * sizeof(char));
@@ -111,7 +111,7 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     program->albedo_texture = NULL;
     
     u32 current_buffer_size = 1000;
-    char* full_source = malloc(sizeof(char) * current_buffer_size);
+    char* full_source = (char*)malloc(sizeof(char) * current_buffer_size);
     
     FILE* file = NULL;
     
@@ -126,7 +126,7 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
         
         if(length >= current_buffer_size) {
             current_buffer_size += 1000;
-            full_source = realloc(full_source, current_buffer_size * sizeof(char));
+            full_source = (char*)realloc(full_source, current_buffer_size * sizeof(char));
         }
         
         full_source[length-1] = character;

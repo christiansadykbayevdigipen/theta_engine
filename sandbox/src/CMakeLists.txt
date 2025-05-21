@@ -9,6 +9,7 @@ project(sandbox)
 
 set(CMAKE_BUILD_TYPE Debug)
 
+
 link_directories(../../theta/build)
 
 link_libraries(-ltheta -lm)
@@ -18,4 +19,4 @@ include_directories(../../theta/src)
 #message(STATUS "YES: " ${})
 #target_link_libraries(libtheta.dll.a)
 
-add_executable(sandbox main.c)
+add_executable(sandbox main.cpp)

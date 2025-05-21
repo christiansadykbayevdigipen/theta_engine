@@ -63,7 +63,7 @@ void theta_scene_render(theta_scene *scene) {
 
         if(renderable->material.lighted) {
             if(scene->lights != NULL) { // Just use the first light source in the lights list. We don't have multiple light source capability yet.
-                theta_light_descriptor* light_src = scene->lights->data;
+                theta_light_descriptor* light_src = (theta_light_descriptor*)scene->lights->data;
                 renderable->program.set_light(&renderable->program, *light_src, scene->bound_camera->transform.position);
                 renderable->program.set_ambient_light(&renderable->program, scene->ambient_lighting);
             }
