@@ -9,9 +9,8 @@
 #include "renderer/renderer.h"
 #include "object/scene_manager.h"
 
-theta_application* theta_application_init(theta_application_descriptor descriptor) {
+void theta_application_init(theta_application* app, theta_application_descriptor descriptor) {
     THETA_PROFILE();
-    theta_application* app = INIT_STRUCT(theta_application);
 
     char full_window_name[MAX_STRING] = "[Powered by Theta] - ";
 
@@ -86,6 +85,4 @@ void theta_application_destruct(theta_application* app) {
     theta_renderer_destroy();
 
     theta_scene_manager_destroy();
-
-    free(app);
 }

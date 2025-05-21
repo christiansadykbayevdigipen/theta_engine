@@ -7,6 +7,8 @@
 
 #include "fast_obj.h"
 
+#include "stb_ds.h"
+
 static f32 g_quad_vertices[] = {
     // positions           coords
      0.5f,  0.5f, 0.0f,       // top right
@@ -156,25 +158,25 @@ void theta_mesh_init_from_file(theta_mesh* mesh, const char* filename) {
 
     THETA_ASSERT(m, "theta_mesh_init_from_file has failed. The reason being, the filename does not exist!");
 
-    theta_dynamic_list poss; theta_dynamic_list_init(&poss, sizeof(f32*));
-    theta_dynamic_list norms; theta_dynamic_list_init(&norms, sizeof(f32*));
-    theta_dynamic_list texs; theta_dynamic_list_init(&texs, sizeof(f32*));
+    f32* pos = NULL;
+    f32* norms = NULL;
+    f32* texs = NULL;
 
     for(s32 i = 0; i < m->index_count; i++) {
         fastObjIndex mi = m->indices[i];
 
-        theta_dynamic_list_push_back(&poss, &m->positions[3 * mi.p + 0]);
-        theta_dynamic_list_push_back(&poss, &m->positions[3 * mi.p + 1]);
-        theta_dynamic_list_push_back(&poss, &m->positions[3 * mi.p + 2]);
+        arrpush(pos, m->positions[3 * mi.p + 0]);
+        arrpush(pos, m->positions[3 * mi.p + 1]);
+        arrpush(pos, m->positions[3 * mi.p + 2]);
 
-        theta_dynamic_list_push_back(&norms, &m->normals[3 * mi.n + 0]);
-        theta_dynamic_list_push_back(&norms, &m->normals[3 * mi.n + 1]);
-        theta_dynamic_list_push_back(&norms, &m->normals[3 * mi.n + 2]);
-        
-        
-        theta_dynamic_list_push_back(&texs, &m->texcoords[2 * mi.t + 0]);
-        theta_dynamic_list_push_back(&texs, &m->texcoords[2 * mi.t + 1]);
+        arrpush(norms, m->normals[3 * mi.n + 0]);
+        arrpush(norms, m->normals[3 * mi.n + 1]);
+        arrpush(norms, m->normals[3 * mi.n + 2]);
+
+        arrpush(texs, m->texcoords[2 * mi.t + 0]);
+        arrpush(texs, m->texcoords[2 * mi.t + 1]);
+
     }
 
-    theta_mesh_init(mesh, (f32*)poss.elements, poss.length, 3, NULL, 0, (f32*)norms.elements, norms.length, (f32*)texs.elements, texs.length);
+    theta_mesh_init(mesh, pos, arrlen(pos), 3, NULL, 0, norms, arrlen(norms), texs, arrlen(texs));
 }

@@ -5,66 +5,64 @@
 #include <memory.h>
 #include <malloc.h>
 
-theta_scene* theta_scene_init(theta_camera* camera) {
+#include "stb_ds.h"
+
+theta_scene* theta_scene_init(theta_camera camera) {
     THETA_PROFILE();
 
     theta_scene* scene = INIT_STRUCT(theta_scene);
 
-    theta_dynamic_list_init(&scene->game_objects, sizeof(theta_game_object*));
     scene->bound_camera = camera;
     scene->ambient_lighting_set = FALSE;
     scene->lights = NULL;
+    scene->game_objects = NULL;
 
     return scene;
 }
 
-void theta_scene_add_game_object(theta_scene* scene, theta_game_object* game_object) {
+void theta_scene_add_game_object(theta_scene* scene, theta_game_object game_object) {
     THETA_PROFILE();
-    theta_dynamic_list_push_back(&scene->game_objects, &game_object);
+    
+    arrput(scene->game_objects, game_object);
 }
 
 void theta_scene_add_light(theta_scene* scene, theta_light_descriptor light_point) {
     THETA_PROFILE();
     
-    if(scene->lights == NULL) {
-        scene->lights = theta_node_init(&light_point, sizeof(theta_light_descriptor));
-        return;
-    }
-
-    scene->lights = theta_node_push_back(scene->lights, &light_point, sizeof(theta_light_descriptor));
+    arrpush(scene->lights, light_point);
 }
 
 void theta_scene_update(theta_scene* scene) { // Update won't really do anything for now.
-    for(u32 i = 0; i < scene->game_objects.length; i++) {
+    for(u32 i = 0; i < arrlen(scene->game_objects); i++) {
         //((theta_game_object*)scene->game_objects.elements[i])
     }
 }
 
 void theta_scene_render(theta_scene *scene) {
     // For each game object.
-    for (u32 i = 0; i < scene->game_objects.length; i++) {
-        theta_game_object* working_obj = (theta_game_object*)scene->game_objects.elements[i];
+    for (u32 i = 0; i < arrlen(scene->game_objects); i++) {
+        theta_game_object working_obj = scene->game_objects[i];
         
         // Check to see if it has a renderable. If not, theta_scene_render does not apply to this particular game object, so it should skip to the next game object in the list.
-        if(!theta_game_object_has_component(working_obj, THETA_COMPONENT_TYPE_RENDERABLE)) {
+        if(!theta_game_object_has_component(&working_obj, THETA_COMPONENT_TYPE_RENDERABLE)) {
             continue;
         }
 
         // Get the renderer off the game object
-        theta_component rend_comp = theta_game_object_get_component(working_obj, THETA_COMPONENT_TYPE_RENDERABLE);
+        theta_component rend_comp = theta_game_object_get_component(&working_obj, THETA_COMPONENT_TYPE_RENDERABLE);
         theta_renderable* renderable = (theta_renderable*)rend_comp.data;
 
         // Set the Model, View, and Projection Matricies of the game object's renderer.
-        theta_mat4x4f model = theta_game_object_get_model(working_obj);
-        theta_mat4x4f view = theta_camera_get_view(scene->bound_camera);
-        theta_mat4x4f proj = scene->bound_camera->projection_matrix;
+        theta_mat4x4f model = theta_game_object_get_model(&working_obj);
+        theta_mat4x4f view = theta_camera_get_view(&scene->bound_camera);
+        theta_mat4x4f proj = scene->bound_camera.projection_matrix;
         //renderable->program.set_light_position(&renderable->program, scene_light.transform.position);
         renderable->program.set_mvp(&renderable->program, model, view, proj);
 
         if(renderable->material.lighted) {
-            if(scene->lights != NULL) { // Just use the first light source in the lights list. We don't have multiple light source capability yet.
-                theta_light_descriptor* light_src = scene->lights->data;
-                renderable->program.set_light(&renderable->program, *light_src, scene->bound_camera->transform.position);
+            if(arrlen(scene->lights) > 0) { // Just use the first light source in the lights list. We don't have multiple light source capability yet.
+                theta_light_descriptor* light_src = &scene->lights[0];
+                renderable->program.set_light(&renderable->program, *light_src, scene->bound_camera.transform.position);
                 renderable->program.set_ambient_light(&renderable->program, scene->ambient_lighting);
             }
         }

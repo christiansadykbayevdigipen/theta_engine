@@ -5,7 +5,6 @@
 
 #include <glad/glad.h>
 
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 theta_texture* theta_texture_init_opengl(const char* filepath) {

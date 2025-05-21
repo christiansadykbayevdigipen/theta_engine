@@ -5,16 +5,19 @@
 #include <math.h>
 #include <stdlib.h>
 
-theta_application* sandbox;
+theta_application sandbox;
 
-#define PLAYER_WALKING_SPEED 2.0f
+#define PLAYER_WALKING_SPEED 2.0f * 100
+#define CAMERA_ROT_SPEED 5.0f
 
 static f32 g_player_movement = 0.0f;
+static f32 g_camera_rotation_movement = 0.0f;
+static f32 g_light_movement = 0.0f;
 
 void on_walk(theta_vector3f axis) {
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
-    theta_game_object* o = theta_dynamic_list_get(&scene->game_objects, 0);
+    theta_game_object o = scene->game_objects[0];
 
     g_player_movement = axis.x * PLAYER_WALKING_SPEED;
 
@@ -26,11 +29,19 @@ void on_walk(theta_vector3f axis) {
     // }
 }
 
+void rotate_cam(theta_vector3f axis) {
+    g_camera_rotation_movement = axis.x * CAMERA_ROT_SPEED;
+}
+
+void light_pos(theta_vector3f axis) {
+    g_light_movement = axis.x * PLAYER_WALKING_SPEED;
+}
+
 void sb_start() {
-    theta_camera* camera = theta_camera_init(theta_mat4x4f_perspective_args(90, 1000, 0.01f));
+    theta_camera camera;
+    theta_camera_init(&camera, theta_mat4x4f_perspective_args(90, 1000000, 0.001f));
 
     theta_scene* scene = theta_scene_init(camera);
-    camera->transform.rotation.x += 1.0f/3.0f*THETA_PI;
     
 
     theta_transform trsf;
@@ -40,7 +51,7 @@ void sb_start() {
     
     theta_mesh mesh1;
     //theta_mesh_init_cube(&mesh1);
-    theta_mesh_init_from_file(&mesh1, "res/thing.obj");
+    theta_mesh_init_from_file(&mesh1, "res/Sponza-master/sponza.obj");
 
     theta_material mat1;
     mat1.albedo = theta_texture_initw("res/quarter.jpeg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
@@ -53,12 +64,13 @@ void sb_start() {
     theta_shader_program shader1;
     theta_shader_program_init_type(&shader1, THETA_SHADER_TYPE_LIGHTING_SHADER_TEXTURED);
 
-    theta_game_object* obj = theta_game_object_init(trsf, theta_renderable_init(mesh1, mat1, shader1));
+    theta_game_object obj;
+    theta_game_object_init(&obj, trsf, theta_renderable_init(mesh1, mat1, shader1));
 
     theta_scene_add_game_object(scene, obj);
 
     theta_light_descriptor light_point1;
-    light_point1.transform.position = theta_vector3f_create_args(5.0f, 3.0f, 0.0f);
+    light_point1.transform.position = theta_vector3f_create_args(0.0f, 3.0f, 0.0f);
     light_point1.transform.rotation = theta_vector3f_create();
     light_point1.transform.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
     light_point1.light_color = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
@@ -78,19 +90,36 @@ void sb_start() {
     layout.input_layout = INIT_STRUCT(theta_input_layout_keyboard);
     ((theta_input_layout_keyboard*)layout.input_layout)->positive = THETA_KEY_CODE_D;
     ((theta_input_layout_keyboard*)layout.input_layout)->negative = THETA_KEY_CODE_A;
-    theta_input_system_bind_input(sandbox->input, "Walk", layout, &on_walk);
+    theta_input_system_bind_input(sandbox.input, "Walk", layout, &on_walk);
+
+    theta_input_layout new_layout;
+    new_layout.type = THETA_INPUT_LAYOUT_TYPE_KEYBOARD;
+    new_layout.input_layout = INIT_STRUCT(theta_input_layout_keyboard);
+    ((theta_input_layout_keyboard*)new_layout.input_layout)->positive = THETA_KEY_CODE_C;
+    ((theta_input_layout_keyboard*)new_layout.input_layout)->negative = THETA_KEY_CODE_Z;
+    theta_input_system_bind_input(sandbox.input, "RotateCam", new_layout, &rotate_cam);
+
+    theta_input_layout new_new_layout;
+    new_new_layout.type = THETA_INPUT_LAYOUT_TYPE_KEYBOARD;
+    new_new_layout.input_layout = INIT_STRUCT(theta_input_layout_keyboard);
+    ((theta_input_layout_keyboard*)new_new_layout.input_layout)->positive = THETA_KEY_CODE_LEFT;
+    ((theta_input_layout_keyboard*)new_new_layout.input_layout)->negative = THETA_KEY_CODE_RIGHT;
+    theta_input_system_bind_input(sandbox.input, "LightPos", new_new_layout, &light_pos);
 }
 
 void sb_update(f64 elapsed_time) {
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
-    theta_game_object* obj = (theta_game_object*)theta_dynamic_list_get(&scene->game_objects, 0);
-    //theta_game_object* obj1 = (theta_game_object*)theta_dynamic_list_get(&scene->game_objects, 1);
-    theta_camera* cam = scene->bound_camera;
+    scene->lights[0].transform.position.x += g_light_movement * elapsed_time;
 
-    cam->transform.position.z += g_player_movement * elapsed_time;
-    obj->transform.rotation.y += 1.5f * elapsed_time;
-    obj->transform.rotation.x += 1.5f * elapsed_time;
+    theta_camera* cam = &scene->bound_camera;
+
+    theta_game_object* obj = &scene->game_objects[0];
+
+    cam->transform.position.z -= g_player_movement * elapsed_time;
+    cam->transform.rotation.y -= g_camera_rotation_movement * elapsed_time;
+    //obj->transform.rotation.y += 1.5f * elapsed_time;
+    //obj->transform.rotation.x += 1.5f * elapsed_time;
     //obj1->transform.rotation.y -= 1.5f * elapsed_time;
     //obj1->transform.rotation.x -= 1.5f * elapsed_time;
 }
@@ -106,7 +135,7 @@ int main() {
     descriptor.update = sb_update;
     descriptor.terminate = sb_terminate;
     descriptor.api = THETA_API_OPENGL;
-    sandbox = theta_application_init(descriptor);
-    theta_application_run(sandbox);
-    theta_application_destruct(sandbox);
+    theta_application_init(&sandbox, descriptor);
+    theta_application_run(&sandbox);
+    theta_application_destruct(&sandbox);
 }

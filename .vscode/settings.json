@@ -23,6 +23,8 @@
         "type_traits": "c",
         "xmemory": "c",
         "xstddef": "c",
-        "xtr1common": "c"
+        "xtr1common": "c",
+        "xlocale": "c",
+        "xstring": "c"
     }
 }

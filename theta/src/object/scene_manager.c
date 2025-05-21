@@ -18,10 +18,5 @@ theta_scene* theta_scene_manager_get_active_scene() {
 void theta_scene_manager_destroy() {
     if(g_active_scene == NULL) return;
 
-    theta_camera_destroy(g_active_scene->bound_camera);
-
-    
-
-
     free(g_active_scene);
 }

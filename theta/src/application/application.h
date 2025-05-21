@@ -37,7 +37,7 @@ typedef struct {
 @param descriptor A descriptor to the parameters of which this application should be initialized as.
 @retuns The initialized application
 */
-THETA_API theta_application* theta_application_init(theta_application_descriptor descriptor);
+THETA_API void theta_application_init(theta_application* app, theta_application_descriptor descriptor);
 
 /*
 @brief This runs the application. This also starts the game loop. This will perform a while loop until the user requests the application to be closed. Hence, no function calls will be called after this in your main function, until the application has been requested to be terminated.
