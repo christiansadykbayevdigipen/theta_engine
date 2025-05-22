@@ -7,7 +7,7 @@
 
 theta_application sandbox;
 
-#define PLAYER_WALKING_SPEED 2.0f * 100
+#define PLAYER_WALKING_SPEED 5.0f
 #define CAMERA_ROT_SPEED 5.0f
 
 static f32 g_player_movement = 0.0f;
@@ -20,6 +20,8 @@ void on_walk(theta_vector3f axis) {
     theta_game_object o = scene->game_objects[0];
 
     g_player_movement = axis.x * PLAYER_WALKING_SPEED;
+
+    printf("%f %f %f\n", axis.x, axis.y, axis.z);
 
     // if(axis.x > 0.0f) {
     //     o->transform.rotation.y = THETA_PI;
@@ -42,7 +44,6 @@ void sb_start() {
     theta_camera_init(&camera, theta_mat4x4f_perspective_args(90, 1000000, 0.001f));
 
     theta_scene* scene = theta_scene_init(camera);
-    
 
     theta_transform trsf;
     trsf.position = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
@@ -51,7 +52,7 @@ void sb_start() {
     
     theta_mesh mesh1;
     //theta_mesh_init_cube(&mesh1);
-    theta_mesh_init_from_file(&mesh1, "res/Sponza-master/sponza.obj");
+    theta_mesh_init_from_file(&mesh1, "res/thing.obj");
 
     theta_material mat1;
     mat1.albedo = theta_texture_initw("res/quarter.jpeg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
@@ -65,12 +66,12 @@ void sb_start() {
     theta_shader_program_init_type(&shader1, THETA_SHADER_TYPE_LIGHTING_SHADER_TEXTURED);
 
     theta_game_object obj;
-    theta_game_object_init(&obj, trsf, theta_renderable_init(mesh1, mat1, shader1));
+    theta_game_object_init(&obj, trsf, theta_renderable_init(mesh1, mat1, shader1), "Special");
 
     theta_scene_add_game_object(scene, obj);
 
     theta_light_descriptor light_point1;
-    light_point1.transform.position = theta_vector3f_create_args(0.0f, 3.0f, 0.0f);
+    light_point1.transform.position = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
     light_point1.transform.rotation = theta_vector3f_create();
     light_point1.transform.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
     light_point1.light_color = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
@@ -110,7 +111,7 @@ void sb_start() {
 void sb_update(f64 elapsed_time) {
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
-    scene->lights[0].transform.position.x += g_light_movement * elapsed_time;
+    scene->lights[0].transform.position.z += g_light_movement * elapsed_time;
 
     theta_camera* cam = &scene->bound_camera;
 

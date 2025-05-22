@@ -21,9 +21,10 @@ typedef struct {
     theta_transform transform;
     theta_component components[MAX_COMPONENTS];
     u32 components_length;
+    char identifier[MAX_STRING];
 }theta_game_object;
 
-THETA_API void theta_game_object_init(theta_game_object* obj, theta_transform transform, theta_renderable* renderable);
+THETA_API void theta_game_object_init(theta_game_object* obj, theta_transform transform, theta_renderable* renderable, const char* identifier);
 
 THETA_API void theta_game_object_add_component(theta_game_object* obj, theta_component component);
 

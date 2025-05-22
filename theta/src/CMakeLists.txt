@@ -17,6 +17,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(../../glfw/include)
 include_directories(../include)
 include_directories(../../stb)
+include_directories(../../cglm/include)
 link_directories(../../glfw_build/src)
 link_libraries(-lglfw3 -lm)
 

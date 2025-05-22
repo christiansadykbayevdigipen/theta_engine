@@ -24,7 +24,6 @@ void theta_application_init(theta_application* app, theta_application_descriptor
 
     app->window->create_input_callbacks(app->window, app->input);
 
-    return app;
 }
 
 static void _theta_application_update(theta_application* app, f64 elapsed) {

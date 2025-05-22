@@ -23,6 +23,13 @@ theta_scene* theta_scene_init(theta_camera camera) {
 void theta_scene_add_game_object(theta_scene* scene, theta_game_object game_object) {
     THETA_PROFILE();
     
+    for(u32 i = 0; i < arrlen(scene->game_objects); i++) {
+        if(strcmp(scene->game_objects[i].identifier, game_object.identifier) == 0) {
+            THETA_ERROR("theta_scene_add_game_object has failed. The reason being, you are trying to add a game object with an identifier that already exists in the scene!\n");
+            return;
+        }
+    }
+
     arrput(scene->game_objects, game_object);
 }
 
@@ -74,4 +81,36 @@ void theta_scene_render(theta_scene *scene) {
 void theta_scene_set_ambient_light(theta_scene* scene, theta_light_ambient_descriptor ambient_lighting) {
     scene->ambient_lighting_set = TRUE;
     scene->ambient_lighting = ambient_lighting;
+}
+
+theta_camera* theta_scene_get_bound_camera(theta_scene* scene) {
+    return &scene->bound_camera;
+}
+
+theta_game_object* theta_scene_get_game_object(theta_scene* scene, u32 index) {
+    if(index < 0 || index > arrlen(scene->game_objects)) {
+        THETA_ERROR("theta_scene_get_game_object has failed. The reason being, the index is out of range!\n");
+        return NULL;
+    }
+
+    return &scene->game_objects[index];
+}
+
+theta_game_object* theta_scene_get_game_object_by_tag(theta_scene* scene, const char* tag) {
+    BOOL found_obj = FALSE;
+    theta_game_object* object = NULL;
+    
+    for(u32 i = 0; i < arrlen(scene->game_objects); i++) {
+        if(strcmp(scene->game_objects[i].identifier, tag) == 0) {
+            found_obj = TRUE;
+            object = &scene->game_objects[i];
+        }
+    }
+
+    if(!found_obj) {
+        THETA_ERROR("theta_scene_get_game_object has failed. The reason being, the identifier supplied did not match any game objects in the scene's game object list!\n");
+        return NULL;
+    }
+
+    return object;
 }

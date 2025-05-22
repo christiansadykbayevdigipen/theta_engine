@@ -3,11 +3,14 @@
 #include <malloc.h>
 #include <memory.h>
 
-void theta_game_object_init(theta_game_object* obj, theta_transform transform, theta_renderable* renderable) {
+#include "stb_ds.h"
+
+void theta_game_object_init(theta_game_object* obj, theta_transform transform, theta_renderable* renderable, const char* identifier) {
     THETA_PROFILE();
 
     obj->components_length = 0;
     obj->transform = transform;
+    strcpy(obj->identifier, identifier);
 
     theta_component c;
     c.data = renderable;
