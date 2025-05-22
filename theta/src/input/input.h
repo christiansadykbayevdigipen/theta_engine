@@ -2,7 +2,7 @@
 
 #include "core.h"
 #include "utils/list.h"
-#include "math/tmath.h"
+#include <cglm/ivec3.h>
 
 #if defined(THETA_PLATFORM_SHARED)
 #include "window/platform/shared/shared_window_keys.h"
@@ -29,6 +29,7 @@ typedef struct {
     theta_input_layout_type type;
 }theta_input_layout;
 
+
 /*
 @brief The input descriptor structure denoting a list of bindings in which they all fall under the same event for input. For example, walking has multiple bindings, for controller, for keyboard, etc. Keyboard would use the A and D keys for example, and joystick would use the left joystick. 
 */
@@ -36,7 +37,7 @@ typedef struct {
     char tag[MAX_STRING];
     theta_input_layout layout[MAX_LAYOUTS];
     u32 layout_count;
-    void (*input_callback)(theta_vector3f);
+    void (*input_callback)(vec3);
     s32 status; // Either -1, 0, or 1. Basically, the last direction it headed.
 }theta_input_descriptor;
 

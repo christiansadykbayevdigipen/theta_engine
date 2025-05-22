@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core.h"
-#include "math/tmath.h"
+#include <cglm/cglm.h>
 #include "object/light.h"
 
 struct theta_texture;
@@ -14,11 +14,11 @@ typedef enum {
 
 typedef struct theta_shader_program{
     void* uninterpreted_data;
-    void (*set_mvp)(struct theta_shader_program* program, theta_mat4x4f model, theta_mat4x4f view, theta_mat4x4f projection);
+    void (*set_mvp)(struct theta_shader_program* program, mat4 model, mat4 view, mat4 projection);
     void (*destroy)(struct theta_shader_program* program);
     void (*give_albedo)(struct theta_shader_program* program, struct theta_texture* albedo);
-    void (*set_color)(struct theta_shader_program* program, theta_vector3f color);
-    void (*set_light)(struct theta_shader_program* program, theta_light_descriptor light, theta_vector3f viewing_position);
+    void (*set_color)(struct theta_shader_program* program, vec3 color);
+    void (*set_light)(struct theta_shader_program* program, theta_light_descriptor light, vec3 viewing_position);
     void (*set_ambient_light)(struct theta_shader_program* program, theta_light_ambient_descriptor light);
     void (*set_specular)(struct theta_shader_program* program, f32 specular_strength);
     void (*set_specular_highlight)(struct theta_shader_program* program, f32 specular_highlight);

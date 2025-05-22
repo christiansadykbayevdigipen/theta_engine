@@ -56,14 +56,22 @@ theta_component theta_game_object_get_component(theta_game_object *obj, theta_co
     THETA_ERROR("theta_game_object_get_component has failed. The reason being, there is no matches for the component type given to this theta game object.\n");
 }
 
-theta_mat4x4f theta_game_object_get_model(theta_game_object* obj) {
-    theta_mat4x4f model_matrix = theta_mat4x4f_identity();
+void theta_game_object_get_model(theta_game_object* obj, mat4 model) {
+    mat4 model_matrix;
+    glm_mat4_identity(model_matrix);
 
-    model_matrix = theta_mat4x4f_scale(model_matrix, obj->transform.scale);
-    model_matrix = theta_mat4x4f_rotate(model_matrix, obj->transform.rotation);
-    model_matrix = theta_mat4x4f_translate(model_matrix, obj->transform.position);
+    glm_scale(model_matrix, obj->transform.scale);
 
-    return model_matrix;
+    vec3 normalized;
+    glm_vec3_copy(obj->transform.rotation, normalized);
+    glm_normalize(normalized);
+    f32 magnitude = glm_vec3_norm(obj->transform.rotation);
+    
+    glm_rotate(model_matrix, magnitude, normalized);
+
+    glm_translate(model_matrix, obj->transform.position);
+
+    glm_mat4_copy(model_matrix, model);
 }
 
 void theta_game_object_destroy(theta_game_object* obj) {

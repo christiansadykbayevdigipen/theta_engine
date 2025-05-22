@@ -25,6 +25,8 @@
         "xstddef": "c",
         "xtr1common": "c",
         "xlocale": "c",
-        "xstring": "c"
-    }
+        "xstring": "c",
+        "*.h_depr": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

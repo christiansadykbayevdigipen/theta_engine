@@ -48,23 +48,23 @@ void theta_scene_update(theta_scene* scene) { // Update won't really do anything
 void theta_scene_render(theta_scene *scene) {
     // For each game object.
     for (u32 i = 0; i < arrlen(scene->game_objects); i++) {
-        theta_game_object working_obj = scene->game_objects[i];
+        theta_game_object* working_obj = &scene->game_objects[i];
         
         // Check to see if it has a renderable. If not, theta_scene_render does not apply to this particular game object, so it should skip to the next game object in the list.
-        if(!theta_game_object_has_component(&working_obj, THETA_COMPONENT_TYPE_RENDERABLE)) {
+        if(!theta_game_object_has_component(working_obj, THETA_COMPONENT_TYPE_RENDERABLE)) {
             continue;
         }
 
         // Get the renderer off the game object
-        theta_component rend_comp = theta_game_object_get_component(&working_obj, THETA_COMPONENT_TYPE_RENDERABLE);
+        theta_component rend_comp = theta_game_object_get_component(working_obj, THETA_COMPONENT_TYPE_RENDERABLE);
         theta_renderable* renderable = (theta_renderable*)rend_comp.data;
 
         // Set the Model, View, and Projection Matricies of the game object's renderer.
-        theta_mat4x4f model = theta_game_object_get_model(&working_obj);
-        theta_mat4x4f view = theta_camera_get_view(&scene->bound_camera);
-        theta_mat4x4f proj = scene->bound_camera.projection_matrix;
+        mat4 model; mat4 view;
+        theta_game_object_get_model(working_obj, model);
+        theta_camera_get_view(&scene->bound_camera, view);
         //renderable->program.set_light_position(&renderable->program, scene_light.transform.position);
-        renderable->program.set_mvp(&renderable->program, model, view, proj);
+        renderable->program.set_mvp(&renderable->program, model, view, scene->bound_camera.projection_matrix);
 
         if(renderable->material.lighted) {
             if(arrlen(scene->lights) > 0) { // Just use the first light source in the lights list. We don't have multiple light source capability yet.

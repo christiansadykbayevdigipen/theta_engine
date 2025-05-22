@@ -46,11 +46,13 @@ void theta_input_system_on_key_down(theta_input_system* system, char key) {
                 theta_input_layout_keyboard* kb = (theta_input_layout_keyboard*)(descriptor->layout[i].input_layout);
 
                 if(kb->positive == key) {
-                    descriptor->input_callback(theta_vector3f_create_args(1.0f, 0.0f, 0.0f));
+                    vec3 ret = {1.0f, 0.0f, 0.0f};
+                    descriptor->input_callback(ret);
                     descriptor->status = 1;
                 }
                 if(kb->negative == key) {
-                    descriptor->input_callback(theta_vector3f_create_args(-1.0f, 0.0f, 0.0f));
+                    vec3 ret = {-1.0f, 0.0f, 0.0f};
+                    descriptor->input_callback(ret);
                     descriptor->status = -1;
                 }
             }
@@ -72,7 +74,8 @@ void theta_input_system_on_key_up(theta_input_system* system, char key) {
                 
                 
                 if(kb->positive == key || kb->negative == key) {
-                    descriptor->input_callback(theta_vector3f_create_args(0.0f, 0.0f, 0.0f));
+                    vec3 ret = {0.0f, 0.0f, 0.0f};
+                    descriptor->input_callback(ret);
                 }
             }
         }

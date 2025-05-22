@@ -14,14 +14,14 @@ static f32 g_player_movement = 0.0f;
 static f32 g_camera_rotation_movement = 0.0f;
 static f32 g_light_movement = 0.0f;
 
-void on_walk(theta_vector3f axis) {
+void on_walk(vec3 axis) {
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
     theta_game_object o = scene->game_objects[0];
 
-    g_player_movement = axis.x * PLAYER_WALKING_SPEED;
+    g_player_movement = axis[0] * PLAYER_WALKING_SPEED;
 
-    printf("%f %f %f\n", axis.x, axis.y, axis.z);
+    printf("%f %f %f\n", axis[0], axis[1], axis[2]);
 
     // if(axis.x > 0.0f) {
     //     o->transform.rotation.y = THETA_PI;
@@ -31,24 +31,30 @@ void on_walk(theta_vector3f axis) {
     // }
 }
 
-void rotate_cam(theta_vector3f axis) {
-    g_camera_rotation_movement = axis.x * CAMERA_ROT_SPEED;
+void rotate_cam(vec3 axis) {
+    g_camera_rotation_movement = axis[0] * CAMERA_ROT_SPEED;
 }
 
-void light_pos(theta_vector3f axis) {
-    g_light_movement = axis.x * PLAYER_WALKING_SPEED;
+void light_posf(vec3 axis) {
+    g_light_movement = axis[0]* PLAYER_WALKING_SPEED;
 }
 
 void sb_start() {
     theta_camera camera;
-    theta_camera_init(&camera, theta_mat4x4f_perspective_args(90, 1000000, 0.001f));
+    mat4 proj;
+    glm_perspective(90, 16.0f/9.0f, 0.01f, 1000.0f, proj);
+    theta_camera_init(&camera, proj);
 
     theta_scene* scene = theta_scene_init(camera);
 
     theta_transform trsf;
-    trsf.position = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
-    trsf.rotation = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
-    trsf.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
+    vec3 pos = {0.0f, 0.0f, 0.0f};
+    vec3 rot  = {0.0f, 0.0f, 0.0f};
+    vec3 sca = {8.0f, 0.25f, 8.0f};
+
+    glm_vec3_copy(pos, trsf.position);
+    glm_vec3_copy(rot, trsf.rotation);
+    glm_vec3_copy(sca, trsf.scale);
     
     theta_mesh mesh1;
     //theta_mesh_init_cube(&mesh1);
@@ -71,14 +77,21 @@ void sb_start() {
     theta_scene_add_game_object(scene, obj);
 
     theta_light_descriptor light_point1;
-    light_point1.transform.position = theta_vector3f_create_args(0.0f, 0.0f, 0.0f);
-    light_point1.transform.rotation = theta_vector3f_create();
-    light_point1.transform.scale = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
-    light_point1.light_color = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
+
+    vec3 light_pos = {0.0f, 0.0f, 0.0f};
+    vec3 light_rot = {0.0f, 0.0f, 0.0f};
+    vec3 light_sca = {1.0f, 1.0f, 1.0f};
+    vec3 ligh_col = {1.0f, 1.0f, 1.0f};
+
+    glm_vec3_copy(light_pos, light_point1.transform.position);
+    glm_vec3_copy(light_rot, light_point1.transform.rotation);
+    glm_vec3_copy(light_sca, light_point1.transform.scale);
+    glm_vec3_copy(ligh_col, light_point1.light_color);
 
     theta_light_ambient_descriptor ambience;
     ambience.ambient_strength = 0.1f;
-    ambience.light_color = theta_vector3f_create_args(1.0f, 1.0f, 1.0f);
+    vec3 ambient_color = {1.0f, 1.0f, 1.0f};
+    glm_vec3_copy(ambient_color, ambience.light_color);
 
     theta_scene_add_light(scene, light_point1);
     theta_scene_set_ambient_light(scene, ambience);
@@ -105,20 +118,26 @@ void sb_start() {
     new_new_layout.input_layout = INIT_STRUCT(theta_input_layout_keyboard);
     ((theta_input_layout_keyboard*)new_new_layout.input_layout)->positive = THETA_KEY_CODE_LEFT;
     ((theta_input_layout_keyboard*)new_new_layout.input_layout)->negative = THETA_KEY_CODE_RIGHT;
-    theta_input_system_bind_input(sandbox.input, "LightPos", new_new_layout, &light_pos);
+    theta_input_system_bind_input(sandbox.input, "LightPos", new_new_layout, &light_posf);
 }
 
 void sb_update(f64 elapsed_time) {
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
-    scene->lights[0].transform.position.z += g_light_movement * elapsed_time;
+    scene->lights[0].transform.position[2] += g_light_movement * elapsed_time;
 
     theta_camera* cam = &scene->bound_camera;
 
     theta_game_object* obj = &scene->game_objects[0];
 
-    cam->transform.position.z -= g_player_movement * elapsed_time;
-    cam->transform.rotation.y -= g_camera_rotation_movement * elapsed_time;
+    vec3 forward;
+    theta_camera_get_forward_vector(cam, forward);
+    vec3 dir = {0.0f, 0.0f, g_player_movement * elapsed_time};
+    vec3 dest;
+    glm_vec3_mul(forward, dir, dest);
+    //glm_vec3_copy(dest, cam->transform.position);
+    glm_vec3_add(cam->transform.position, dest, cam->transform.position);
+    cam->transform.rotation[1] -= g_camera_rotation_movement * elapsed_time;
     //obj->transform.rotation.y += 1.5f * elapsed_time;
     //obj->transform.rotation.x += 1.5f * elapsed_time;
     //obj1->transform.rotation.y -= 1.5f * elapsed_time;
