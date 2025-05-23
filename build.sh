@@ -16,4 +16,4 @@ cd ..
 rm -rf sandbox/build/res
 cp theta/build/libtheta.so sandbox/build/libtheta.so
 mkdir sandbox/build/res
-cp res/*.* sandbox/build/res/
+cp -R res/*.* sandbox/build/res/

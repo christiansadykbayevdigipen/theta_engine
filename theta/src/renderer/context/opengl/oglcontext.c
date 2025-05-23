@@ -136,6 +136,29 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
     glUseProgram(0);
 }
 
+void theta_rendering_context_vao_draw_skybox(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, u32 skybox_texture_id) {
+
+    theta_shader_program_opengl_specifics* shader = DATA_CAST(theta_shader_program_opengl_specifics, associated_shader);
+
+    glDepthMask(GL_FALSE);
+
+    glUseProgram(shader->programID);
+    glBindVertexArray(vao->vertex_array_id);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_texture_id);
+
+    glEnableVertexAttribArray(0);
+    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+    glDisableVertexAttribArray(0);
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    glBindVertexArray(0);
+    glUseProgram(0);
+
+    glDepthMask(GL_TRUE);
+}
+
 void theta_rendering_context_vao_destroy(theta_rendering_context* ctx, theta_opengl_vertex_array* vao) {
     glDeleteVertexArrays(1, &vao->vertex_array_id);
 }

@@ -46,6 +46,14 @@ void theta_scene_update(theta_scene* scene) { // Update won't really do anything
 }
 
 void theta_scene_render(theta_scene *scene) {
+    mat4 view;
+    theta_camera_get_view(&scene->bound_camera, view);
+
+    theta_skybox* skybox;
+    if(theta_renderer_get_skybox(&skybox)) {
+        skybox->bind_vp(skybox, view, scene->bound_camera.projection_matrix);
+    }
+
     // For each game object.
     for (u32 i = 0; i < arrlen(scene->game_objects); i++) {
         theta_game_object* working_obj = &scene->game_objects[i];
@@ -60,9 +68,9 @@ void theta_scene_render(theta_scene *scene) {
         theta_renderable* renderable = (theta_renderable*)rend_comp.data;
 
         // Set the Model, View, and Projection Matricies of the game object's renderer.
-        mat4 model; mat4 view;
+        mat4 model;
         theta_game_object_get_model(working_obj, model);
-        theta_camera_get_view(&scene->bound_camera, view);
+
         //renderable->program.set_light_position(&renderable->program, scene_light.transform.position);
         renderable->program.set_mvp(&renderable->program, model, view, scene->bound_camera.projection_matrix);
 
@@ -94,6 +102,10 @@ theta_game_object* theta_scene_get_game_object(theta_scene* scene, u32 index) {
     }
 
     return &scene->game_objects[index];
+}
+
+void theta_scene_give_skybox(theta_scene* scene, theta_skybox skybox) {
+    theta_renderer_bind_skybox(skybox);
 }
 
 theta_game_object* theta_scene_get_game_object_by_tag(theta_scene* scene, const char* tag) {

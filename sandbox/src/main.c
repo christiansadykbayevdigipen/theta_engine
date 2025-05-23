@@ -19,7 +19,7 @@ static f32 g_vertical_light_movement = 0.0f;
 void on_walk(vec3 axis) {
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
-    theta_game_object o = scene->game_objects[0];
+    //theta_game_object o = scene->game_objects[0];
 
     g_player_movement = axis[0] * PLAYER_WALKING_SPEED;
 
@@ -76,6 +76,7 @@ void sb_start() {
     mat1.uses_color = FALSE;
     mat1.specular_strength = 0.5f;
     mat1.specular_highlight = 5;
+    mat1.is_skybox = FALSE;
 
     theta_shader_program shader1;
     theta_shader_program_init_type(&shader1, THETA_SHADER_TYPE_LIGHTING_SHADER_TEXTURED);
@@ -142,6 +143,21 @@ void sb_start() {
     ((theta_input_layout_keyboard*)new_new_new_layout.input_layout)->positive = THETA_KEY_CODE_UP;
     ((theta_input_layout_keyboard*)new_new_new_layout.input_layout)->negative = THETA_KEY_CODE_DOWN;
     theta_input_system_bind_input(sandbox.input, "LightPosSS", new_new_new_layout, &light_posv);
+
+    char texture_locations[6][MAX_STRING] = 
+    {
+        "res/right.jpg",
+        "res/left.jpg",
+        "res/top.jpg",
+        "res/bottom.jpg",
+        "res/front.jpg",
+        "res/back.jpg",
+    };
+
+    theta_skybox skybox;
+    theta_skybox_init(&skybox, texture_locations);
+
+    theta_scene_give_skybox(scene, skybox);
 }
 
 void sb_update(f64 elapsed_time) {

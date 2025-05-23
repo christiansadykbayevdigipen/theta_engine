@@ -3,6 +3,7 @@
 #include "core.h"
 #include "context/context.h"
 #include "utils/list.h"
+#include "skybox.h"
 
 struct theta_mesh;
 struct theta_shader_program;
@@ -15,6 +16,8 @@ typedef struct {
     theta_window* window;
     theta_rendering_context* context;
     theta_node* rendering_list;
+    theta_skybox skybox;
+    BOOL is_skybox_bound;
 }theta_renderer;
 
 /*
@@ -32,6 +35,10 @@ THETA_API void theta_renderer_begin_frame();
 @brief Submits a renderable to the rendering queue. Gets rendered at theta_renderer_end_frame.
 */
 THETA_API void theta_renderer_submit(struct theta_renderable* renderable);
+
+THETA_API void theta_renderer_bind_skybox(theta_skybox skybox);
+
+THETA_API BOOL theta_renderer_get_skybox(theta_skybox** skybox);
 
 /*
 @brief This method should be called AFTER all rendering. Finishes the frame and preps for the next frame.

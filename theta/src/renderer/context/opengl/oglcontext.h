@@ -82,6 +82,9 @@ THETA_API void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx
 */
 THETA_API void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, BOOL uses_ibo, theta_opengl_index_buffer* ibo);
 
+// TODO: Maybe change this? This is a weird workaround my messed up architecture
+THETA_API void theta_rendering_context_vao_draw_skybox(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, u32 skybox_texture_id);
+
 /*
 @brief Destroys and clears the memory of the VAO
 */

@@ -8,12 +8,6 @@
 #include "oglshader.h"
 #include "ogltexture.h"
 
-typedef struct {
-    theta_opengl_vertex_array vao;
-    theta_opengl_index_buffer ibo;
-    BOOL uses_ibo;
-}theta_mesh_opengl_specifics;
-
 void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals, f32* uvs, u32 number_of_uvs) {
     THETA_PROFILE();
     

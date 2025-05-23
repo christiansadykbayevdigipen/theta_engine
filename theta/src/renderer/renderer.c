@@ -12,6 +12,7 @@ void theta_renderer_init(theta_window* window) {
     THETA_PROFILE();
     g_renderer.window = window;
     g_renderer.context = window->context;
+    g_renderer.is_skybox_bound = FALSE;
 
     g_renderer.rendering_list = NULL;
 }
@@ -30,12 +31,32 @@ void theta_renderer_submit(struct theta_renderable* renderable) {
     g_renderer.rendering_list = theta_node_push_back(g_renderer.rendering_list, renderable, sizeof(theta_renderable));
 }
 
+void theta_renderer_bind_skybox(theta_skybox skybox) {
+    g_renderer.is_skybox_bound = TRUE;
+    g_renderer.skybox = skybox;
+}
+
+BOOL theta_renderer_get_skybox(theta_skybox** skybox) {
+    if(g_renderer.is_skybox_bound) {
+        (*skybox) = &g_renderer.skybox;
+        return TRUE;
+    }
+    else {
+        (*skybox) = NULL;
+        return FALSE;
+    }
+}
+
 void theta_renderer_end_frame() {
     // for(s32 i = g_renderer.rendering_list.length-1; i >= 0; i--) {
     //     theta_renderable* r = ((theta_renderable*)theta_dynamic_list_get(&g_renderer.rendering_list, i));
     //     r->mesh.render(&r->mesh, &r->program);
     //     theta_dynamic_list_pop_back(&g_renderer.rendering_list);
     // }
+
+    if(g_renderer.is_skybox_bound) {
+        g_renderer.skybox.render(&g_renderer.skybox);
+    }
 
 
     // Render everything in the queue
