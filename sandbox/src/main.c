@@ -12,7 +12,9 @@ theta_application sandbox;
 
 static f32 g_player_movement = 0.0f;
 static f32 g_camera_rotation_movement = 0.0f;
+static f32 g_camera_vertical_movement = 0.0f;
 static f32 g_light_movement = 0.0f;
+static f32 g_vertical_light_movement = 0.0f;
 
 void on_walk(vec3 axis) {
     theta_scene* scene = theta_scene_manager_get_active_scene();
@@ -21,7 +23,6 @@ void on_walk(vec3 axis) {
 
     g_player_movement = axis[0] * PLAYER_WALKING_SPEED;
 
-    printf("%f %f %f\n", axis[0], axis[1], axis[2]);
 
     // if(axis.x > 0.0f) {
     //     o->transform.rotation.y = THETA_PI;
@@ -37,6 +38,14 @@ void rotate_cam(vec3 axis) {
 
 void light_posf(vec3 axis) {
     g_light_movement = axis[0]* PLAYER_WALKING_SPEED;
+}
+
+void light_posv(vec3 axis) {
+    g_vertical_light_movement = axis[0] * PLAYER_WALKING_SPEED;
+}
+
+void up_and_down(vec3 axis) {
+    g_camera_vertical_movement = axis[0] * PLAYER_WALKING_SPEED;
 }
 
 void sb_start() {
@@ -102,16 +111,23 @@ void sb_start() {
     theta_input_layout layout;
     layout.type = THETA_INPUT_LAYOUT_TYPE_KEYBOARD;
     layout.input_layout = INIT_STRUCT(theta_input_layout_keyboard);
-    ((theta_input_layout_keyboard*)layout.input_layout)->positive = THETA_KEY_CODE_D;
-    ((theta_input_layout_keyboard*)layout.input_layout)->negative = THETA_KEY_CODE_A;
+    ((theta_input_layout_keyboard*)layout.input_layout)->positive = THETA_KEY_CODE_W;
+    ((theta_input_layout_keyboard*)layout.input_layout)->negative = THETA_KEY_CODE_S;
     theta_input_system_bind_input(sandbox.input, "Walk", layout, &on_walk);
 
     theta_input_layout new_layout;
     new_layout.type = THETA_INPUT_LAYOUT_TYPE_KEYBOARD;
     new_layout.input_layout = INIT_STRUCT(theta_input_layout_keyboard);
-    ((theta_input_layout_keyboard*)new_layout.input_layout)->positive = THETA_KEY_CODE_C;
-    ((theta_input_layout_keyboard*)new_layout.input_layout)->negative = THETA_KEY_CODE_Z;
+    ((theta_input_layout_keyboard*)new_layout.input_layout)->positive = THETA_KEY_CODE_D;
+    ((theta_input_layout_keyboard*)new_layout.input_layout)->negative = THETA_KEY_CODE_A;
     theta_input_system_bind_input(sandbox.input, "RotateCam", new_layout, &rotate_cam);
+
+    theta_input_layout up_n_down;
+    up_n_down.type = THETA_INPUT_LAYOUT_TYPE_KEYBOARD;
+    up_n_down.input_layout = INIT_STRUCT(theta_input_layout_keyboard);
+    ((theta_input_layout_keyboard*)up_n_down.input_layout)->positive = THETA_KEY_CODE_Q;
+    ((theta_input_layout_keyboard*)up_n_down.input_layout)->negative = THETA_KEY_CODE_E;
+    theta_input_system_bind_input(sandbox.input, "UpNDown", up_n_down, &up_and_down);
 
     theta_input_layout new_new_layout;
     new_new_layout.type = THETA_INPUT_LAYOUT_TYPE_KEYBOARD;
@@ -119,12 +135,20 @@ void sb_start() {
     ((theta_input_layout_keyboard*)new_new_layout.input_layout)->positive = THETA_KEY_CODE_LEFT;
     ((theta_input_layout_keyboard*)new_new_layout.input_layout)->negative = THETA_KEY_CODE_RIGHT;
     theta_input_system_bind_input(sandbox.input, "LightPos", new_new_layout, &light_posf);
+
+    theta_input_layout new_new_new_layout;
+    new_new_new_layout.type = THETA_INPUT_LAYOUT_TYPE_KEYBOARD;
+    new_new_new_layout.input_layout = INIT_STRUCT(theta_input_layout_keyboard);
+    ((theta_input_layout_keyboard*)new_new_new_layout.input_layout)->positive = THETA_KEY_CODE_UP;
+    ((theta_input_layout_keyboard*)new_new_new_layout.input_layout)->negative = THETA_KEY_CODE_DOWN;
+    theta_input_system_bind_input(sandbox.input, "LightPosSS", new_new_new_layout, &light_posv);
 }
 
 void sb_update(f64 elapsed_time) {
     theta_scene* scene = theta_scene_manager_get_active_scene();
 
     scene->lights[0].transform.position[2] += g_light_movement * elapsed_time;
+    scene->lights[0].transform.position[1] += g_vertical_light_movement * elapsed_time;
 
     theta_camera* cam = &scene->bound_camera;
 
@@ -132,12 +156,14 @@ void sb_update(f64 elapsed_time) {
 
     vec3 forward;
     theta_camera_get_forward_vector(cam, forward);
-    vec3 dir = {0.0f, 0.0f, g_player_movement * elapsed_time};
     vec3 dest;
-    glm_vec3_mul(forward, dir, dest);
+    glm_vec3_scale(forward, g_player_movement * elapsed_time, dest);
     //glm_vec3_copy(dest, cam->transform.position);
     glm_vec3_add(cam->transform.position, dest, cam->transform.position);
-    cam->transform.rotation[1] -= g_camera_rotation_movement * elapsed_time;
+
+    cam->transform.position[1] += g_camera_vertical_movement * elapsed_time;
+
+    cam->transform.rotation[1] += g_camera_rotation_movement * elapsed_time;
     //obj->transform.rotation.y += 1.5f * elapsed_time;
     //obj->transform.rotation.x += 1.5f * elapsed_time;
     //obj1->transform.rotation.y -= 1.5f * elapsed_time;

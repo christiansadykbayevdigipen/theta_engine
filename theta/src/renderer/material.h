@@ -4,7 +4,7 @@
 #include "shader.h"
 #include "texture.h"
 
-typedef struct {
+typedef struct theta_material{
     BOOL uses_albedo;
     theta_texture* albedo;
     BOOL uses_color;

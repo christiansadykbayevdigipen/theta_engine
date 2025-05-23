@@ -7,6 +7,8 @@
 #include <glad/glad.h>
 #include <math.h>
 
+#include "renderer/material.h"
+
 #include "renderer/texture.h"
 #include "renderer/context/opengl/ogltexture.h"
 
@@ -154,28 +156,15 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
 
     program->set_mvp = &theta_shader_program_set_mvp_opengl;
     program->destroy = &theta_shader_program_destroy_opengl;
-    program->give_albedo = &theta_shader_program_give_albedo_opengl;
-    program->set_color = &theta_shader_program_set_color_opengl;
     program->set_light = &theta_shader_program_set_light_opengl;
     program->set_ambient_light = &theta_shader_program_set_ambient_light_opengl;
-    program->set_specular = &theta_shader_program_set_specular_opengl;
-    program->set_specular_highlight = &theta_shader_program_set_specular_highlight_opengl;
+    program->give_material = &theta_shader_program_give_material_opengl;
 }
 
 void theta_shader_program_set_mvp_opengl(theta_shader_program* program, mat4 model, mat4 view, mat4 projection) {
-    u32 p_id = DATA_CAST(theta_shader_program_opengl_specifics, program)->programID;
-
-    u32 model_location = glGetUniformLocation(p_id, "model");
-    u32 view_location = glGetUniformLocation(p_id, "view");
-    u32 proj_location = glGetUniformLocation(p_id, "projection");
-
-    glUseProgram(p_id);
-
-    glUniformMatrix4fv(model_location, 1, GL_FALSE, model[0]);
-    glUniformMatrix4fv(view_location, 1, GL_FALSE, view[0]);
-    glUniformMatrix4fv(proj_location, 1, GL_FALSE, projection[0]);
-
-    glUseProgram(0);
+    theta_opengl_shader_program_bind_uniform_mat4f(program, "model", model);
+    theta_opengl_shader_program_bind_uniform_mat4f(program, "view", view);
+    theta_opengl_shader_program_bind_uniform_mat4f(program, "projection", projection);
 }
 
 void theta_shader_program_destroy_opengl(theta_shader_program* program) {
@@ -184,121 +173,172 @@ void theta_shader_program_destroy_opengl(theta_shader_program* program) {
     glDeleteProgram(DATA_CAST(theta_shader_program_opengl_specifics, program)->programID);
 }
 
-void theta_shader_program_give_albedo_opengl(theta_shader_program* program, theta_texture* albedo_texture) {
-    THETA_PROFILE();
-    theta_shader_program_opengl_specifics* progspec = DATA_CAST(theta_shader_program_opengl_specifics, program);
+// void theta_shader_program_give_albedo_opengl(theta_shader_program* program, theta_texture* albedo_texture) {
+//     THETA_PROFILE();
+//     theta_shader_program_opengl_specifics* progspec = DATA_CAST(theta_shader_program_opengl_specifics, program);
 
-    program->albedo_texture = albedo_texture;
+//     program->albedo_texture = albedo_texture;
 
-    glUseProgram(progspec->programID);
+//     glUseProgram(progspec->programID);
 
-    DATA_CAST(theta_shader_program_opengl_specifics, program)->albedo_unit_id = 0;
+//     DATA_CAST(theta_shader_program_opengl_specifics, program)->albedo_unit_id = 0;
 
-    s32 loc = glGetUniformLocation(progspec->programID, "theta_Albedo");
+//     s32 loc = glGetUniformLocation(progspec->programID, "theta_Albedo");
 
-    if(loc == -1) {
-        THETA_WARN("theta_shader_program_give_albedo_opengl has failed. The reason being, the shader you are using does not have a proper albedo texture property! Be sure that there is a Uniform Sampler2D called 'theta_Albedo' in your vertex shader!\n");
-        return;
-    }
+//     if(loc == -1) {
+//         THETA_WARN("theta_shader_program_give_albedo_opengl has failed. The reason being, the shader you are using does not have a proper albedo texture property! Be sure that there is a Uniform Sampler2D called 'theta_Albedo' in your vertex shader!\n");
+//         return;
+//     }
 
-    glUniform1i(loc, progspec->albedo_unit_id);
+//     glUniform1i(loc, progspec->albedo_unit_id);
     
-    glUseProgram(0);
-}
+//     glUseProgram(0);
+// }
 
-void theta_shader_program_set_color_opengl(theta_shader_program* program, vec3 color) {
-    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+// void theta_shader_program_set_color_opengl(theta_shader_program* program, vec3 color) {
+//     theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
 
-    s32 location = glGetUniformLocation(self->programID, "color");
+//     s32 location = glGetUniformLocation(self->programID, "color");
 
-    //THETA_ASSERT(location == -1, "");
-    if(location == -1) {
-        THETA_WARN("theta_shader_program_set_color_opengl has failed. The reason being, the shader that you are using does not have a uniform vec4 named 'color'!\n");
-        return;
-    }
+//     //THETA_ASSERT(location == -1, "");
+//     if(location == -1) {
+//         THETA_WARN("theta_shader_program_set_color_opengl has failed. The reason being, the shader that you are using does not have a uniform vec4 named 'color'!\n");
+//         return;
+//     }
 
-    glUseProgram(self->programID);
+//     glUseProgram(self->programID);
 
-    glUniform4f(location, color[0], color[1], color[2], 1.0f);
+//     glUniform4f(location, color[0], color[1], color[2], 1.0f);
     
-    glUseProgram(0);
-}
+//     glUseProgram(0);
+// }
 
 void theta_shader_program_set_light_opengl(theta_shader_program* program, theta_light_descriptor light, vec3 viewing_position) {
-    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
-
-    s32 loc = glGetUniformLocation(self->programID, "theta_SceneLightPos");
-    
-    if(loc == -1) {
-        THETA_WARN("theta_shader_program_set_light_position_opengl has failed. The reason being, the shader you are using does not have a proper light positon property! Be sure that there is a Vec3 in your shader called 'theta_SceneLightPos'!\n");
-    }
-
-    s32 color_loc = glGetUniformLocation(self->programID, "theta_SceneLightColor");
-    if(color_loc == -1) {
-        THETA_WARN("theta_shader_program_set_light_position_opengl has failed. The reason being, the shader you are using does not have a proper light color property! Be sure that there is a Vec3 in your shader called 'theta_SceneLightColor'!\n");
-    }
-
-    s32 viewing_loc = glGetUniformLocation(self->programID, "theta_CameraViewingLocation");
-    if(viewing_loc == -1) {
-        THETA_WARN("theta_shader_program_set_light_position_opengl has failed. The reason being, the shader you are using does not have a proper viewing camera property! Be sure that there is a Vec3 in your shader called 'theta_CameraViewingLocation'!\n");
-    }
-    
-    glUseProgram(self->programID);
-
-    glUniform3f(loc, light.transform.position[0], light.transform.position[1], light.transform.position[2]);
-    glUniform3f(color_loc, light.light_color[0], light.light_color[1], light.light_color[2]);
-    glUniform3f(viewing_loc, viewing_position[0], viewing_position[1], viewing_position[2]);
-
-    glUseProgram(0);
+    theta_opengl_shader_program_bind_uniform3f(program, "theta_SceneLightPos", light.transform.position);
+    theta_opengl_shader_program_bind_uniform3f(program, "theta_SceneLightColor", light.light_color);
+    theta_opengl_shader_program_bind_uniform3f(program, "theta_CameraViewingLocation", viewing_position);
 }
 
 void theta_shader_program_set_ambient_light_opengl(theta_shader_program* program, theta_light_ambient_descriptor light) {
-    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
-
-    s32 ambient_strength_loc = glGetUniformLocation(self->programID, "theta_AmbientStrength");
-    
-    if(ambient_strength_loc == -1) {
-        THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper ambien light property! Be sure that there is a float in your vertex shader called 'theta_AmbientStrength'!\n");
-    }
-
-    s32 ambient_color_loc = glGetUniformLocation(self->programID, "theta_AmbientColor");
-    
-    if(ambient_color_loc == -1) {
-        THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper ambient light property! Be sure that there is a vec3 in your vertex shader called 'theta_AmbientColor'!\n");
-    }
-    
-    glUseProgram(self->programID);
-
-    glUniform1f(ambient_strength_loc, light.ambient_strength);
-    glUniform3f(ambient_color_loc, light.light_color[0], light.light_color[1], light.light_color[2]);
-
-    glUseProgram(0);
+    theta_opengl_shader_program_bind_uniform1f(program, "theta_AmbientStrength", light.ambient_strength);
+    theta_opengl_shader_program_bind_uniform3f(program, "theta_AmbientColor", light.light_color);
 }
 
-void theta_shader_program_set_specular_opengl(theta_shader_program* program, f32 specular_strength) {
+void theta_opengl_shader_program_bind_uniform1f(theta_shader_program* program, const char* name, f32 data) {
     theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+    
+    s32 location = glGetUniformLocation(self->programID, name);
 
-    s32 specular_loc = glGetUniformLocation(self->programID, "theta_MaterialSpecularStrength");
-
-    if(specular_loc == -1) {
-        THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper specular property! Be sure that there is a float in your vertex shader called 'theta_MaterialSpecularStrength'!\n");
+    if(location == -1) {
+        THETA_WARN("theta_opengl_shader_program_bind_uniform1f has a warning. The reason being, either the shader you are using does not have a %s property, or it is just unused\n", name);
     }
 
     glUseProgram(self->programID);
-    glUniform1f(specular_loc, specular_strength);
+    glUniform1f(location, data);
     glUseProgram(0);
 }
 
-void theta_shader_program_set_specular_highlight_opengl(theta_shader_program* program, f32 specular_highlight) {
+void theta_opengl_shader_program_bind_uniform2f(theta_shader_program* program, const char* name, vec2 data) {
     theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+    
+    s32 location = glGetUniformLocation(self->programID, name);
 
-    s32 specular_loc = glGetUniformLocation(self->programID, "theta_MaterialSpecularHighlight");
-
-    if(specular_loc == -1) {
-        THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper specular highlight property! Be sure that there is a float in your vertex shader called 'theta_MaterialSpecularHighlight'!\n");
+    if(location == -1) {
+        THETA_WARN("theta_opengl_shader_program_bind_uniform2f has a warning. The reason being, either the shader you are using does not have a %s property, or it is just unused\n", name);
     }
 
     glUseProgram(self->programID);
-    glUniform1f(specular_loc, powf(2.0f, specular_highlight));
+    glUniform2fv(location, 1, data);
     glUseProgram(0);
 }
+
+void theta_opengl_shader_program_bind_uniform3f(theta_shader_program* program, const char* name, vec3 data) {
+    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+    
+    s32 location = glGetUniformLocation(self->programID, name);
+
+    if(location == -1) {
+        THETA_WARN("theta_opengl_shader_program_bind_uniform3f has a warning. The reason being, either the shader you are using does not have a %s property, or it is just unused\n", name);
+    }
+
+    glUseProgram(self->programID);
+    glUniform3fv(location, 1, data);
+    glUseProgram(0);
+}
+
+void theta_opengl_shader_program_bind_uniform4f(theta_shader_program* program, const char* name, vec4 data) {
+    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+    
+    s32 location = glGetUniformLocation(self->programID, name);
+
+    if(location == -1) {
+        THETA_WARN("theta_opengl_shader_program_bind_uniform4f has a warning. The reason being, either the shader you are using does not have a %s property, or it is just unused\n", name);
+    }
+
+    glUseProgram(self->programID);
+    glUniform4fv(location, 1, data);
+    glUseProgram(0);
+}
+
+void theta_opengl_shader_program_bind_uniform_mat4f(theta_shader_program* program, const char* name, mat4 data) {
+    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+    
+    s32 location = glGetUniformLocation(self->programID, name);
+
+    if(location == -1) {
+        THETA_WARN("theta_opengl_shader_program_bind_uniform_mat4f has a warning. The reason being, either the shader you are using does not have a %s property, or it is just unused\n", name);
+    }
+
+    glUseProgram(self->programID);
+    glUniformMatrix4fv(location, 1, GL_FALSE, data[0]);
+    glUseProgram(0);
+}
+
+void theta_shader_program_give_material_opengl(theta_shader_program* program, struct theta_material* material) {
+    theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+    
+    /*Fill out the color information of the shader*/
+    if(material->uses_albedo) {
+        self->albedo_unit_id = 0;
+        theta_opengl_shader_program_bind_uniform1f(program, "theta_Albedo", self->albedo_unit_id);
+        program->albedo_texture = material->albedo;
+    }
+    if(material->uses_color) {
+        vec4 color = {material->color[0], material->color[1], material->color[2], 1.0f};
+        theta_opengl_shader_program_bind_uniform4f(program, "color", color);
+    }
+
+    // If the material has lighting properties attached to it, fill out the lighting properties.
+    if(material->lighted) {
+        theta_opengl_shader_program_bind_uniform1f(program, "theta_MaterialSpecularStrength", material->specular_strength);
+        theta_opengl_shader_program_bind_uniform1f(program, "theta_MaterialSpecularHighlight", material->specular_highlight);
+    }
+}
+
+// void theta_shader_program_set_specular_opengl(theta_shader_program* program, f32 specular_strength) {
+//     theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+
+//     s32 specular_loc = glGetUniformLocation(self->programID, "theta_MaterialSpecularStrength");
+
+//     if(specular_loc == -1) {
+//         THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper specular property! Be sure that there is a float in your vertex shader called 'theta_MaterialSpecularStrength'!\n");
+//     }
+
+//     glUseProgram(self->programID);
+//     glUniform1f(specular_loc, specular_strength);
+//     glUseProgram(0);
+// }
+
+// void theta_shader_program_set_specular_highlight_opengl(theta_shader_program* program, f32 specular_highlight) {
+//     theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
+
+//     s32 specular_loc = glGetUniformLocation(self->programID, "theta_MaterialSpecularHighlight");
+
+//     if(specular_loc == -1) {
+//         THETA_WARN("theta_shader_program_set_ambient_light_opengl has failed. The reason being, the shader you are using does not have a proper specular highlight property! Be sure that there is a float in your vertex shader called 'theta_MaterialSpecularHighlight'!\n");
+//     }
+
+//     glUseProgram(self->programID);
+//     glUniform1f(specular_loc, powf(2.0f, specular_highlight));
+//     glUseProgram(0);
+// }

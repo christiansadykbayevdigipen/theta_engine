@@ -32,14 +32,22 @@ void theta_camera_get_view(theta_camera* camera, mat4 view) {
 }
 
 void theta_camera_get_forward_vector(theta_camera* camera, vec3 forward) {
+    // mat4 view;
+    // theta_camera_get_view(camera, view);
+
+    // //mat4 inverted;
+    // //glm_mat4_inv_fast(view, inverted);
+
+    // vec3 forwardvec = {view[2][0], view[2][1], view[2][2]};
+    // glm_normalize(forwardvec);
+
+    // glm_vec3_copy(forwardvec, forward);
+
     mat4 view;
     theta_camera_get_view(camera, view);
 
-    //mat4 inverted;
-    //glm_mat4_inv_fast(view, inverted);
+    vec3 temp_forward = {view[0][2], view[1][2], view[2][2]};
+    glm_normalize(temp_forward);
 
-    vec3 forwardvec = {view[2][0], view[2][1], view[2][2]};
-    glm_normalize(forwardvec);
-
-    glm_vec3_copy(forwardvec, forward);
+    glm_vec3_copy(temp_forward, forward);
 }

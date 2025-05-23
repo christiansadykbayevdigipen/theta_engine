@@ -5,6 +5,7 @@
 #include "object/light.h"
 
 struct theta_texture;
+struct theta_material;
 
 typedef enum {
     THETA_SHADER_TYPE_BASIC_SHADER_TEXTURED,
@@ -16,12 +17,13 @@ typedef struct theta_shader_program{
     void* uninterpreted_data;
     void (*set_mvp)(struct theta_shader_program* program, mat4 model, mat4 view, mat4 projection);
     void (*destroy)(struct theta_shader_program* program);
-    void (*give_albedo)(struct theta_shader_program* program, struct theta_texture* albedo);
-    void (*set_color)(struct theta_shader_program* program, vec3 color);
+    void (*give_material)(struct theta_shader_program* program, struct theta_material* material);
+    // void (*give_albedo)(struct theta_shader_program* program, struct theta_texture* albedo);
+    // void (*set_color)(struct theta_shader_program* program, vec3 color);
     void (*set_light)(struct theta_shader_program* program, theta_light_descriptor light, vec3 viewing_position);
     void (*set_ambient_light)(struct theta_shader_program* program, theta_light_ambient_descriptor light);
-    void (*set_specular)(struct theta_shader_program* program, f32 specular_strength);
-    void (*set_specular_highlight)(struct theta_shader_program* program, f32 specular_highlight);
+    // void (*set_specular)(struct theta_shader_program* program, f32 specular_strength);
+    // void (*set_specular_highlight)(struct theta_shader_program* program, f32 specular_highlight);
     struct theta_texture* albedo_texture;
 }theta_shader_program;
 

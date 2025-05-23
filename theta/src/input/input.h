@@ -47,7 +47,7 @@ typedef struct theta_input_system{
 
 THETA_API theta_input_system* theta_input_system_init();
 
-THETA_API void theta_input_system_bind_input(theta_input_system* system, const char* tag, theta_input_layout layout, void (*input_callback)(theta_vector3f));
+THETA_API void theta_input_system_bind_input(theta_input_system* system, const char* tag, theta_input_layout layout, void (*input_callback)(vec3));
 
 THETA_API void theta_input_system_on_key_down(theta_input_system* system, char key);
 THETA_API void theta_input_system_on_key_up(theta_input_system* system, char key);
