@@ -26,7 +26,15 @@
         "xtr1common": "c",
         "xlocale": "c",
         "xstring": "c",
-        "*.h_depr": "c"
+        "*.h_depr": "c",
+        "deque": "c",
+        "forward_list": "c",
+        "list": "c",
+        "string": "c",
+        "vector": "c",
+        "valarray": "c",
+        "ios": "c",
+        "ranges": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

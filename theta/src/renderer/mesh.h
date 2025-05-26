@@ -5,11 +5,16 @@
 
 struct theta_shader_program;
 
+typedef enum {
+    THETA_MESH_FACE_TYPE_TRIANGLES,
+}theta_mesh_face_type;
+
 /*
 @brief The mesh in theta is the rendered object without any material applied. It's the shape of the rendered object.
 */
 typedef struct theta_mesh {
     u32 vertex_position_count;
+    theta_mesh_face_type face_type;
     void* uninterpreted_data;
 
     void (*render)(struct theta_mesh*, struct theta_shader_program*);
@@ -25,7 +30,7 @@ typedef struct theta_mesh {
 @param indices The list of indices that refer to the vertices
 @param number_of_indices The number of indices in the array
 */
-THETA_API void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals, f32* uvs, u32 number_of_uvs);
+THETA_API void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals, f32* uvs, u32 number_of_uvs, theta_mesh_face_type face_type);
 
 // Creates a basic quad mesh with basic vertices, and UV coordinates
 THETA_API void theta_mesh_init_quad(theta_mesh* mesh);

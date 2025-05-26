@@ -45,11 +45,13 @@ theta_rendering_context* theta_rendering_context_init_opengl(theta_window* windo
     ctx->clear = &theta_rendering_context_clear_opengl;
     ctx->swap = &theta_rendering_context_swap_opengl;
     ctx->destroy = &theta_rendering_context_destroy_opengl;
+    ctx->resize = &theta_rendering_context_resize_opengl;
     
     THETA_ASSERT(gladLoadGL(), "theta_rendering_context_init_opengl has failed. The reason being, glad, the opengl loader, has failed to load opengl.");
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
     return ctx;
@@ -63,6 +65,10 @@ void theta_rendering_context_swap_opengl(theta_rendering_context* ctx) {
 #if defined(THETA_PLATFORM_SHARED)
     theta_shared_window_swap_buffers(ctx->window);
 #endif
+}
+
+void theta_rendering_context_resize_opengl(theta_rendering_context* ctx, u32 new_width, u32 new_height) {
+    glViewport(0, 0, new_width, new_height);
 }
 
 void theta_rendering_context_vao_init(theta_rendering_context* ctx, theta_opengl_vertex_array* vao) {
@@ -98,7 +104,7 @@ void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx, theta_op
 
 }
 
-void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, BOOL uses_ibo, theta_opengl_index_buffer* ibo) {
+void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, BOOL uses_ibo, theta_opengl_index_buffer* ibo, theta_mesh_face_type face_type) {
     glUseProgram(DATA_CAST(theta_shader_program_opengl_specifics, associated_shader)->programID);
     
     glBindVertexArray(vao->vertex_array_id);
@@ -116,10 +122,21 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
         glActiveTexture(GL_TEXTURE0 + shader_spec->albedo_unit_id);
         glBindTexture(GL_TEXTURE_2D, tex_spec->texture_id);
     }
+
+    if(associated_shader->specular_texture != NULL) {
+        theta_shader_program_opengl_specifics* shader_spec = DATA_CAST(theta_shader_program_opengl_specifics, associated_shader);
+        theta_texture_opengl_specifics* tex_spec = DATA_CAST(theta_texture_opengl_specifics, associated_shader->specular_texture);
+
+        glActiveTexture(GL_TEXTURE0 + shader_spec->specular_unit_id);
+        glBindTexture(GL_TEXTURE_2D, tex_spec->texture_id);
+    }
+
+    u32 openglfacetype = GL_TRIANGLES;
+
     if(uses_ibo)
-        glDrawElements(GL_TRIANGLES, ibo->indices_count, GL_UNSIGNED_INT, NULL);
+        glDrawElements(openglfacetype, ibo->indices_count, GL_UNSIGNED_INT, NULL);
     else
-        glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+        glDrawArrays(openglfacetype, 0, vertex_count);
 
     if(associated_shader->albedo_texture != NULL) {
         glBindTexture(GL_TEXTURE_2D, 0);

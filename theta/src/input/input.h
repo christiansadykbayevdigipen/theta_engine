@@ -22,17 +22,18 @@ typedef struct {
 
 typedef enum {
     THETA_INPUT_LAYOUT_TYPE_KEYBOARD,
+    THETA_INPUT_LAYOUT_TYPE_CURSOR,
 }theta_input_layout_type;
 
+
+// Note if the input type is CURSOR, you can effectively make input_layout = NULL.
 typedef struct {
     void* input_layout;
     theta_input_layout_type type;
 }theta_input_layout;
 
 
-/*
-@brief The input descriptor structure denoting a list of bindings in which they all fall under the same event for input. For example, walking has multiple bindings, for controller, for keyboard, etc. Keyboard would use the A and D keys for example, and joystick would use the left joystick. 
-*/
+// The input descriptor structure denoting a list of bindings in which they all fall under the same event for input. For example, walking has multiple bindings, for controller, for keyboard, etc. Keyboard would use the A and D keys for example, and joystick would use the left joystick. 
 typedef struct {
     char tag[MAX_STRING];
     theta_input_layout layout[MAX_LAYOUTS];
@@ -51,5 +52,7 @@ THETA_API void theta_input_system_bind_input(theta_input_system* system, const c
 
 THETA_API void theta_input_system_on_key_down(theta_input_system* system, char key);
 THETA_API void theta_input_system_on_key_up(theta_input_system* system, char key);
+
+THETA_API void theta_input_system_on_cursor(theta_input_system* system, f64 x_position, f64 y_position);
 
 THETA_API void theta_input_system_destroy(theta_input_system* system);

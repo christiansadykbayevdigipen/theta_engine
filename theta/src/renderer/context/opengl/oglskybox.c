@@ -66,7 +66,7 @@ void theta_skybox_init_opengl(theta_skybox* skybox, char texture_locations[6][MA
     memset(skybox->uninterpreted_data, 0, sizeof(theta_skybox_opengl_specifics));
     theta_skybox_opengl_specifics* self = DATA_CAST(theta_skybox_opengl_specifics, skybox);
     
-    theta_mesh_init(&skybox->cubemap_mesh, g_cubemap_vertices, sizeof(g_cubemap_vertices) / sizeof(g_cubemap_vertices[0]), 3, NULL, 0, NULL, 0, NULL, 0);
+    theta_mesh_init(&skybox->cubemap_mesh, g_cubemap_vertices, sizeof(g_cubemap_vertices) / sizeof(g_cubemap_vertices[0]), 3, NULL, 0, NULL, 0, NULL, 0, THETA_MESH_FACE_TYPE_TRIANGLES);
 
     // Texture Creating time.
     glGenTextures(1, &self->texture_id);
@@ -102,11 +102,12 @@ void theta_skybox_init_opengl(theta_skybox* skybox, char texture_locations[6][MA
 
     skybox->render = &theta_skybox_render_opengl;
     skybox->bind_vp = &theta_skybox_bind_vp_opengl;
+    skybox->destroy = &theta_skybox_destroy_opengl;
 }
 
 void theta_skybox_render_opengl(theta_skybox* skybox) {
     theta_skybox_opengl_specifics* self = DATA_CAST(theta_skybox_opengl_specifics, skybox);
-    theta_mesh_opengl_specifics* mesh = (theta_mesh_opengl_specifics*)skybox->uninterpreted_data;
+    theta_mesh_opengl_specifics* mesh = (theta_mesh_opengl_specifics*)skybox->cubemap_mesh.uninterpreted_data;
 
     theta_rendering_context* ctx = theta_renderer_get_context();
     theta_rendering_context_vao_draw_skybox(ctx, &mesh->vao, skybox->cubemap_mesh.vertex_position_count, &skybox->program, self->texture_id);
@@ -122,4 +123,11 @@ void theta_skybox_bind_vp_opengl(theta_skybox* skybox, mat4 view, mat4 projectio
 
     theta_opengl_shader_program_bind_uniform_mat4f(&skybox->program, "view", newview);
     theta_opengl_shader_program_bind_uniform_mat4f(&skybox->program, "projection", projection);
+}
+
+void theta_skybox_destroy_opengl(theta_skybox* skybox) {
+    theta_skybox_opengl_specifics* self = DATA_CAST(theta_skybox_opengl_specifics, skybox);
+    skybox->program.destroy(&skybox->program);
+    skybox->cubemap_mesh.destroy(&skybox->cubemap_mesh);
+    glDeleteTextures(1, &self->texture_id);
 }

@@ -12,3 +12,5 @@ THETA_API void theta_skybox_init_opengl(theta_skybox* skybox, char texture_locat
 THETA_API void theta_skybox_render_opengl(theta_skybox* skybox);
 
 THETA_API void theta_skybox_bind_vp_opengl(theta_skybox* skybox, mat4 view, mat4 projection);
+
+THETA_API void theta_skybox_destroy_opengl(theta_skybox* skybox);

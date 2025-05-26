@@ -207,4 +207,5 @@ void theta_renderable_destroy(theta_renderable* renderable) {
     THETA_PROFILE();
 
     renderable->mesh.destroy(&renderable->mesh);
+    renderable->program.destroy(&renderable->program);
 }

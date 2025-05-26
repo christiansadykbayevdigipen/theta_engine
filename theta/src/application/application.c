@@ -24,6 +24,8 @@ void theta_application_init(theta_application* app, theta_application_descriptor
 
     app->window->create_input_callbacks(app->window, app->input);
 
+    app->window->set_fullscreen(app->window, app->descriptor.starts_in_fullscreen);
+    app->window->set_cursor_lock(app->window, app->descriptor.cursor_lock);
 }
 
 static void _theta_application_update(theta_application* app, f64 elapsed) {
@@ -78,10 +80,6 @@ void theta_application_destruct(theta_application* app) {
     if(app->descriptor.terminate != NULL) app->descriptor.terminate();
     
     app->window->destroy(app->window);
-
-    theta_input_system_destroy(app->input);
     
-    theta_renderer_destroy();
-
-    theta_scene_manager_destroy();
+    
 }

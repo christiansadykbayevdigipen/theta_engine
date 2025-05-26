@@ -7,11 +7,12 @@
 typedef struct theta_material{
     BOOL uses_albedo;
     theta_texture* albedo;
+    f32 texture_tiling_x;
+    f32 texture_tiling_y;
     BOOL uses_color;
     vec3 color;
+    f32 metallic, roughness, ao; // THERE ARE ALL FOR TESTING PURPOSES REMOVE LATER.
     BOOL lighted; // Determines whether the material will have light sources affecting it.
-    f32 specular_strength; // The shininess of the material. Won't really matter if the material is not lighted.
-    f32 specular_highlight; // Specifies the sharpness of the highlight on the surface. This describes an exponent. The actual interpreted value in the shader will be 2^specular_highlight. A good number for this would be 5. Because 2^5=32.
     BOOL is_skybox;
 }theta_material;
 

@@ -11,6 +11,7 @@ typedef struct theta_skybox{
     void* uninterpreted_data;
     void (*render)(struct theta_skybox* skybox);
     void (*bind_vp)(struct theta_skybox* skybox, mat4 view, mat4 proj);
+    void (*destroy)(struct theta_skybox* skybox);
 }theta_skybox;
 
 // Initializes a skybox.

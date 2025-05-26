@@ -1,5 +1,5 @@
 [X] Migrate to CGLM
-[ ] Make shaders directly bind materials rather than a material binding properties to a shader. Weird level of redunancy that causes issues with adding new features.
+[X] Make shaders directly bind materials rather than a material binding properties to a shader. Weird level of redunancy that causes issues with adding new features.
 [ ] Remove a lot of unnecessary heap allocations
 [ ] Create a custom memory manager that counts heap allocations and deallocations and detects memory leaks.
 [ ] Make the input system allow for multiple bindings (Only one binding per input event.)
@@ -15,7 +15,9 @@
 [ ] Implement Vulkan
 [ ] Implement editor for theta.
 [ ] Implement debugging/monitoring stuff like tracking how long a render function takes, how many draw calls are being made, how long physics takes to calculate, etc.
-[ ] Resizing framebuffer with the window. It's so annoying that the window does not size with the framebuffer. This is like a 2 minute fix.
+[X] Resizing framebuffer with the window. It's so annoying that the window does not size with the framebuffer. This is like a 2 minute fix.
 [ ] Ray Tracing
 [X] Skyboxes
 [ ] Refactor all of the skybox system. It was a really quick and dirty way of implementing skyboxes, and it needs heavy refactoring. Also, it's not using best practices, and there is a better way to implement them. 
+[ ] Allow for non-triangulated mesh loading. Create an automatic triangulator.
+[ ] Make mesh loading using index buffers.

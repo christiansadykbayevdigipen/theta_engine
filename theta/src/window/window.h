@@ -12,12 +12,16 @@ typedef struct theta_window{
     void* uninterpreted_data;
     theta_api api;
     struct theta_rendering_context* context;
+    struct theta_input_system* input_system;
+    u32 width, height;
 
     BOOL (*close_requested)(struct theta_window*);
     void (*update)(struct theta_window*);
     void (*destroy)(struct theta_window*);
     void (*create_input_callbacks)(struct theta_window*, struct theta_input_system* input_system);
     void (*change_title)(struct theta_window*, const char* new_title);
+    void (*set_fullscreen)(struct theta_window* window, BOOL fullscreen);
+    void (*set_cursor_lock)(struct theta_window* window, BOOL cursor_lock);
 }theta_window;
 
 /*

@@ -6,6 +6,8 @@
 
 #define MAX_VAO_LAYOUT 20
 
+#include "renderer/mesh.h"
+
 typedef struct {
     u32 proc_address;
 }theta_opengl_rendering_context_specifics;
@@ -49,6 +51,7 @@ THETA_API theta_rendering_context* theta_rendering_context_init_opengl(theta_win
 
 THETA_API void theta_rendering_context_clear_opengl(theta_rendering_context* ctx);
 THETA_API void theta_rendering_context_swap_opengl(theta_rendering_context* ctx);
+THETA_API void theta_rendering_context_resize_opengl(theta_rendering_context* ctx, u32 new_width, u32 new_height);
 
 /*
 @brief Initializes a Vertex Array Object
@@ -80,7 +83,7 @@ THETA_API void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx
 @brief Draws a particular vertex array
 @param vertex_count The number of whole vertex positions.
 */
-THETA_API void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, BOOL uses_ibo, theta_opengl_index_buffer* ibo);
+THETA_API void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, BOOL uses_ibo, theta_opengl_index_buffer* ibo, theta_mesh_face_type face_type);
 
 // TODO: Maybe change this? This is a weird workaround my messed up architecture
 THETA_API void theta_rendering_context_vao_draw_skybox(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, u32 skybox_texture_id);

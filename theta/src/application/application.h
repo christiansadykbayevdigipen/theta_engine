@@ -21,6 +21,8 @@ typedef struct {
     void (*update)(f64 elapsed_time);
     void (*terminate)();
     theta_api api;
+    BOOL starts_in_fullscreen;
+    BOOL cursor_lock;
 }theta_application_descriptor;
 
 /*

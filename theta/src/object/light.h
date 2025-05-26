@@ -4,11 +4,14 @@
 #include "transform.h"
 
 typedef struct {
-    theta_transform transform;
-    vec3 light_color;
-}theta_light_descriptor;
+    vec3 location;
+    vec3 color;
+}theta_light;
 
 typedef struct {
-    f32 ambient_strength;
-    vec3 light_color;
-}theta_light_ambient_descriptor;
+    vec3 direction;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+}theta_light_directional;

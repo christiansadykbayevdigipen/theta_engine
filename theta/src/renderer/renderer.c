@@ -84,4 +84,6 @@ theta_api theta_renderer_get_api() {
 
 void theta_renderer_destroy() {
     THETA_PROFILE();
+
+    theta_node_free_all(g_renderer.rendering_list);
 }

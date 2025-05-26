@@ -50,6 +50,10 @@ THETA_API void theta_window_create_input_callbacks_shared_window(theta_window* w
 
 THETA_API void theta_window_change_title_shared_window(theta_window* window, const char* new_title);
 
+THETA_API void theta_window_set_fullscreen_shared_window(theta_window* window, BOOL fullscreen);
+
+THETA_API void theta_window_set_cursor_lock_shared_window(theta_window* window, BOOL cursor_lock);
+
 #else
 #error You cannot include this header when you are not on the shared platform (windows, linux, mac).
 #endif

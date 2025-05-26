@@ -8,12 +8,13 @@
 #include "oglshader.h"
 #include "ogltexture.h"
 
-void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals, f32* uvs, u32 number_of_uvs) {
+void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals, f32* uvs, u32 number_of_uvs, theta_mesh_face_type face_type) {
     THETA_PROFILE();
     
     theta_rendering_context* ctx = theta_renderer_get_context();
 
     mesh->uninterpreted_data = malloc(sizeof(theta_mesh_opengl_specifics));
+    mesh->face_type = face_type;
 
     theta_mesh_opengl_specifics* self = DATA_CAST(theta_mesh_opengl_specifics, mesh);
 
@@ -30,6 +31,7 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
     vertices_layout.offset = 0;
     vertices_layout.stride = sizeof(f32)*dimension;
     theta_rendering_context_vao_push_vbo(ctx, &self->vao, &vbo_vertices, &vertices_layout, 1);
+    theta_rendering_context_vbo_destroy(ctx, &vbo_vertices);
 
     if(number_of_uvs > 0) {
         // Initialize the Vertex Buffer for UVS
@@ -41,6 +43,7 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
         uvs_layout.offset = 0;
         uvs_layout.stride = sizeof(f32) * 2;
         theta_rendering_context_vao_push_vbo(ctx, &self->vao, &vbo_uvs, &uvs_layout, 1);
+        theta_rendering_context_vbo_destroy(ctx, &vbo_uvs);
     }
 
     if(number_of_normals > 0) {
@@ -52,6 +55,8 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
         normals_layout.offset = 0;
         normals_layout.stride = sizeof(f32)*3;
         theta_rendering_context_vao_push_vbo(ctx, &self->vao, &vbo_normals, &normals_layout, 1);
+        
+        theta_rendering_context_vbo_destroy(ctx, &vbo_normals);
     }
     
 
@@ -64,40 +69,6 @@ void theta_mesh_init_opengl(theta_mesh* mesh, f32* vertices, u32 number_of_verti
 
     mesh->vertex_position_count = number_of_vertices/dimension;
 
-    // theta_opengl_vertex_buffer vbo;
-    // theta_opengl_vertex_buffer normals_vbo;
-
-    // theta_opengl_vao_layout layout;
-    // layout.dimension = dimension;
-    // layout.index = 0;
-    // layout.offset = 0;
-    // layout.stride = sizeof(f32) * (dimension+2);
-
-    // theta_opengl_vao_layout tex_layout;
-    // tex_layout.dimension = 2;
-    // tex_layout.index = 1;
-    // tex_layout.offset = sizeof(f32) * 3;
-    // tex_layout.stride = sizeof(f32) * 5;
-
-    // theta_rendering_context_vbo_init(ctx, &vbo, vertices, sizeof(f32) * number_of_vertices);
-
-    
-    
-    // theta_rendering_context_vao_push_vbo(ctx, &self->vao, &vbo, layouts, 2);
-    
-    // if(number_of_normals > 0) {
-    //     theta_rendering_context_vbo_init(ctx, &normals_vbo, normals, sizeof(f32) * number_of_normals);
-    //     theta_opengl_vao_layout normals_layout;
-    //     normals_layout.dimension = 3;
-    //     normals_layout.index = 2;
-    //     normals_layout.offset = 0;
-    //     normals_layout.stride = sizeof(f32) * 3;
-    //     theta_rendering_context_vao_push_vbo(ctx, &self->vao, &normals_vbo, &normals_layout, 1);
-    // }
-
-    // mesh->vertex_position_count = number_of_vertices / dimension;
-
-    // theta_rendering_context_ibo_init(ctx, &self->ibo, indices, number_of_indices);
 
     /*Setup Function Pointers Here*/
     mesh->render = &theta_mesh_render_opengl;
@@ -108,7 +79,7 @@ void theta_mesh_render_opengl(theta_mesh* mesh, theta_shader_program* program) {
     theta_rendering_context* ctx = theta_renderer_get_context();
     theta_mesh_opengl_specifics* self = DATA_CAST(theta_mesh_opengl_specifics, mesh);
 
-    theta_rendering_context_vao_draw(ctx, &self->vao, mesh->vertex_position_count, program, self->uses_ibo, &self->ibo);
+    theta_rendering_context_vao_draw(ctx, &self->vao, mesh->vertex_position_count, program, self->uses_ibo, &self->ibo, mesh->face_type);
 }
 
 void theta_mesh_destroy_opengl(theta_mesh* mesh) {

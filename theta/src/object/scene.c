@@ -13,9 +13,8 @@ theta_scene* theta_scene_init(theta_camera camera) {
     theta_scene* scene = INIT_STRUCT(theta_scene);
 
     scene->bound_camera = camera;
-    scene->ambient_lighting_set = FALSE;
-    scene->lights = NULL;
     scene->game_objects = NULL;
+    scene->light_count = 0;
 
     return scene;
 }
@@ -31,12 +30,6 @@ void theta_scene_add_game_object(theta_scene* scene, theta_game_object game_obje
     }
 
     arrput(scene->game_objects, game_object);
-}
-
-void theta_scene_add_light(theta_scene* scene, theta_light_descriptor light_point) {
-    THETA_PROFILE();
-    
-    arrpush(scene->lights, light_point);
 }
 
 void theta_scene_update(theta_scene* scene) { // Update won't really do anything for now.
@@ -75,20 +68,11 @@ void theta_scene_render(theta_scene *scene) {
         renderable->program.set_mvp(&renderable->program, model, view, scene->bound_camera.projection_matrix);
 
         if(renderable->material.lighted) {
-            if(arrlen(scene->lights) > 0) { // Just use the first light source in the lights list. We don't have multiple light source capability yet.
-                theta_light_descriptor* light_src = &scene->lights[0];
-                renderable->program.set_light(&renderable->program, *light_src, scene->bound_camera.transform.position);
-                renderable->program.set_ambient_light(&renderable->program, scene->ambient_lighting);
-            }
+            renderable->program.set_light(&renderable->program, scene->lights, scene->light_count, scene->bound_camera.transform.position, working_obj->transform.position);
         }
 
         theta_renderer_submit(renderable);
     }
-}
-
-void theta_scene_set_ambient_light(theta_scene* scene, theta_light_ambient_descriptor ambient_lighting) {
-    scene->ambient_lighting_set = TRUE;
-    scene->ambient_lighting = ambient_lighting;
 }
 
 theta_camera* theta_scene_get_bound_camera(theta_scene* scene) {
@@ -106,6 +90,16 @@ theta_game_object* theta_scene_get_game_object(theta_scene* scene, u32 index) {
 
 void theta_scene_give_skybox(theta_scene* scene, theta_skybox skybox) {
     theta_renderer_bind_skybox(skybox);
+}
+
+void theta_scene_add_light(theta_scene* scene, theta_light light) {
+    if(scene->light_count >= MAX_LIGHTS) {
+        THETA_ERROR("theta_scene_add_light has failed. The reason being, max lights reached in a scene\n");
+        return;
+    }
+    
+    scene->lights[scene->light_count] = light;
+    scene->light_count++;
 }
 
 theta_game_object* theta_scene_get_game_object_by_tag(theta_scene* scene, const char* tag) {

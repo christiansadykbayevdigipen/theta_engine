@@ -132,12 +132,12 @@ static u32 g_cube_indices[] = {
         22, 23, 20
 };
 
-void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals, f32* uvs, u32 number_of_uvs) {
+void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u32 dimension, u32* indices, u32 number_of_indices, f32* normals, u32 number_of_normals, f32* uvs, u32 number_of_uvs, theta_mesh_face_type face_type) {
     THETA_PROFILE();
 
     switch(theta_renderer_get_api()) {
     case THETA_API_OPENGL:
-        theta_mesh_init_opengl(mesh, vertices, number_of_vertices, dimension, indices, number_of_indices, normals, number_of_normals, uvs, number_of_uvs);
+        theta_mesh_init_opengl(mesh, vertices, number_of_vertices, dimension, indices, number_of_indices, normals, number_of_normals, uvs, number_of_uvs, face_type);
         break;
     default:
         THETA_FATAL("theta_mesh_init has failed. The reason being, an unsupported or non existent API was supplied to theta_mesh_init.\n");
@@ -146,11 +146,11 @@ void theta_mesh_init(theta_mesh* mesh, f32* vertices, u32 number_of_vertices, u3
 }
 
 void theta_mesh_init_quad(theta_mesh* mesh) {
-    theta_mesh_init(mesh, g_quad_vertices, sizeof(g_quad_vertices) / sizeof(g_quad_vertices[0]), 3, g_quad_indices, sizeof(g_quad_indices) / sizeof(g_quad_indices[0]), NULL, 0, g_quad_tex_coords, sizeof(g_quad_tex_coords) / sizeof(g_quad_tex_coords[0]));
+    theta_mesh_init(mesh, g_quad_vertices, sizeof(g_quad_vertices) / sizeof(g_quad_vertices[0]), 3, g_quad_indices, sizeof(g_quad_indices) / sizeof(g_quad_indices[0]), NULL, 0, g_quad_tex_coords, sizeof(g_quad_tex_coords) / sizeof(g_quad_tex_coords[0]), THETA_MESH_FACE_TYPE_TRIANGLES);
 }
 
 void theta_mesh_init_cube(theta_mesh* mesh) {
-    theta_mesh_init(mesh, g_cube_vertices, sizeof(g_cube_vertices) / sizeof(g_cube_vertices[0]), 3, g_cube_indices, sizeof(g_cube_indices)/sizeof(g_cube_indices[0]), g_cube_normals, sizeof(g_cube_normals)/sizeof(g_cube_normals[0]), g_cube_tex_coords, sizeof(g_cube_tex_coords) / sizeof(g_cube_tex_coords[0]));
+    theta_mesh_init(mesh, g_cube_vertices, sizeof(g_cube_vertices) / sizeof(g_cube_vertices[0]), 3, g_cube_indices, sizeof(g_cube_indices)/sizeof(g_cube_indices[0]), g_cube_normals, sizeof(g_cube_normals)/sizeof(g_cube_normals[0]), g_cube_tex_coords, sizeof(g_cube_tex_coords) / sizeof(g_cube_tex_coords[0]), THETA_MESH_FACE_TYPE_TRIANGLES);
 }
 
 void theta_mesh_init_from_file(theta_mesh* mesh, const char* filename) {
@@ -165,18 +165,32 @@ void theta_mesh_init_from_file(theta_mesh* mesh, const char* filename) {
     for(s32 i = 0; i < m->index_count; i++) {
         fastObjIndex mi = m->indices[i];
 
-        arrpush(pos, m->positions[3 * mi.p + 0]);
-        arrpush(pos, m->positions[3 * mi.p + 1]);
-        arrpush(pos, m->positions[3 * mi.p + 2]);
+        if(mi.p) {
+            arrpush(pos, m->positions[3 * mi.p + 0]);
+            arrpush(pos, m->positions[3 * mi.p + 1]);
+            arrpush(pos, m->positions[3 * mi.p + 2]);
+        }
 
-        arrpush(norms, m->normals[3 * mi.n + 0]);
-        arrpush(norms, m->normals[3 * mi.n + 1]);
-        arrpush(norms, m->normals[3 * mi.n + 2]);
+        if(mi.n){
+            arrpush(norms, m->normals[3 * mi.n + 0]);
+            arrpush(norms, m->normals[3 * mi.n + 1]);
+            arrpush(norms, m->normals[3 * mi.n + 2]);
+        }
 
-        arrpush(texs, m->texcoords[2 * mi.t + 0]);
-        arrpush(texs, m->texcoords[2 * mi.t + 1]);
-
+        if(mi.t){
+            arrpush(texs, m->texcoords[2 * mi.t + 0]);
+            arrpush(texs, m->texcoords[2 * mi.t + 1]);
+        }
     }
 
-    theta_mesh_init(mesh, pos, arrlen(pos), 3, NULL, 0, norms, arrlen(norms), texs, arrlen(texs));
+    u32 face_size = m->index_count / m->face_count;
+    theta_mesh_face_type face_type = THETA_MESH_FACE_TYPE_TRIANGLES;
+
+    THETA_ASSERT((face_size == 3), "theta_mesh_init_from_file has failed. The reason being, Theta does not currently have support for non-triangular mesh types. Make sure in the software that creates the mesh, to select 'triangulate mesh'");
+
+    theta_mesh_init(mesh, pos, arrlen(pos), 3, NULL, 0, norms, arrlen(norms), texs, arrlen(texs), face_type);
+
+    arrfree(pos);
+    arrfree(norms);
+    arrfree(texs);
 }
