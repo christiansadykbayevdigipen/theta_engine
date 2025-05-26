@@ -77,17 +77,22 @@ void sb_start() {
     theta_material mat1;
     //mat1.albedo = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_Color.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
     mat1.lighted = TRUE;
-    mat1.uses_albedo = FALSE;
-    mat1.uses_color = TRUE;
-    vec3 albedo_color = {0.5f, 0.0f, 0.0f};
-    glm_vec3_copy(albedo_color, mat1.color);
-    mat1.ao = 1.0f;
-    mat1.metallic = 0.5f;
-    mat1.roughness = 0.5f;
-    
+    mat1.uses_color = FALSE;
     mat1.is_skybox = FALSE;
     mat1.texture_tiling_x = 9;
     mat1.texture_tiling_y = 9;
+    mat1.albedo = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_Color.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
+    mat1.normal_map = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_NormalGL.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
+    //mat1.normal_map = NULL;
+    mat1.metallic_map = NULL;
+    mat1.metallic = 0.5f;
+    mat1.roughness_map = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_Roughness.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
+    //mat1.roughness_map = NULL;
+    //mat1.ao_map = NULL;
+    mat1.ao_map = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_AmbientOcclusion.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
+
+    mat1.roughness = 0.5f;
+    mat1.ao = 1.0f;
 
     theta_shader_program shader1;
     theta_shader_program_init_type(&shader1, THETA_SHADER_TYPE_LIGHTING_SHADER_TEXTURED);
@@ -96,7 +101,6 @@ void sb_start() {
     theta_game_object_init(&obj, trsf, theta_renderable_init(mesh1, mat1, shader1), "Special");
 
     theta_scene_add_game_object(scene, obj);
-
 
     theta_scene_manager_set_active_scene(scene);
 
@@ -160,10 +164,19 @@ void sb_start() {
          "res/clouds1_south.bmp",
      };
 
-    // theta_skybox skybox;
-    // theta_skybox_init(&skybox, texture_locations);
+    theta_skybox skybox;
+    theta_skybox_init(&skybox, texture_locations);
 
-    // theta_scene_give_skybox(scene, skybox);
+    //theta_scene_give_skybox(scene, skybox);
+
+    // Give the scene a light source
+    theta_light light;
+    vec3 light_color = {1.0f, 1.0f, 1.0f};
+    vec3 light_location = {1.0f, 1.5f, 0.0f};
+    light.intensity = 150;
+    glm_vec3_copy(light_color, light.color);
+    glm_vec3_copy(light_location, light.location);
+    theta_scene_add_light(scene, light);
 }
 
 void sb_update(f64 elapsed_time) {
@@ -195,7 +208,7 @@ int main() {
     descriptor.update = sb_update;
     descriptor.terminate = sb_terminate;
     descriptor.api = THETA_API_OPENGL;
-    descriptor.starts_in_fullscreen = FALSE;
+    descriptor.starts_in_fullscreen = TRUE;
     descriptor.cursor_lock = FALSE;
     theta_application_init(&sandbox, descriptor);
     theta_application_run(&sandbox);

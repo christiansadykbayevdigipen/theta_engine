@@ -6,6 +6,7 @@
 typedef struct {
     vec3 location;
     vec3 color;
+    f32 intensity;
 }theta_light;
 
 typedef struct {

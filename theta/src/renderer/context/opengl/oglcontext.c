@@ -115,19 +115,26 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
         glEnableVertexAttribArray(i);
     }
 
-    if(associated_shader->albedo_texture != NULL) {
+    // if(associated_shader->albedo_texture != NULL) {
+    //     theta_shader_program_opengl_specifics* shader_spec = DATA_CAST(theta_shader_program_opengl_specifics, associated_shader);
+    //     theta_texture_opengl_specifics* tex_spec = DATA_CAST(theta_texture_opengl_specifics, associated_shader->albedo_texture);
+
+    //     glActiveTexture(GL_TEXTURE0 + shader_spec->albedo_unit_id);
+    //     glBindTexture(GL_TEXTURE_2D, tex_spec->texture_id);
+    // }
+
+    // if(associated_shader->specular_texture != NULL) {
+    //     theta_shader_program_opengl_specifics* shader_spec = DATA_CAST(theta_shader_program_opengl_specifics, associated_shader);
+    //     theta_texture_opengl_specifics* tex_spec = DATA_CAST(theta_texture_opengl_specifics, associated_shader->specular_texture);
+
+    //     glActiveTexture(GL_TEXTURE0 + shader_spec->specular_unit_id);
+    //     glBindTexture(GL_TEXTURE_2D, tex_spec->texture_id);
+    // }
+
+    for(u32 i = 0; i < associated_shader->bound_textures_length; i++) {
         theta_shader_program_opengl_specifics* shader_spec = DATA_CAST(theta_shader_program_opengl_specifics, associated_shader);
-        theta_texture_opengl_specifics* tex_spec = DATA_CAST(theta_texture_opengl_specifics, associated_shader->albedo_texture);
-
-        glActiveTexture(GL_TEXTURE0 + shader_spec->albedo_unit_id);
-        glBindTexture(GL_TEXTURE_2D, tex_spec->texture_id);
-    }
-
-    if(associated_shader->specular_texture != NULL) {
-        theta_shader_program_opengl_specifics* shader_spec = DATA_CAST(theta_shader_program_opengl_specifics, associated_shader);
-        theta_texture_opengl_specifics* tex_spec = DATA_CAST(theta_texture_opengl_specifics, associated_shader->specular_texture);
-
-        glActiveTexture(GL_TEXTURE0 + shader_spec->specular_unit_id);
+        theta_texture_opengl_specifics* tex_spec = DATA_CAST(theta_texture_opengl_specifics, associated_shader->bound_textures[i]);
+        glActiveTexture(GL_TEXTURE0 + i);
         glBindTexture(GL_TEXTURE_2D, tex_spec->texture_id);
     }
 
@@ -138,9 +145,7 @@ void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl
     else
         glDrawArrays(openglfacetype, 0, vertex_count);
 
-    if(associated_shader->albedo_texture != NULL) {
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     for(u32 i = 0; i < vao->current_layout_length; i++) {
         glDisableVertexAttribArray(i);

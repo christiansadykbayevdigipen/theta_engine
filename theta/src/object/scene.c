@@ -68,7 +68,7 @@ void theta_scene_render(theta_scene *scene) {
         renderable->program.set_mvp(&renderable->program, model, view, scene->bound_camera.projection_matrix);
 
         if(renderable->material.lighted) {
-            renderable->program.set_light(&renderable->program, scene->lights, scene->light_count, scene->bound_camera.transform.position, working_obj->transform.position);
+            renderable->program.set_light(&renderable->program, scene->lights, scene->light_count, scene->bound_camera.transform.position);
         }
 
         theta_renderer_submit(renderable);

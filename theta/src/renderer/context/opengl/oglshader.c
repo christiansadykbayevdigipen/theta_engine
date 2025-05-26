@@ -110,8 +110,7 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     THETA_PROFILE();
     
     program->uninterpreted_data = malloc(sizeof(theta_shader_program_opengl_specifics));
-    program->albedo_texture = NULL;
-    program->specular_texture = NULL;
+    program->bound_textures_length = 0;
     
     u32 current_buffer_size = 1000;
     char* full_source = malloc(sizeof(char) * current_buffer_size);
@@ -273,10 +272,13 @@ void theta_shader_program_give_material_opengl(theta_shader_program* program, st
     theta_shader_program_opengl_specifics* self = DATA_CAST(theta_shader_program_opengl_specifics, program);
     
     /*Fill out the color information of the shader*/
-    if(material->uses_albedo) {
-        self->albedo_unit_id = 0;
-        theta_opengl_shader_program_bind_uniform1f(program, "theta_Material.diffuse", self->albedo_unit_id);
-        program->albedo_texture = material->albedo;
+    theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesAlbedoMap", FALSE);
+    if(material->albedo != NULL) {
+        theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesAlbedoMap", TRUE);
+        theta_opengl_shader_program_bind_uniform1i(program, "theta_Albedo", program->bound_textures_length);
+        program->bound_textures[program->bound_textures_length] = material->albedo;
+        
+        program->bound_textures_length++;
     }
 
 
@@ -287,10 +289,43 @@ void theta_shader_program_give_material_opengl(theta_shader_program* program, st
 
     // If the material has lighting properties attached to it, fill out the lighting properties.
     if(material->lighted) {
-        // TESTING PURPOSES
         theta_opengl_shader_program_bind_uniform1f(program, "theta_MetallicScalar", material->metallic);
         theta_opengl_shader_program_bind_uniform1f(program, "theta_RoughnessScalar", material->roughness);
         theta_opengl_shader_program_bind_uniform1f(program, "theta_AmbientOcclusionScalar", material->ao);
+        
+        
+        theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesMetallicMap", FALSE);
+        theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesNormalMap", FALSE);
+        theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesRoughnessMap", FALSE);
+        theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesAmbientOcclusionMap", FALSE);
+
+        if(material->metallic_map != NULL) {
+            theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesMetallicMap", TRUE);
+            theta_opengl_shader_program_bind_uniform1i(program, "theta_Metallic", program->bound_textures_length);
+            program->bound_textures[program->bound_textures_length] = material->metallic_map;
+            program->bound_textures_length++;
+        }
+
+        if(material->normal_map != NULL) {
+            theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesNormalMap", TRUE);
+            theta_opengl_shader_program_bind_uniform1i(program, "theta_Normal", program->bound_textures_length);
+            program->bound_textures[program->bound_textures_length] = material->normal_map;
+            program->bound_textures_length++;
+        }
+
+        if(material->roughness_map != NULL) {
+            theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesRoughnessMap", TRUE);
+            theta_opengl_shader_program_bind_uniform1i(program, "theta_Roughness", program->bound_textures_length);
+            program->bound_textures[program->bound_textures_length] = material->roughness_map;
+            program->bound_textures_length++;
+        }
+
+        if(material->ao_map != NULL) {
+            theta_opengl_shader_program_bind_uniform1i(program, "theta_UsesAmbientOcclusionMap", TRUE);
+            theta_opengl_shader_program_bind_uniform1i(program, "theta_AmbientOcclusion", program->bound_textures_length);
+            program->bound_textures[program->bound_textures_length] = material->ao_map;
+            program->bound_textures_length++;
+        }
     }
 
     // Texture tiling
@@ -298,10 +333,10 @@ void theta_shader_program_give_material_opengl(theta_shader_program* program, st
     theta_opengl_shader_program_bind_uniform1f(program, "yTiling", material->texture_tiling_y);
 }
 
-void theta_shader_program_set_light_opengl(theta_shader_program* program, theta_light* lights, u32 light_count, vec3 viewing_position, vec3 model_position) {
+void theta_shader_program_set_light_opengl(theta_shader_program* program, theta_light* lights, u32 light_count, vec3 viewing_position) {
     theta_opengl_shader_program_bind_uniform3f(program, "theta_CameraViewingLocation", viewing_position);
-    theta_opengl_shader_program_bind_uniform3f(program, "theta_WorldPosition", model_position);
 
     theta_opengl_shader_program_bind_uniform3f(program, "theta_FirstLight.Position", lights[0].location);
     theta_opengl_shader_program_bind_uniform3f(program, "theta_FirstLight.Color", lights[0].color);
+    theta_opengl_shader_program_bind_uniform1f(program, "theta_FirstLight.Intensity", lights[0].intensity);
 }

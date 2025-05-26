@@ -18,9 +18,9 @@ typedef struct theta_shader_program{
     void (*set_mvp)(struct theta_shader_program* program, mat4 model, mat4 view, mat4 projection);
     void (*destroy)(struct theta_shader_program* program);
     void (*give_material)(struct theta_shader_program* program, struct theta_material* material);
-    void (*set_light)(struct theta_shader_program* program, theta_light* lights, u32 light_count, vec3 viewing_position, vec3 model_position);
-    struct theta_texture* albedo_texture;
-    struct theta_texture* specular_texture;
+    void (*set_light)(struct theta_shader_program* program, theta_light* lights, u32 light_count, vec3 viewing_position);
+    struct theta_texture* bound_textures[10];
+    u32 bound_textures_length;
 }theta_shader_program;
 
 /*
