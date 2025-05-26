@@ -64,7 +64,8 @@ void sb_start() {
     theta_transform trsf;
     vec3 pos = {0.0f, 0.0f, 0.0f};
     vec3 rot  = {0.0f, 0.0f, 0.0f};
-    vec3 sca = {6.0f, 0.25f, 6.0f};
+    //vec3 sca = {6.0f, 0.25f, 6.0f};
+    vec3 sca = {1.0f, 1.0f, 1.0f};
 
     glm_vec3_copy(pos, trsf.position);
     glm_vec3_copy(rot, trsf.rotation);
@@ -72,15 +73,15 @@ void sb_start() {
     
     theta_mesh mesh1;
     //theta_mesh_init_cube(&mesh1);
-    theta_mesh_init_from_file(&mesh1, "res/thing.obj");
+    theta_mesh_init_from_file(&mesh1, "res/torus.obj");
 
     theta_material mat1;
     //mat1.albedo = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_Color.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
     mat1.lighted = TRUE;
     mat1.uses_color = FALSE;
     mat1.is_skybox = FALSE;
-    mat1.texture_tiling_x = 9;
-    mat1.texture_tiling_y = 9;
+    mat1.texture_tiling_x = 2;
+    mat1.texture_tiling_y = 2;
     mat1.albedo = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_Color.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
     mat1.normal_map = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_NormalGL.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
     //mat1.normal_map = NULL;
@@ -90,6 +91,7 @@ void sb_start() {
     //mat1.roughness_map = NULL;
     //mat1.ao_map = NULL;
     mat1.ao_map = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_AmbientOcclusion.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
+    //mat1.ao_map = NULL;
 
     mat1.roughness = 0.5f;
     mat1.ao = 1.0f;
@@ -173,7 +175,7 @@ void sb_start() {
     theta_light light;
     vec3 light_color = {1.0f, 1.0f, 1.0f};
     vec3 light_location = {1.0f, 1.5f, 0.0f};
-    light.intensity = 150;
+    light.intensity = 50;
     glm_vec3_copy(light_color, light.color);
     glm_vec3_copy(light_location, light.location);
     theta_scene_add_light(scene, light);
