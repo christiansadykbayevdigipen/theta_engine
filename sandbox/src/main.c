@@ -109,6 +109,7 @@ void sb_start(theta_application* app) {
     vec3 pos2 = {0.0f, 4.0f, 0.0f};
     vec3 rot2  = {0.0f, 0.0f, 0.0f};
     vec3 sca2 = {8.0f, 0.15f, 8.0f};
+    //vec3 sca2 = {1.0f, 1.0f, 1.0f};
 
     glm_vec3_copy(pos2, trsf2.position);
     glm_vec3_copy(rot2, trsf2.rotation);
@@ -125,10 +126,10 @@ void sb_start(theta_application* app) {
     mat2.texture_tiling_y = 6;
     mat2.albedo = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_Color.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
     mat2.normal_map = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_NormalGL.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
-    mat2.metallic_map = NULL;
-    mat2.metallic = 0.5f;
     mat2.roughness_map = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_Roughness.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
     mat2.ao_map = theta_texture_initw("res/Rock062_2K-JPG/Rock062_2K-JPG_AmbientOcclusion.jpg", THETA_TEXTURE_WRAP_TYPE_REPEAT);
+    mat2.metallic_map = NULL;
+    mat2.metallic = 0.5f;
 
     theta_shader_program shader2;
     theta_shader_program_init_type(&shader2, THETA_SHADER_TYPE_LIGHTING_SHADER_TEXTURED);
@@ -195,24 +196,24 @@ void sb_start(theta_application* app) {
     mouse_layout.input_layout = NULL;
     theta_input_system_bind_input(sandbox.input, "CursorLook", mouse_layout, &cursor_look);
 
-    // char texture_locations[6][MAX_STRING] = 
-    // {
-    //     "res/right.jpg",
-    //     "res/left.jpg",
-    //     "res/top.jpg",
-    //     "res/bottom.jpg",
-    //     "res/front.jpg",
-    //     "res/back.jpg",
-    // };
-     char texture_locations[6][MAX_STRING] = 
-     {
-         "res/lightblue/right.png",
-         "res/lightblue/left.png",
-         "res/lightblue/top.png",
-         "res/lightblue/bot.png",
-         "res/lightblue/front.png",
-         "res/lightblue/back.png",
-     };
+    char texture_locations[6][MAX_STRING] = 
+    {
+        "res/right.jpg",
+        "res/left.jpg",
+        "res/top.jpg",
+        "res/bottom.jpg",
+        "res/front.jpg",
+        "res/back.jpg",
+    };
+    //  char texture_locations[6][MAX_STRING] = 
+    //  {
+    //      "res/lightblue/right.png",
+    //      "res/lightblue/left.png",
+    //      "res/lightblue/top.png",
+    //      "res/lightblue/bot.png",
+    //      "res/lightblue/front.png",
+    //      "res/lightblue/back.png",
+    //  };
 
     theta_skybox skybox;
     theta_skybox_init(&skybox, texture_locations);
@@ -246,6 +247,9 @@ void sb_update(theta_application* app, f64 elapsed_time) {
     cam->transform.position[1] += g_camera_vertical_movement * elapsed_time;
     cam->transform.rotation[1] += g_camera_rotation_movement * elapsed_time;
     cam->transform.rotation[0] += g_vertical_look * elapsed_time;
+
+    scene->lights[0].location[0] += g_light_movement * elapsed_time;
+    scene->lights[0].location[1] += g_vertical_light_movement * elapsed_time;
 }
 
 void sb_terminate(theta_application* app) {
@@ -259,7 +263,7 @@ int main() {
     descriptor.update = sb_update;
     descriptor.terminate = sb_terminate;
     descriptor.api = THETA_API_OPENGL;
-    descriptor.starts_in_fullscreen = FALSE;
+    descriptor.starts_in_fullscreen = TRUE;
     descriptor.cursor_lock = FALSE;
     theta_application_init(&sandbox, descriptor);
     theta_application_run(&sandbox);
