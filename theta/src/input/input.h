@@ -46,13 +46,21 @@ typedef struct theta_input_system{
     theta_input_descriptor* inputs;
 }theta_input_system;
 
+// Initializes the theta input system
 THETA_API theta_input_system* theta_input_system_init();
 
+// Binds an input for a particular action.
+// If that action does not exist yet, it creates it
+// If an action already exists, it binds a new input type for that action
 THETA_API void theta_input_system_bind_input(theta_input_system* system, const char* tag, theta_input_layout layout, void (*input_callback)(vec3));
 
+// More or less reserved for the window backend
 THETA_API void theta_input_system_on_key_down(theta_input_system* system, char key);
+// More or less reserved for the window backend
 THETA_API void theta_input_system_on_key_up(theta_input_system* system, char key);
 
+// More or less reserved for the window backend
 THETA_API void theta_input_system_on_cursor(theta_input_system* system, f64 x_position, f64 y_position);
 
+// Destroys the input system.
 THETA_API void theta_input_system_destroy(theta_input_system* system);

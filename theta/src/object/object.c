@@ -47,6 +47,9 @@ BOOL theta_game_object_has_component(theta_game_object* obj, theta_component_typ
 }
 
 theta_component theta_game_object_get_component(theta_game_object *obj, theta_component_type type) {
+    theta_component component;
+    component.type = THETA_COMPONENT_TYPE_NULL;
+
     for (u32 i = 0; i < obj->components_length; i++) {
         if (obj->components[i].type == type) {
             return obj->components[i];
@@ -54,6 +57,7 @@ theta_component theta_game_object_get_component(theta_game_object *obj, theta_co
     }
 
     THETA_ERROR("theta_game_object_get_component has failed. The reason being, there is no matches for the component type given to this theta game object.\n");
+    return component;
 }
 
 void theta_game_object_get_model(theta_game_object* obj, mat4 model) {

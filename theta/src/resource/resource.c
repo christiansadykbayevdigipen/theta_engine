@@ -3,7 +3,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "stb_ds.h"
+
 void theta_resource_init(theta_resource* resource, const char* filename, theta_resource_type resource_type) {
+    resource->data = NULL;
+    resource->length = 0;
+    resource->resource_type = resource_type;
+    
     char reading_mode[20] = "r";
 
     if(resource_type != THETA_RESOURCE_TYPE_PLAIN_TEXT) {
@@ -15,12 +21,14 @@ void theta_resource_init(theta_resource* resource, const char* filename, theta_r
 
     char c;
     while((c = getc(file_handle)) != EOF) {
-        
+        arrpush(resource->data, c);
     }
+
+    resource->length = arrlen(resource->data);
 
     fclose(file_handle);
 }
 
 void theta_resource_destroy(theta_resource* resource) {
-
+    arrfree(resource->data);
 }

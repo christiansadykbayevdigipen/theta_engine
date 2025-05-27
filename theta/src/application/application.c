@@ -29,7 +29,7 @@ void theta_application_init(theta_application* app, theta_application_descriptor
 }
 
 static void _theta_application_update(theta_application* app, f64 elapsed) {
-    if(app->descriptor.update != NULL) app->descriptor.update(elapsed);
+    if(app->descriptor.update != NULL) app->descriptor.update(app, elapsed);
     theta_scene* scene = theta_scene_manager_get_active_scene();
     if(scene != NULL) {
         theta_scene_update(scene);
@@ -47,7 +47,7 @@ static void _theta_application_render(theta_application* app) {
 
 void theta_application_run(theta_application* app) {
     THETA_PROFILE();
-    if(app->descriptor.start != NULL) app->descriptor.start();
+    if(app->descriptor.start != NULL) app->descriptor.start(app);
 
     theta_timer_reset();
 
@@ -77,7 +77,7 @@ void theta_application_run(theta_application* app) {
 }
 
 void theta_application_destruct(theta_application* app) {
-    if(app->descriptor.terminate != NULL) app->descriptor.terminate();
+    if(app->descriptor.terminate != NULL) app->descriptor.terminate(app);
     
     app->window->destroy(app->window);
     

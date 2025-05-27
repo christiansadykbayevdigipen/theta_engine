@@ -27,14 +27,37 @@ theta_input_system* theta_input_system_init() {
 
 void theta_input_system_bind_input(theta_input_system* system, const char* tag, theta_input_layout layout, void (*input_callback)(vec3)) {
     THETA_PROFILE();
-    theta_input_descriptor descriptor;
-    descriptor.input_callback = input_callback;
-    descriptor.layout[0] = layout;
-    descriptor.layout_count = 1;
-    strcpy(descriptor.tag, tag);
 
+    BOOL found_input = FALSE;
+    u32 input_index = 0;
+    // Find the particular action that we are binding another input to
+    for(u32 i = 0; i < arrlen(system->inputs); i++) {
+        // We have then found the input tag.
+        if(strcmp(system->inputs[i].tag, tag) == 0) {
+            found_input = TRUE;
+            input_index = i;
+        }
+    }
 
-    arrpush(system->inputs, descriptor);
+    if(found_input) {
+        theta_input_descriptor* descriptor = &system->inputs[input_index];
+        
+        if(descriptor->layout_count >= MAX_LAYOUTS) {
+            THETA_ERROR("theta_input_system_bind_input has failed. The reason being, the max number of layouts for a particular input type has been reached and you cannot add another input layout.\n");
+            return;
+        }
+
+        descriptor->layout[descriptor->layout_count] = layout;
+        descriptor->layout_count++;
+    }
+    else {
+        theta_input_descriptor descriptor;
+        descriptor.input_callback = input_callback;
+        descriptor.layout[0] = layout;
+        descriptor.layout_count = 1;
+        strcpy(descriptor.tag, tag);
+        arrpush(system->inputs, descriptor);
+    }
 }
 
 void theta_input_system_on_key_down(theta_input_system* system, char key) {

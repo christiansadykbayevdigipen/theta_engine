@@ -171,7 +171,8 @@ void main()
         N = GetNormalFromMap();
     }
 
-    vec3 V = normalize(theta_CameraViewingLocation - FragPos);
+    //https://computergraphics.stackexchange.com/questions/8979/strange-dark-spot-when-lighting-in-deferred-rendering-pbr-shaders
+    vec3 V = normalize(-(theta_CameraViewingLocation - FragPos));
     
     vec3 F0 = vec3(0.04);
     F0 = mix(F0, albedo, metallic);

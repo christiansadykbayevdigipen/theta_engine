@@ -67,6 +67,7 @@ void theta_scene_render(theta_scene *scene) {
         //renderable->program.set_light_position(&renderable->program, scene_light.transform.position);
         renderable->program.set_mvp(&renderable->program, model, view, scene->bound_camera.projection_matrix);
 
+        if(scene->light_count > 0)
         if(renderable->material.lighted) {
             renderable->program.set_light(&renderable->program, scene->lights, scene->light_count, scene->bound_camera.transform.position);
         }
@@ -119,4 +120,10 @@ theta_game_object* theta_scene_get_game_object_by_tag(theta_scene* scene, const 
     }
 
     return object;
+}
+
+void theta_scene_destroy(theta_scene* scene) {
+    arrfree(scene->game_objects);
+
+    free(scene);
 }

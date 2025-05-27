@@ -4,6 +4,7 @@
 #include "context/context.h"
 #include "utils/list.h"
 #include "skybox.h"
+#include "renderable.h"
 
 struct theta_mesh;
 struct theta_shader_program;
@@ -15,7 +16,7 @@ struct theta_renderable;
 typedef struct {
     theta_window* window;
     theta_rendering_context* context;
-    theta_node* rendering_list;
+    theta_renderable** submitted_renderables;
     theta_skybox skybox;
     BOOL is_skybox_bound;
 }theta_renderer;

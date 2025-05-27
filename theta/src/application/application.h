@@ -7,6 +7,8 @@
 
 #define SEC_PER_UPDATE 0.016
 
+struct theta_application;
+
 /*
 @brief This is the data that theta needs to initialize the user defined application outlined in theta_application_init.
 @param app_name This is the name you wish to give to the application
@@ -17,18 +19,19 @@
 */
 typedef struct {
     char app_name[MAX_STRING];
-    void (*start)();
-    void (*update)(f64 elapsed_time);
-    void (*terminate)();
+    void (*start)(struct theta_application* app);
+    void (*update)(struct theta_application* app, f64 elapsed_time);
+    void (*terminate)(struct theta_application* app);
     theta_api api;
     BOOL starts_in_fullscreen;
     BOOL cursor_lock;
+    BOOL F11_does_fullscreen;
 }theta_application_descriptor;
 
 /*
 @brief This is an application structure in which the user defines their version of the application.
 */
-typedef struct {
+typedef struct theta_application{
     theta_application_descriptor descriptor;
     theta_window* window;
     theta_input_system* input;

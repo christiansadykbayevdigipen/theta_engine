@@ -1,17 +1,22 @@
+Key
+[X]=Done
+[I]=Working On
+[ ]=Not started on yet
+----------------------
 [X] Migrate to CGLM
 [X] Make shaders directly bind materials rather than a material binding properties to a shader. Weird level of redunancy that causes issues with adding new features.
 [ ] Remove a lot of unnecessary heap allocations
 [ ] Create a custom memory manager that counts heap allocations and deallocations and detects memory leaks.
-[ ] Make the input system allow for multiple bindings (Only one binding per input event.)
+[X] Make the input system allow for multiple bindings (Only one binding per input event.)
 [ ] Improve memory management. There is a lot of heap allocated memory that does not get freed... Bad.
 [ ] Create parenting and child system with game objects. Allow for extensive game object hierarchy trees. Allow pretty much any component to be parented to another object. 
 [ ] Potentially make light descriptor be a component in a game object?? IDK.
-[ ] Create shader library system where you can create shaders into a shader library and reuse them. There will also be default shaders supplied in this shader library for use. 
+[I] Create shader library system where you can create shaders into a shader library and reuse them. There will also be default shaders supplied in this shader library for use. 
 [ ] Make the lighting system and everything else into a seperate shader that gets compiled with the users' shader. This is so that when a user wants to make a custom shader for some simple manipulation with vertices, they don't have to deal with lighting stuff or texture bindings like normal maps and roughness maps and other texture types. 
 [ ] Potentially create a shading language? That gets compiled into the two respective languages GLSL and HLSL?
 [ ] Make a resource system.
 [ ] Make a more advanced lighting system
-[ ] More advanced texture types such as normal maps and roughness textures
+[X] More advanced texture types such as normal maps and roughness textures
 [ ] Implement Vulkan
 [ ] Implement editor for theta.
 [ ] Implement debugging/monitoring stuff like tracking how long a render function takes, how many draw calls are being made, how long physics takes to calculate, etc.
@@ -21,3 +26,5 @@
 [ ] Refactor all of the skybox system. It was a really quick and dirty way of implementing skyboxes, and it needs heavy refactoring. Also, it's not using best practices, and there is a better way to implement them. 
 [ ] Allow for non-triangulated mesh loading. Create an automatic triangulator.
 [ ] Make mesh loading using index buffers.
+[ ] Batch rendering and batch mesh/materials. Or something similar to that. Creating 10 cubes literally takes like 20 seconds on a fast PC. It should be instantaneous. Make sure to make some sort of way to share materials and meshes between game objects.
+[ ] Improve loading times for mesh/material/shader/renderable/game-objects
