@@ -17,7 +17,7 @@ void theta_application_init(theta_application* app, theta_application_descriptor
     strcat(full_window_name, descriptor.app_name);
 
     app->descriptor = descriptor;
-    app->window = theta_window_init(1280, 720, full_window_name, descriptor.api);
+    app->window = theta_window_init(1280, 720, full_window_name, descriptor.api, descriptor.enable_imgui);
     theta_renderer_init(app->window);
 
     app->input = theta_input_system_init();

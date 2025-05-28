@@ -256,6 +256,7 @@ int main() {
     descriptor.api = THETA_API_OPENGL;
     descriptor.starts_in_fullscreen = FALSE;
     descriptor.cursor_lock = FALSE;
+    descriptor.enable_imgui = FALSE;
     theta_application_init(&sandbox, descriptor);
     theta_application_run(&sandbox);
     theta_application_destruct(&sandbox);

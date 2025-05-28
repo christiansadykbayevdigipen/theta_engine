@@ -26,6 +26,7 @@ typedef struct {
     BOOL starts_in_fullscreen;
     BOOL cursor_lock;
     BOOL F11_does_fullscreen;
+    BOOL enable_imgui;
 }theta_application_descriptor;
 
 /*

@@ -4,9 +4,9 @@
 #include "platform/shared/shared_window.h"
 #endif
 
-theta_window* theta_window_init(u32 width, u32 height, const char* title, theta_api api) {
+theta_window* theta_window_init(u32 width, u32 height, const char* title, theta_api api, BOOL enable_imgui) {
     THETA_PROFILE();
     #if defined(THETA_PLATFORM_SHARED)
-    return theta_window_init_shared_window(width, height, title, api);
+    return theta_window_init_shared_window(width, height, title, api, enable_imgui);
     #endif
 }

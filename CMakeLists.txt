@@ -4,3 +4,4 @@ project(theta_engine_workspace)
 
 add_subdirectory(theta)
 add_subdirectory(sandbox)
+add_subdirectory(lambda)

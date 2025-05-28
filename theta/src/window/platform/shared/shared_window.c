@@ -7,6 +7,9 @@
 #include <memory.h>
 #include <stdio.h>
 
+
+
+
 static void _theta_window_shared_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     theta_input_system* input_system = ((theta_window*)glfwGetWindowUserPointer(window))->input_system;
     
@@ -28,7 +31,9 @@ static void _theta_window_shared_resize_callback(GLFWwindow* window, int width, 
     rendering_context->resize(rendering_context, width, height);
 }
 
-theta_window* theta_window_init_shared_window(u32 width, u32 height, const char* title, theta_api api) {
+int test();
+
+theta_window* theta_window_init_shared_window(u32 width, u32 height, const char* title, theta_api api, BOOL enable_imgui) {
     THETA_PROFILE();
     
     theta_window* window = INIT_STRUCT(theta_window);
@@ -62,6 +67,9 @@ theta_window* theta_window_init_shared_window(u32 width, u32 height, const char*
     // If the API is OpenGL, make OpenGL Context current.
     if(window->api == THETA_API_OPENGL) {
         glfwMakeContextCurrent(DATA_CAST(theta_shared_window_specifics, window)->window_handle);
+        //igCreateContext(NULL);
+
+        //ImGui_ImplGlfw_InitForOpenGL(DATA_CAST(theta_shared_window_specifics, window)->window_handle, TRUE);
     }
 
     window->context = theta_rendering_context_init(api, window);
@@ -81,6 +89,7 @@ theta_window* theta_window_init_shared_window(u32 width, u32 height, const char*
 
     window->width = width;
     window->height = height;
+
 
     return window;
 }

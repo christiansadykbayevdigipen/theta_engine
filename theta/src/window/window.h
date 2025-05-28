@@ -31,4 +31,4 @@ typedef struct theta_window{
 @param title The title you wish to give the window.
 @param api The api that you wish to initialize the window as
 */
-THETA_API theta_window* theta_window_init(u32 width, u32 height, const char* title, theta_api api);
+THETA_API theta_window* theta_window_init(u32 width, u32 height, const char* title, theta_api api, BOOL enable_imgui);

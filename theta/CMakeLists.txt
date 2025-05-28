@@ -19,8 +19,10 @@ include_directories(include)
 include_directories(../stb)
 include_directories(../cglm/include)
 include_directories(src)
+include_directories(../cimgui)
 link_directories(../glfw_build/src)
-link_libraries(-lglfw3 -lm)
+link_directories(../cimgui_build/)
+link_libraries(-lglfw3 -lm -lcimgui)
 
 add_definitions(-D_GLFW_WIN32)
 
