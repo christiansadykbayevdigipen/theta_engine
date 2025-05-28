@@ -44,10 +44,6 @@ void vertically_look(vec3 axis) {
     g_vertical_look = axis[0] * CAMERA_ROT_SPEED;
 }
 
-void cursor_look(vec3 axis) {
-    glm_vec3_copy(axis, g_rotating);
-}
-
 void reset_thing(vec3 axis) {
     if(axis[0] > 0.0f) {
         theta_scene* scene = theta_scene_manager_get_active_scene();
@@ -58,7 +54,7 @@ void reset_thing(vec3 axis) {
 }
 
 void make_a_bunch_of_thingies(theta_scene* scene) {
-    for(u32 i = 0; i < 10; i++) {
+    for(u32 i = 0; i < 0; i++) {
         theta_transform trsf2;
         vec3 pos2 = {5.0f + (i*8), 8.0f, 0.0f};
         vec3 rot2 = {0.0f, 0.0f, 0.0f};
@@ -191,11 +187,6 @@ void sb_start(theta_application* app) {
     ((theta_input_layout_keyboard*)new_new_new_layout.input_layout)->negative = THETA_KEY_CODE_DOWN;
     theta_input_system_bind_input(sandbox.input, "LightPosSS", new_new_new_layout, &light_posv);
 
-    theta_input_layout mouse_layout;
-    mouse_layout.type = THETA_INPUT_LAYOUT_TYPE_CURSOR;
-    mouse_layout.input_layout = NULL;
-    theta_input_system_bind_input(sandbox.input, "CursorLook", mouse_layout, &cursor_look);
-
     char texture_locations[6][MAX_STRING] = 
     {
         "res/right.jpg",
@@ -263,7 +254,7 @@ int main() {
     descriptor.update = sb_update;
     descriptor.terminate = sb_terminate;
     descriptor.api = THETA_API_OPENGL;
-    descriptor.starts_in_fullscreen = TRUE;
+    descriptor.starts_in_fullscreen = FALSE;
     descriptor.cursor_lock = FALSE;
     theta_application_init(&sandbox, descriptor);
     theta_application_run(&sandbox);

@@ -6,6 +6,8 @@
 
 #include "stb_ds.h"
 
+#include <cglm/cglm.h>
+
 /*
 Well, there is a bug that when you press the negative key and then release the other key (so changing directions really quickly), it halts the input sort of. 
 So, when the positive key is being pressed and then the negative key gets pressed, it it should just cancel the positive key and not do any event for the releasing of that key. 
@@ -21,6 +23,8 @@ theta_input_system* theta_input_system_init() {
     theta_input_system* input = INIT_STRUCT(theta_input_system);
 
     input->inputs = NULL;
+    vec2 empty = {0.0f, 0.0f};
+    glm_vec2_copy(empty, input->previous_cursor_position);
 
     return input;
 }
@@ -60,7 +64,7 @@ void theta_input_system_bind_input(theta_input_system* system, const char* tag, 
     }
 }
 
-void theta_input_system_on_key_down(theta_input_system* system, char key) {
+void theta_input_system_on_key_down(theta_input_system* system, theta_key_code key) {
     for(u32 i = 0; i < arrlen(system->inputs); i++) { // Go through each input binding
         theta_input_descriptor* descriptor = &system->inputs[i];
         
@@ -83,7 +87,7 @@ void theta_input_system_on_key_down(theta_input_system* system, char key) {
     }
 }
 
-void theta_input_system_on_key_up(theta_input_system* system, char key) {
+void theta_input_system_on_key_up(theta_input_system* system, theta_key_code key) {
         for(u32 i = 0; i < arrlen(system->inputs); i++) { // Go through each input binding
         theta_input_descriptor* descriptor = &system->inputs[i];
         
@@ -110,8 +114,35 @@ void theta_input_system_on_cursor(theta_input_system* system, f64 x_position, f6
         theta_input_descriptor* descriptor = &system->inputs[i];
         for(u32 k = 0; k < descriptor->layout_count; k++) {
             if(descriptor->layout[k].type == THETA_INPUT_LAYOUT_TYPE_CURSOR) {
-                vec3 ret = {x_position, y_position, 0.0f};
+                descriptor->status = 1;
+
+                // Find the delta mouse cursor position
+                vec2 temp = {x_position, y_position};
+                vec2 result;
+                glm_vec2_sub(temp, system->previous_cursor_position, result);
+                
+                // Then put the new cursor position as the "previous" cursor position for future calculations.
+                glm_vec2_copy(temp, system->previous_cursor_position);
+
+                // Send this to the input callback
+                vec3 ret = {result[0], result[1], 0.0f};
                 descriptor->input_callback(ret);
+            }
+        }
+    }
+}
+
+void theta_input_system_after_update(theta_input_system* system) {
+    for(u32 i = 0; i < arrlen(system->inputs); i++) { // Go through each input binding
+        theta_input_descriptor* descriptor = &system->inputs[i];
+        for(u32 k = 0; k < descriptor->layout_count; k++) {
+            if(descriptor->layout[k].type == THETA_INPUT_LAYOUT_TYPE_CURSOR) {
+                if(descriptor->status == 1) {
+                    // Send this to the input callback
+                    vec3 ret = {0.0f, 0.0f, 0.0f};
+                    descriptor->input_callback(ret);
+                    descriptor->status = 0;
+                }
             }
         }
     }

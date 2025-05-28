@@ -1,5 +1,5 @@
-/theta/build/
-/sandbox/build/
 /glfw_build/
 /theta/cloc-2.04.exe
 /assimp_build/
+/build/
+/.cache/

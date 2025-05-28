@@ -51,12 +51,13 @@ theta_window* theta_window_init_shared_window(u32 width, u32 height, const char*
     }
 
     if(window->api == THETA_API_OPENGL) {
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     }
 
     DATA_CAST(theta_shared_window_specifics, window)->window_handle = glfwCreateWindow(width, height, title, NULL, NULL);
+    DATA_CAST(theta_shared_window_specifics, window)->called_cursor_last_frame = FALSE;
 
     // If the API is OpenGL, make OpenGL Context current.
     if(window->api == THETA_API_OPENGL) {

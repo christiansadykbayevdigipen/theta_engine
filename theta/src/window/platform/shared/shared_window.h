@@ -11,6 +11,7 @@
 */
 typedef struct {
     GLFWwindow* window_handle;
+    BOOL called_cursor_last_frame;
 }theta_shared_window_specifics;
 
 /*

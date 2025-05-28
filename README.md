@@ -12,3 +12,8 @@
  3. Commenting style guide. Every function and struct must be commented. Structs must have @brief information and @param for each field in the struct. The same with functions.
  4. Uninterpreted data buffers. Every single object that contains information that is hidden, must be called uninterpreted_data, so that the DATA_CAST macro may work properly. If not, the DATA_CAST macro may not work properly.
  5. Structs used to fill in uninterpreted data buffers must have the name of the inherited object name, followed by 'specifics.' For example, "theta_shared_window_specifics." Remember, theta_shared_window inherits theta_window.
+
+# How to build this project
+ 1. Go into the root directory of this project.
+ 2. Run ./build_glfw.bat or ./build_glfw.sh depending on whether you are on Windows or Linux.
+ 3. Go to the higher directory than this, and run cmake -S this_folder -B wherever_you_want_the_build_directory and -G whatever kind of cmake build you want to make. If you are on windows, I would recommend making a MSVC solution.

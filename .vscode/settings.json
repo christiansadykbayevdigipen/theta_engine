@@ -35,6 +35,5 @@
         "valarray": "c",
         "ios": "c",
         "ranges": "c"
-    },
-    "C_Cpp.errorSquiggles": "disabled"
+    }
 }

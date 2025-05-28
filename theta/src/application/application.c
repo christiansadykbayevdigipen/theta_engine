@@ -73,6 +73,8 @@ void theta_application_run(theta_application* app) {
         _theta_application_render(app);
 
         theta_renderer_end_frame();
+
+        theta_input_system_after_update(app->input);
     }
 }
 
@@ -80,6 +82,4 @@ void theta_application_destruct(theta_application* app) {
     if(app->descriptor.terminate != NULL) app->descriptor.terminate(app);
     
     app->window->destroy(app->window);
-    
-    
 }

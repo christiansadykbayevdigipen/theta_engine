@@ -16,8 +16,8 @@
 @param negative The key on the keyboard that signifies a negative input choice. If this is NULL, then it is assumed that the input choice is binary instead of a range. For example, a reload button does not have a negative state, only a positive state or no state. So a reload button would have negative set to NULL.
 */
 typedef struct {
-    char positive;
-    char negative;
+    theta_key_code positive;
+    theta_key_code negative;
 }theta_input_layout_keyboard;
 
 typedef enum {
@@ -44,6 +44,7 @@ typedef struct {
 
 typedef struct theta_input_system{
     theta_input_descriptor* inputs;
+    vec2 previous_cursor_position;
 }theta_input_system;
 
 // Initializes the theta input system
@@ -55,12 +56,15 @@ THETA_API theta_input_system* theta_input_system_init();
 THETA_API void theta_input_system_bind_input(theta_input_system* system, const char* tag, theta_input_layout layout, void (*input_callback)(vec3));
 
 // More or less reserved for the window backend
-THETA_API void theta_input_system_on_key_down(theta_input_system* system, char key);
+THETA_API void theta_input_system_on_key_down(theta_input_system* system, theta_key_code key);
 // More or less reserved for the window backend
-THETA_API void theta_input_system_on_key_up(theta_input_system* system, char key);
+THETA_API void theta_input_system_on_key_up(theta_input_system* system, theta_key_code key);
 
 // More or less reserved for the window backend
 THETA_API void theta_input_system_on_cursor(theta_input_system* system, f64 x_position, f64 y_position);
+
+// This should be called after all user defined updates have been called and all rendering.
+THETA_API void theta_input_system_after_update(theta_input_system* system);
 
 // Destroys the input system.
 THETA_API void theta_input_system_destroy(theta_input_system* system);
