@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.11)
-
 project(lambda)
 
+set(CMAKE_CXX_STANDARD 20)
+
+
 include_directories(../theta/src)
-link_directories(../build/theta)
-link_libraries(-ltheta)
-include_directories(../stb)
 include_directories(../cglm/include)
 
-add_executable(lambda src/main.c)
+link_directories(../build/theta)
+
+link_libraries(-ltheta)
+
+add_executable(lambda src/main.cpp)

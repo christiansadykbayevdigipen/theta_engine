@@ -7,9 +7,6 @@
 #include <memory.h>
 #include <stdio.h>
 
-
-
-
 static void _theta_window_shared_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     theta_input_system* input_system = ((theta_window*)glfwGetWindowUserPointer(window))->input_system;
     
@@ -67,9 +64,6 @@ theta_window* theta_window_init_shared_window(u32 width, u32 height, const char*
     // If the API is OpenGL, make OpenGL Context current.
     if(window->api == THETA_API_OPENGL) {
         glfwMakeContextCurrent(DATA_CAST(theta_shared_window_specifics, window)->window_handle);
-        //igCreateContext(NULL);
-
-        //ImGui_ImplGlfw_InitForOpenGL(DATA_CAST(theta_shared_window_specifics, window)->window_handle, TRUE);
     }
 
     window->context = theta_rendering_context_init(api, window);

@@ -22,7 +22,7 @@ include_directories(src)
 include_directories(../cimgui)
 link_directories(../glfw_build/src)
 link_directories(../cimgui_build/)
-link_libraries(-lglfw3 -lm -lcimgui)
+#link_libraries(cimgui -lglfw3 -lm)
 
 add_definitions(-D_GLFW_WIN32)
 
@@ -32,3 +32,7 @@ FILE(GLOB_RECURSE ThetaSources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
 #add_library(theta SHARED ../../glfw/src/context.c ../../glfw/src/egl_context.c ../../glfw/src/glx_context.c ../../glfw/src/init.c ../../glfw/src/input.c ../../glfw/src/monitor.c ../../glfw/src/platform.c ../../glfw/src/wgl_context.c ../../glfw/src/win32_init.c ../../glfw/src/win32_joystick.c ../../glfw/src/win32_module.c ../../glfw/src/win32_monitor.c ../../glfw/src/win32_thread.c ../../glfw/src/win32_time.c ../../glfw/src/win32_window.c ../../glfw/src/vulkan.c ../../glfw/src/window.c logger/logger.c application/application.c )
 #add_library(theta SHARED logger/logger.c application/application.c window/window.c window/platform/shared/shared_window.c)
 add_library(theta SHARED ${ThetaSources} vendor/glad.c)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE -lglfw3 -lm)
+
+#target_compile_definitions(${PROJECT_NAME} PUBLIC)

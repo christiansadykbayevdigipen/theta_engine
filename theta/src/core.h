@@ -31,7 +31,11 @@ typedef enum {
     THETA_LOGGER_SEVERITY_TRACE
 }theta_logger_severity;
 
+#ifndef _cplus_plus
 #define THETA_API extern
+#else
+#define THETA_API extern "C"
+#endif
 #define MAX_STRING 512
 #define TRUE 1
 #define FALSE 0

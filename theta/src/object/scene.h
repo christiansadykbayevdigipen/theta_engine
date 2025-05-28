@@ -6,8 +6,6 @@
 #include "light.h"
 #include "renderer/skybox.h"
 
-#include "stb_ds.h"
-
 #define MAX_LIGHTS 90
 
 typedef struct {

@@ -1,4 +1,4 @@
-cmake -S cimgui -B cimgui_build -DIMGUI_STATIC=yes
+cmake -E env CXXFLAGS="IMGUI_IMPL_OPENGL_LOADER_GL3W" cmake -S cimgui -B cimgui_build -DIMGUI_STATIC=yes
 
 cd cimgui_build
 make
