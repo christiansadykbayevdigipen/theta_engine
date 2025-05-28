@@ -10,3 +10,6 @@
 [submodule "cglm"]
 	path = cglm
 	url = https://github.com/recp/cglm
+[submodule "cimgui"]
+	path = cimgui
+	url = https://github.com/cimgui/cimgui
