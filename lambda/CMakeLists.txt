@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(../theta/src)
 include_directories(../cglm/include)
 include_directories(../imgui)
+include_directories(../glfw/include)
 
 link_directories(../build/theta)
 
