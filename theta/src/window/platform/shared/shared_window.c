@@ -30,7 +30,7 @@ static void _theta_window_shared_resize_callback(GLFWwindow* window, int width, 
 
 int test();
 
-theta_window* theta_window_init_shared_window(u32 width, u32 height, const char* title, theta_api api, BOOL enable_imgui) {
+theta_window* theta_window_init_shared_window(u32 width, u32 height, const char* title, theta_api api) {
     THETA_PROFILE();
     
     theta_window* window = INIT_STRUCT(theta_window);
@@ -80,6 +80,7 @@ theta_window* theta_window_init_shared_window(u32 width, u32 height, const char*
     window->change_title = &theta_window_change_title_shared_window;
     window->set_fullscreen = &theta_window_set_fullscreen_shared_window;
     window->set_cursor_lock = &theta_window_set_cursor_lock_shared_window;
+    window->get_window_handle = &theta_window_get_window_handle_shared_window;
 
     window->width = width;
     window->height = height;
@@ -160,4 +161,8 @@ void theta_window_set_cursor_lock_shared_window(theta_window* window, BOOL curso
         glfwSetInputMode(DATA_CAST(theta_shared_window_specifics, window)->window_handle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     else
         glfwSetInputMode(DATA_CAST(theta_shared_window_specifics, window)->window_handle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+void* theta_window_get_window_handle_shared_window(theta_window* window) {
+    return (void*)DATA_CAST(theta_shared_window_specifics, window)->window_handle;
 }

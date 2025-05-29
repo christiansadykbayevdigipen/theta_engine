@@ -21,12 +21,12 @@ typedef struct {
     char app_name[MAX_STRING];
     void (*start)(struct theta_application* app);
     void (*update)(struct theta_application* app, f64 elapsed_time);
+    void (*render)(struct theta_application* app);
     void (*terminate)(struct theta_application* app);
     theta_api api;
     BOOL starts_in_fullscreen;
     BOOL cursor_lock;
     BOOL F11_does_fullscreen;
-    BOOL enable_imgui;
 }theta_application_descriptor;
 
 /*

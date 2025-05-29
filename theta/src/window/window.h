@@ -22,6 +22,7 @@ typedef struct theta_window{
     void (*change_title)(struct theta_window*, const char* new_title);
     void (*set_fullscreen)(struct theta_window* window, BOOL fullscreen);
     void (*set_cursor_lock)(struct theta_window* window, BOOL cursor_lock);
+    void* (*get_window_handle)(struct theta_window* window);
 }theta_window;
 
 /*
@@ -31,4 +32,4 @@ typedef struct theta_window{
 @param title The title you wish to give the window.
 @param api The api that you wish to initialize the window as
 */
-THETA_API theta_window* theta_window_init(u32 width, u32 height, const char* title, theta_api api, BOOL enable_imgui);
+THETA_API theta_window* theta_window_init(u32 width, u32 height, const char* title, theta_api api);

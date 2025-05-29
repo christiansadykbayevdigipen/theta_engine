@@ -17,7 +17,7 @@ typedef struct {
 /*
 @brief See theta_window_init
 */
-THETA_API theta_window* theta_window_init_shared_window(u32 width, u32 height, const char* title, theta_api api, BOOL enable_imgui);
+THETA_API theta_window* theta_window_init_shared_window(u32 width, u32 height, const char* title, theta_api api);
 
 /*
 @brief See theta_window_close_requested
@@ -54,6 +54,8 @@ THETA_API void theta_window_change_title_shared_window(theta_window* window, con
 THETA_API void theta_window_set_fullscreen_shared_window(theta_window* window, BOOL fullscreen);
 
 THETA_API void theta_window_set_cursor_lock_shared_window(theta_window* window, BOOL cursor_lock);
+
+THETA_API void* theta_window_get_window_handle_shared_window(theta_window* window);
 
 #else
 #error You cannot include this header when you are not on the shared platform (windows, linux, mac).
