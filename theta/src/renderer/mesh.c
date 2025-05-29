@@ -156,7 +156,9 @@ void theta_mesh_init_cube(theta_mesh* mesh) {
 void theta_mesh_init_from_file(theta_mesh* mesh, const char* filename) {
     fastObjMesh* m = fast_obj_read(filename);
 
-    THETA_ASSERT(m, "theta_mesh_init_from_file has failed. The reason being, the filename does not exist!");
+    if(!m) {
+        THETA_ERROR("theta_mesh_init_from_file has failed. The reason being, the filename does not exist!\n");
+    }
 
     f32* pos = NULL;
     f32* norms = NULL;
@@ -186,7 +188,11 @@ void theta_mesh_init_from_file(theta_mesh* mesh, const char* filename) {
     u32 face_size = m->index_count / m->face_count;
     theta_mesh_face_type face_type = THETA_MESH_FACE_TYPE_TRIANGLES;
 
-    THETA_ASSERT((face_size == 3), "theta_mesh_init_from_file has failed. The reason being, Theta does not currently have support for non-triangular mesh types. Make sure in the software that creates the mesh, to select 'triangulate mesh'");
+    //THETA_ASSERT((face_size == 3), "theta_mesh_init_from_file has failed. The reason being, Theta does not currently have support for non-triangular mesh types. Make sure in the software that creates the mesh, to select 'triangulate mesh'");
+
+    if(face_size != 3) {
+        THETA_ERROR("theta_mesh_init_from_file has failed. The reason being, Theta does not currently have support for non-triangular mesh types. Make sure in the software that creates the mesh, to select 'triangulate mesh'\n");
+    }
 
     theta_mesh_init(mesh, pos, arrlen(pos), 3, NULL, 0, norms, arrlen(norms), texs, arrlen(texs), face_type);
 

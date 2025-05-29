@@ -71,7 +71,7 @@ static u32 compile_shader(u32 type, const char* src) {
 
         glGetShaderInfoLog(shaderID, 1024, &log_length, message);
 
-        THETA_FATAL("compile_shader for %s has failed. The reason being, OpenGL returned this error: %s\n", shader_type_name, message);
+        THETA_ERROR("compile_shader for %s has failed. The reason being, OpenGL returned this error: %s\n", shader_type_name, message);
         return -1;
     }
 
@@ -99,7 +99,7 @@ static u32 create_and_link_program(u32 vertex_shader, u32 fragment_shader) {
 
         glGetProgramInfoLog(program, 1024, &log_length, message);
 
-        THETA_FATAL("create_and_link_program has failed. The reason being, OpenGL returned this error: %s\n", message);
+        THETA_ERROR("create_and_link_program has failed. The reason being, OpenGL returned this error: %s\n", message);
         return -1;
     }
 
@@ -119,8 +119,10 @@ void theta_shader_program_init_opengl(theta_shader_program* program, const char*
     
     file = fopen(filename, "r");
     
-    THETA_ASSERT(file != NULL, "theta_shader_program_init_opengl has failed. The reason being, the shader program file that has been requested does not currently exist.");
-    
+    if(file == NULL) {
+        THETA_ERROR("theta_shader_program_init_opengl has failed. The reason being, the shader program file that has been requested does not currently exist.\n");
+    }
+
     char character;
     u32 length = 0;
     while((character = fgetc(file)) != EOF) {

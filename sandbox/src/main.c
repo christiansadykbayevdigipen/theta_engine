@@ -1,4 +1,5 @@
 #include "../../theta/src/theta.h"
+#include "resource/resource.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -54,7 +55,7 @@ void reset_thing(vec3 axis) {
 }
 
 void make_a_bunch_of_thingies(theta_scene* scene) {
-    for(u32 i = 0; i < 0; i++) {
+    for(u32 i = 0; i < 10; i++) {
         theta_transform trsf2;
         vec3 pos2 = {5.0f + (i*8), 8.0f, 0.0f};
         vec3 rot2 = {0.0f, 0.0f, 0.0f};
@@ -187,24 +188,24 @@ void sb_start(theta_application* app) {
     ((theta_input_layout_keyboard*)new_new_new_layout.input_layout)->negative = THETA_KEY_CODE_DOWN;
     theta_input_system_bind_input(sandbox.input, "LightPosSS", new_new_new_layout, &light_posv);
 
-    char texture_locations[6][MAX_STRING] = 
-    {
-        "res/right.jpg",
-        "res/left.jpg",
-        "res/top.jpg",
-        "res/bottom.jpg",
-        "res/front.jpg",
-        "res/back.jpg",
-    };
-    //  char texture_locations[6][MAX_STRING] = 
-    //  {
-    //      "res/lightblue/right.png",
-    //      "res/lightblue/left.png",
-    //      "res/lightblue/top.png",
-    //      "res/lightblue/bot.png",
-    //      "res/lightblue/front.png",
-    //      "res/lightblue/back.png",
-    //  };
+    // char texture_locations[6][MAX_STRING] = 
+    // {
+    //     "res/right.jpg",
+    //     "res/left.jpg",
+    //     "res/top.jpg",
+    //     "res/bottom.jpg",
+    //     "res/front.jpg",
+    //     "res/back.jpg",
+    // };
+     char texture_locations[6][MAX_STRING] = 
+     {
+         "res/lightblue/right.png",
+         "res/lightblue/left.png",
+         "res/lightblue/top.png",
+         "res/lightblue/bot.png",
+         "res/lightblue/front.png",
+         "res/lightblue/back.png",
+     };
 
     theta_skybox skybox;
     theta_skybox_init(&skybox, texture_locations);

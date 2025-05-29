@@ -78,7 +78,9 @@ void theta_skybox_init_opengl(theta_skybox* skybox, char texture_locations[6][MA
     const u32 number_of_textures = 6;
     for(u32 i = 0; i < number_of_textures; i++) { 
         u8* data = stbi_load(texture_locations[i], &width, &height, &nr_channels, 3);
-        THETA_ASSERT(data, "theta_skybox_init_opengl has failed. The reason being, at least one of the textures has an invalid filepath");
+        if(!data) {
+            THETA_ERROR("theta_skybox_init_opengl has failed. The reason being, at least one of the textures has an invalid filepath\n");
+        }
 
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 

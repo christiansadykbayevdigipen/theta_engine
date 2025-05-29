@@ -57,6 +57,10 @@ THETA_API void theta_window_set_cursor_lock_shared_window(theta_window* window, 
 
 THETA_API void* theta_window_get_window_handle_shared_window(theta_window* window);
 
+THETA_API void theta_window_set_context_viewport_shared_window(theta_window* window, u32 x_location, u32 y_location, u32 width, u32 height);
+
+THETA_API void theta_window_get_current_size_shared_window(theta_window* window, u32* width, u32* height);
+
 #else
 #error You cannot include this header when you are not on the shared platform (windows, linux, mac).
 #endif

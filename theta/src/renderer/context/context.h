@@ -21,7 +21,7 @@ typedef struct theta_rendering_context{
     void (*clear)(struct theta_rendering_context*);
     void (*swap)(struct theta_rendering_context*);
     void (*destroy)(struct theta_rendering_context*);
-    void (*resize)(struct theta_rendering_context*, u32 new_width, u32 new_height);
+    void (*resize)(struct theta_rendering_context*, u32 x, u32 y, u32 new_width, u32 new_height);
 }theta_rendering_context;
 
 /*

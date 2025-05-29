@@ -4,6 +4,7 @@
 
 #include "window/window.h"
 #include "input/input.h"
+#include "timer/timer.h"
 
 #define SEC_PER_UPDATE 0.016
 
@@ -21,7 +22,7 @@ typedef struct {
     char app_name[MAX_STRING];
     void (*start)(struct theta_application* app);
     void (*update)(struct theta_application* app, f64 elapsed_time);
-    void (*render)(struct theta_application* app);
+    void (*render)(struct theta_application* app, f64 frame_time);
     void (*terminate)(struct theta_application* app);
     theta_api api;
     BOOL starts_in_fullscreen;
@@ -36,6 +37,7 @@ typedef struct theta_application{
     theta_application_descriptor descriptor;
     theta_window* window;
     theta_input_system* input;
+    theta_timer timer;
 }theta_application;
 
 /*
@@ -50,6 +52,12 @@ THETA_API void theta_application_init(theta_application* app, theta_application_
 @param app A pointer to an initialized application structure.
 */
 THETA_API void theta_application_run(theta_application* app);
+
+// Sets the viewport location and size of the rendering context.
+THETA_API void theta_application_set_viewport(theta_application* app, u32 x_location, u32 y_location, u32 width, u32 height);
+
+THETA_API u32 theta_application_get_window_current_width(theta_application* app);
+THETA_API u32 theta_application_get_window_current_height(theta_application* app);
 
 /*
 @brief This destructs the theta application. This should ideally be called after theta_application_run.

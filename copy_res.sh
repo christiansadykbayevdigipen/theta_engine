@@ -1,1 +1,2 @@
-cp -r res build/sandbox/
+cp -a res/. build/sandbox/res/
+cp -a res/. build/lambda/res/

@@ -25,7 +25,9 @@ theta_texture* theta_texture_initw_opengl(const char* filepath, theta_texture_wr
 
     u8* data = stbi_load(filepath, &width, &height, &nrChannels, 4);
 
-    THETA_ASSERT(data, "theta_texture_init_opengl has failed. The reason being, filepath does not exist for texture");
+    if(!data) {
+        THETA_ERROR("theta_texture_init_opengl has failed. The reason being, filepath does not exist for texture\n");
+    }
 
     glGenTextures(1, &self->texture_id);
     glBindTexture(GL_TEXTURE_2D, self->texture_id);

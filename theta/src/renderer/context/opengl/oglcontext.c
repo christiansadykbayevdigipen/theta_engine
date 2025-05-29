@@ -67,8 +67,8 @@ void theta_rendering_context_swap_opengl(theta_rendering_context* ctx) {
 #endif
 }
 
-void theta_rendering_context_resize_opengl(theta_rendering_context* ctx, u32 new_width, u32 new_height) {
-    glViewport(0, 0, new_width, new_height);
+void theta_rendering_context_resize_opengl(theta_rendering_context* ctx, u32 x, u32 y, u32 new_width, u32 new_height) {
+    glViewport(x, y, new_width, new_height);
 }
 
 void theta_rendering_context_vao_init(theta_rendering_context* ctx, theta_opengl_vertex_array* vao) {

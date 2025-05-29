@@ -1,5 +1,6 @@
 #include "shared_window.h"
 
+#include "GLFW/glfw3.h"
 #include "renderer/context/context.h"
 #include "input/input.h"
 
@@ -25,7 +26,7 @@ static void _theta_window_shared_cursor_callback(GLFWwindow* window, double xPos
 static void _theta_window_shared_resize_callback(GLFWwindow* window, int width, int height) {
     theta_rendering_context* rendering_context = ((theta_window*)glfwGetWindowUserPointer(window))->context;
     
-    rendering_context->resize(rendering_context, width, height);
+    rendering_context->resize(rendering_context, 0, 0, width, height);
 }
 
 int test();
@@ -81,10 +82,13 @@ theta_window* theta_window_init_shared_window(u32 width, u32 height, const char*
     window->set_fullscreen = &theta_window_set_fullscreen_shared_window;
     window->set_cursor_lock = &theta_window_set_cursor_lock_shared_window;
     window->get_window_handle = &theta_window_get_window_handle_shared_window;
+    window->set_context_viewport = &theta_window_set_context_viewport_shared_window;
+    window->get_current_size = &theta_window_get_current_size_shared_window;
 
     window->width = width;
     window->height = height;
 
+    glfwSwapInterval(0);
 
     return window;
 }
@@ -153,6 +157,7 @@ void theta_window_set_fullscreen_shared_window(theta_window* window, BOOL fullsc
         }
     }
 
+
     glfwSetWindowMonitor(DATA_CAST(theta_shared_window_specifics, window)->window_handle, mons[best_monitor], 0, 0, best_monitor_vidmode->width, best_monitor_vidmode->height, GLFW_DONT_CARE);
 }
 
@@ -165,4 +170,13 @@ void theta_window_set_cursor_lock_shared_window(theta_window* window, BOOL curso
 
 void* theta_window_get_window_handle_shared_window(theta_window* window) {
     return (void*)DATA_CAST(theta_shared_window_specifics, window)->window_handle;
+}
+
+void theta_window_get_current_size_shared_window(theta_window* window, u32* width, u32* height) {
+    theta_shared_window_specifics* self = DATA_CAST(theta_shared_window_specifics, window);
+    glfwGetWindowSize(self->window_handle, (int*)width, (int*)height);
+}
+
+void theta_window_set_context_viewport_shared_window(theta_window* window, u32 x_location, u32 y_location, u32 width, u32 height) {
+    window->context->resize(window->context, x_location, y_location, width, height);
 }

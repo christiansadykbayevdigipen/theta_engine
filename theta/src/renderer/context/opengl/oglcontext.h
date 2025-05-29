@@ -51,7 +51,7 @@ THETA_API theta_rendering_context* theta_rendering_context_init_opengl(theta_win
 
 THETA_API void theta_rendering_context_clear_opengl(theta_rendering_context* ctx);
 THETA_API void theta_rendering_context_swap_opengl(theta_rendering_context* ctx);
-THETA_API void theta_rendering_context_resize_opengl(theta_rendering_context* ctx, u32 new_width, u32 new_height);
+THETA_API void theta_rendering_context_resize_opengl(theta_rendering_context* ctx, u32 x, u32 y, u32 new_width, u32 new_height);
 
 /*
 @brief Initializes a Vertex Array Object

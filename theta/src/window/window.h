@@ -23,6 +23,8 @@ typedef struct theta_window{
     void (*set_fullscreen)(struct theta_window* window, BOOL fullscreen);
     void (*set_cursor_lock)(struct theta_window* window, BOOL cursor_lock);
     void* (*get_window_handle)(struct theta_window* window);
+    void (*set_context_viewport)(struct theta_window* window, u32 x_location, u32 y_location, u32 width, u32 height);
+    void (*get_current_size)(struct theta_window* window, u32* out_width, u32* out_height);
 }theta_window;
 
 /*
