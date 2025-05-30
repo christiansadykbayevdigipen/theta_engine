@@ -158,6 +158,7 @@ void theta_mesh_init_from_file(theta_mesh* mesh, const char* filename) {
 
     if(!m) {
         THETA_ERROR("theta_mesh_init_from_file has failed. The reason being, the filename does not exist!\n");
+        return;
     }
 
     f32* pos = NULL;

@@ -100,7 +100,7 @@ void theta_skybox_init_opengl(theta_skybox* skybox, char texture_locations[6][MA
     theta_shader_program_init(&skybox->program, "res/skybox.shader");
     
     // TODO: Maybe abstract this a bit? 
-    theta_opengl_shader_program_bind_uniform1f(&skybox->program, "theta_Skybox", 0);
+    skybox->program.give_uniform1i(&skybox->program, "theta_Skybox", 0);
 
     skybox->render = &theta_skybox_render_opengl;
     skybox->bind_vp = &theta_skybox_bind_vp_opengl;
@@ -123,8 +123,8 @@ void theta_skybox_bind_vp_opengl(theta_skybox* skybox, mat4 view, mat4 projectio
     newview[3][1] = 0.0f;
     newview[3][2] = 0.0f;
 
-    theta_opengl_shader_program_bind_uniform_mat4f(&skybox->program, "view", newview);
-    theta_opengl_shader_program_bind_uniform_mat4f(&skybox->program, "projection", projection);
+    skybox->program.give_uniform_mat4f(&skybox->program, "view", newview);
+    skybox->program.give_uniform_mat4f(&skybox->program, "projection", projection);
 }
 
 void theta_skybox_destroy_opengl(theta_skybox* skybox) {

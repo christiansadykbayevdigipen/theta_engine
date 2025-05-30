@@ -21,12 +21,12 @@ THETA_API void theta_shader_program_destroy_opengl(theta_shader_program* program
 THETA_API void theta_shader_program_set_light_opengl(theta_shader_program* program, theta_light* lights, u32 light_count, vec3 viewing_position);
 
 
-THETA_API void theta_opengl_shader_program_bind_uniform1f(theta_shader_program* program, const char* name, f32 data);
-THETA_API void theta_opengl_shader_program_bind_uniform1i(theta_shader_program* program, const char* name, s32 data);
-THETA_API void theta_opengl_shader_program_bind_uniform2f(theta_shader_program* program, const char* name, vec2 data);
-THETA_API void theta_opengl_shader_program_bind_uniform3f(theta_shader_program* program, const char* name, vec3 data);
-THETA_API void theta_opengl_shader_program_bind_uniform4f(theta_shader_program* program, const char* name, vec4 data);
-THETA_API void theta_opengl_shader_program_bind_uniform_mat4f(theta_shader_program* program, const char* name, mat4 data);
+THETA_API void theta_shader_program_bind_uniform1f_opengl(theta_shader_program* program, const char* name, f32 data);
+THETA_API void theta_shader_program_bind_uniform1i_opengl(theta_shader_program* program, const char* name, s32 data);
+THETA_API void theta_shader_program_bind_uniform2f_opengl(theta_shader_program* program, const char* name, vec2 data);
+THETA_API void theta_shader_program_bind_uniform3f_opengl(theta_shader_program* program, const char* name, vec3 data);
+THETA_API void theta_shader_program_bind_uniform4f_opengl(theta_shader_program* program, const char* name, vec4 data);
+THETA_API void theta_shader_program_bind_uniform_mat4f_opengl(theta_shader_program* program, const char* name, mat4 data);
 
 THETA_API void theta_shader_program_give_material_opengl(theta_shader_program* program, struct theta_material* material);
 

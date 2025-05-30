@@ -254,6 +254,7 @@ int main() {
     descriptor.start = sb_start;
     descriptor.update = sb_update;
     descriptor.terminate = sb_terminate;
+    descriptor.render = NULL;
     descriptor.api = THETA_API_OPENGL;
     descriptor.starts_in_fullscreen = FALSE;
     descriptor.cursor_lock = FALSE;

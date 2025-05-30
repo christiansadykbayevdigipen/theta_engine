@@ -21,6 +21,12 @@ typedef struct theta_shader_program{
     void (*set_light)(struct theta_shader_program* program, theta_light* lights, u32 light_count, vec3 viewing_position);
     struct theta_texture* bound_textures[10];
     u32 bound_textures_length;
+    void (*give_uniform1f)(struct theta_shader_program* program, const char* name, f32 data);
+    void (*give_uniform1i)(struct theta_shader_program* program, const char* name, s32 data);
+    void (*give_uniform2f)(struct theta_shader_program* program, const char* name, vec2 data);
+    void (*give_uniform3f)(struct theta_shader_program* program, const char* name, vec3 data);
+    void (*give_uniform4f)(struct theta_shader_program* program, const char* name, vec4 data);
+    void (*give_uniform_mat4f)(struct theta_shader_program* program, const char* name, mat4 data);
 }theta_shader_program;
 
 /*
