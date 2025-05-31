@@ -80,6 +80,10 @@ typedef enum {
 // This macro is useful for general malloc operations with structs.
 #define INIT_STRUCT(TYPE) (TYPE*)(malloc(sizeof(TYPE)))
 
+// Macro is useful in structs that have multiple implementations.
+// Creates a self variable that links to uninterpreted_data
+#define AUTO_SELF(STRUCT_NAME, VAR_NAME) STRUCT_NAME* self = DATA_CAST(STRUCT_NAME, VAR_NAME)
+
 #define THETA_ASSERT(STATEMENT, MESSAGE) if(!STATEMENT) THETA_FATAL("Theta has ran into a failed assertion! Statement: %s, Message: %s\n", #STATEMENT, MESSAGE)
 
 //https://stackoverflow.com/questions/15305310/predefined-macros-for-function-name-func

@@ -9,6 +9,7 @@
 
 #include "renderer/material.h"
 
+#include "renderer/shader.h"
 #include "renderer/texture.h"
 #include "renderer/context/opengl/ogltexture.h"
 
@@ -337,4 +338,16 @@ void theta_shader_program_set_light_opengl(theta_shader_program* program, theta_
     theta_shader_program_bind_uniform3f_opengl(program, "theta_FirstLight.Position", lights[0].location);
     theta_shader_program_bind_uniform3f_opengl(program, "theta_FirstLight.Color", lights[0].color);
     theta_shader_program_bind_uniform1f_opengl(program, "theta_FirstLight.Intensity", lights[0].intensity);
+}
+
+void theta_shader_program_give_uniform_buffer_opengl(theta_shader_program* program, theta_uniform_buffer buffer) {
+    AUTO_SELF(theta_shader_program_opengl_specifics, program);
+
+    if(program->ubo_count + 1 > MAX_UBO_COUNT) {
+        THETA_ERROR("theta_shader_program_give_uniform_buffer_opengl has failed. The reason being, you have exceeded the maximum UBO count on a shader\n");
+        return;
+    }
+
+    program->ubos[program->ubo_count] = buffer;
+    self->ubos_associated_block_indices[program->ubo_count] = glGetUniformBlockIndex(self->programID, buffer.name);
 }

@@ -3,6 +3,9 @@
 #include "core.h"
 #include <cglm/cglm.h>
 #include "object/light.h"
+#include "uniform_buffer.h"
+
+#define MAX_UBO_COUNT 15
 
 struct theta_texture;
 struct theta_material;
@@ -27,6 +30,9 @@ typedef struct theta_shader_program{
     void (*give_uniform3f)(struct theta_shader_program* program, const char* name, vec3 data);
     void (*give_uniform4f)(struct theta_shader_program* program, const char* name, vec4 data);
     void (*give_uniform_mat4f)(struct theta_shader_program* program, const char* name, mat4 data);
+    void (*give_uniform_buffer)(struct theta_shader_program* program, theta_uniform_buffer buffer);
+    theta_uniform_buffer ubos[MAX_UBO_COUNT];
+    u32 ubo_count;
 }theta_shader_program;
 
 /*

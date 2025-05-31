@@ -6,6 +6,7 @@ struct theta_texture;
 
 typedef struct {
     u32 programID;
+    u32 ubos_associated_block_indices[MAX_UBO_COUNT];
 }theta_shader_program_opengl_specifics;
 
 THETA_API void theta_shader_program_init_opengl(theta_shader_program* program, const char* filename);
@@ -27,6 +28,7 @@ THETA_API void theta_shader_program_bind_uniform2f_opengl(theta_shader_program* 
 THETA_API void theta_shader_program_bind_uniform3f_opengl(theta_shader_program* program, const char* name, vec3 data);
 THETA_API void theta_shader_program_bind_uniform4f_opengl(theta_shader_program* program, const char* name, vec4 data);
 THETA_API void theta_shader_program_bind_uniform_mat4f_opengl(theta_shader_program* program, const char* name, mat4 data);
+THETA_API void theta_shader_program_give_uniform_buffer_opengl(theta_shader_program* program, theta_uniform_buffer buffer);
 
 THETA_API void theta_shader_program_give_material_opengl(theta_shader_program* program, struct theta_material* material);
 
