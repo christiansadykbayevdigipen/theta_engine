@@ -335,9 +335,22 @@ void theta_shader_program_give_material_opengl(theta_shader_program* program, st
 void theta_shader_program_set_light_opengl(theta_shader_program* program, theta_light* lights, u32 light_count, vec3 viewing_position) {
     theta_shader_program_bind_uniform3f_opengl(program, "theta_CameraViewingLocation", viewing_position);
 
-    theta_shader_program_bind_uniform3f_opengl(program, "theta_FirstLight.Position", lights[0].location);
-    theta_shader_program_bind_uniform3f_opengl(program, "theta_FirstLight.Color", lights[0].color);
-    theta_shader_program_bind_uniform1f_opengl(program, "theta_FirstLight.Intensity", lights[0].intensity);
+    for(u32 i = 0; i < light_count; i++) {
+        char position[MAX_STRING];
+        sprintf(position, "theta_Lights[%d].Position", i);
+
+        char color[MAX_STRING];
+        sprintf(color, "theta_Lights[%d].Color", i);
+
+        char intensity[MAX_STRING];
+        sprintf(intensity, "theta_Lights[%d].Intensity", i);
+
+        theta_shader_program_bind_uniform3f_opengl(program, position, lights[i].location);
+        theta_shader_program_bind_uniform3f_opengl(program, color, lights[i].color);
+        theta_shader_program_bind_uniform1f_opengl(program, intensity, lights[i].intensity);
+    }
+
+    theta_shader_program_bind_uniform1i_opengl(program, "theta_LightCount", light_count);
 }
 
 void theta_shader_program_give_uniform_buffer_opengl(theta_shader_program* program, theta_uniform_buffer buffer) {

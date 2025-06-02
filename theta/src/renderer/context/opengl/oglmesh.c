@@ -79,7 +79,7 @@ void theta_mesh_render_opengl(theta_mesh* mesh, theta_shader_program* program) {
     theta_rendering_context* ctx = theta_renderer_get_context();
     theta_mesh_opengl_specifics* self = DATA_CAST(theta_mesh_opengl_specifics, mesh);
 
-    theta_rendering_context_vao_draw(ctx, &self->vao, mesh->vertex_position_count, program, self->uses_ibo, &self->ibo, mesh->face_type);
+    theta_rendering_context_draw(ctx, &self->vao, mesh->vertex_position_count, program, self->uses_ibo, &self->ibo, mesh->face_type);
 }
 
 void theta_mesh_destroy_opengl(theta_mesh* mesh) {

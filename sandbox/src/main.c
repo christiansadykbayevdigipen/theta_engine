@@ -220,7 +220,17 @@ void sb_start(theta_application* app) {
     glm_vec3_copy(light_color, light.color);
     glm_vec3_copy(light_location, light.location);
     theta_scene_add_light(scene, light);
-    make_a_bunch_of_thingies(scene);
+
+    // Give the scene a light source
+    theta_light light1;
+    vec3 light_color1 = {1.0f, 1.0f, 1.0f};
+    vec3 light_location1 = {1.0f, 4.5f, 0.0f};
+    light1.intensity = 50;
+    glm_vec3_copy(light_color1, light1.color);
+    glm_vec3_copy(light_location1, light1.location);
+    //theta_scene_add_light(scene, light1);
+
+    //make_a_bunch_of_thingies(scene);
 }
 
 void sb_update(theta_application* app, f64 elapsed_time) {
@@ -256,7 +266,7 @@ int main() {
     descriptor.terminate = sb_terminate;
     descriptor.render = NULL;
     descriptor.api = THETA_API_OPENGL;
-    descriptor.starts_in_fullscreen = FALSE;
+    descriptor.starts_in_fullscreen = TRUE;
     descriptor.cursor_lock = FALSE;
     theta_application_init(&sandbox, descriptor);
     theta_application_run(&sandbox);

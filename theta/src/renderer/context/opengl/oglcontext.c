@@ -104,7 +104,7 @@ void theta_rendering_context_vao_push_vbo(theta_rendering_context* ctx, theta_op
 
 }
 
-void theta_rendering_context_vao_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, BOOL uses_ibo, theta_opengl_index_buffer* ibo, theta_mesh_face_type face_type) {
+void theta_rendering_context_draw(theta_rendering_context* ctx, theta_opengl_vertex_array* vao, u32 vertex_count, theta_shader_program* associated_shader, BOOL uses_ibo, theta_opengl_index_buffer* ibo, theta_mesh_face_type face_type) {
     glUseProgram(DATA_CAST(theta_shader_program_opengl_specifics, associated_shader)->programID);
     
     glBindVertexArray(vao->vertex_array_id);

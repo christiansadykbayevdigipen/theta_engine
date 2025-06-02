@@ -40,6 +40,9 @@ void main()
 
 ~NewShader
 #version 330 core
+
+#define MAX_LIGHTS 99
+
 out vec4 FragColor;
 in vec2 texCoord;
 in vec3 FragPos;
@@ -74,8 +77,8 @@ struct Light
 // uniform Light theta_Lights[90];
 // uniform int theta_LightCount;
 
-// Simply for testing purposes. Once this is working, Ill add a UBO object and implement multipe lights.
-uniform Light theta_FirstLight;
+uniform Light theta_Lights[MAX_LIGHTS];
+uniform int theta_LightCount;
 
 const float PI = 3.141592653589;
 
@@ -144,7 +147,7 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
     return ggx1 * ggx2;
 }
 
-void main() 
+void main()
 {
     // Query whether the shader is using map versions or scalar versions
     vec3 albedo = theta_AlbedoColor;
@@ -179,14 +182,14 @@ void main()
     
     vec3 Lo = vec3(0.0);
     // There is only one light for now.
-    for(int i = 0; i < 1; ++i){
+    for(int i = 0; i < theta_LightCount; ++i){
         // Per Light Radiance
-        vec3 L = normalize(theta_FirstLight.Position - FragPos);
+        vec3 L = normalize(theta_Lights[i].Position - FragPos);
         vec3 H = normalize(V + L);
 
-        float distance = length(theta_FirstLight.Position - FragPos);
+        float distance = length(theta_Lights[i].Position - FragPos);
         float attenuation = 1.0 / (distance * distance);
-        vec3 radiance = theta_FirstLight.Color * attenuation;
+        vec3 radiance = theta_Lights[i].Color * attenuation;
 
         // Cook-Torrance BRDF
         float NDF = DistributionGGX(N, H, roughness);
@@ -203,7 +206,7 @@ void main()
 
         // Add to Outgoing Radiance Lo
         float NdotL = max(dot(N, L), 0.0);
-        Lo += ((kD * albedo / PI + specular) * radiance * NdotL) * theta_FirstLight.Intensity;
+        Lo += ((kD * albedo / PI + specular) * radiance * NdotL) * theta_Lights[i].Intensity;
     }
 
     vec3 ambient = vec3(0.03) * albedo * ao;

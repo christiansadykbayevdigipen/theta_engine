@@ -6,7 +6,7 @@
 #include "light.h"
 #include "renderer/skybox.h"
 
-#define MAX_LIGHTS 90
+#define MAX_LIGHTS 99
 
 typedef struct {
     theta_game_object* game_objects;
@@ -29,6 +29,16 @@ THETA_API theta_game_object* theta_scene_get_game_object(theta_scene* scene, u32
 
 // Gets a game object by the identifier.
 THETA_API theta_game_object* theta_scene_get_game_object_by_tag(theta_scene* scene, const char* tag);
+
+THETA_API u32 theta_scene_get_game_object_count(theta_scene* scene);
+
+THETA_API theta_game_object* theta_scene_get_game_objects(theta_scene* scene);
+
+THETA_API u32 theta_scene_get_index_by_game_object(theta_scene* scene, theta_game_object* object);
+
+THETA_API void theta_scene_remove_game_object(theta_scene* scene, theta_game_object* object);
+
+THETA_API void theta_scene_remove_game_object_by_index(theta_scene* scene, u32 index);
 
 // Adds a light to the light stack in the scene. There is a maximum of MAX_LIGHTS that is permitted per scene.
 THETA_API void theta_scene_add_light(theta_scene* scene, theta_light light);

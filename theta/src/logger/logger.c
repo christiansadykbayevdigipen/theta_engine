@@ -40,8 +40,7 @@ void theta_logger_log(theta_logger_severity severity, const char* message, ...){
 
     vprintf(message, args);
 
-    if(severity == THETA_LOGGER_SEVERITY_FATAL)
-    {
+    if(severity == THETA_LOGGER_SEVERITY_FATAL) {
         assert(!"Theta engine had to terminate because it ran into a fatal error.");
     }
 }

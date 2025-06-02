@@ -46,6 +46,7 @@ void start(theta_application* app) {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGui::StyleColorsDark();
 
@@ -98,7 +99,7 @@ void update(theta_application* app, f64 elapsed) {
 
 void DrawViewport(theta_application* app) {
     bool is_open;
-    ImGui::Begin("Viewport", &is_open, ImGuiWindowFlags_NoSavedSettings);
+    ImGui::Begin("Viewport", &is_open, /*ImGuiWindowFlags_NoSavedSettings | */ImGuiWindowFlags_NoBackground);
     
     ImVec2 pos = ImGui::GetWindowPos();
     ImVec2 size = ImGui::GetContentRegionMax();
@@ -134,7 +135,7 @@ void DrawObjectWizard(theta_application* app) {
     if(!g_CreatingObject) return;
     
     bool is_open;
-    ImGui::Begin("Object Creation Wizard", &is_open, ImGuiWindowFlags_NoSavedSettings);
+    ImGui::Begin("Object Creation Wizard", &is_open/*, ImGuiWindowFlags_NoSavedSettings*/);
 
     static ObjectDetails details = {{0}, {0}, {0}, {0}, {0}};
 
@@ -281,10 +282,32 @@ void DrawProfiler(theta_application* app, f64 frame_time) {
     ImGui::End();
 }
 
+void DrawSceneHierarchy(theta_application* app) {
+    theta_scene* scene = theta_scene_manager_get_active_scene();
+    
+    ImGui::Begin("Lambda Scene View");
+    for(u32 i = 0; i < theta_scene_get_game_object_count(scene); i++) {
+        theta_game_object* obj = theta_scene_get_game_objects(scene) + i;
+
+        ImGui::Text("Object Name: %s", obj->identifier);
+        ImGui::InputFloat3((std::string("Object Position") + std::string("##") + (char)i).c_str(), obj->transform.position);
+        ImGui::InputFloat3((std::string("Object Rotation") + std::string("##") + (char)i).c_str(), obj->transform.rotation);
+        ImGui::InputFloat3((std::string("Object Scale") + std::string("##") + (char)i).c_str(), obj->transform.scale);
+        bool deleteResult = ImGui::Button((std::string("Delete Object") + std::string("##") + (char)i).c_str());
+
+        if(deleteResult) {
+            theta_scene_remove_game_object(scene, obj);
+            continue;
+        }
+    }
+    ImGui::End();
+}
+
 void render(theta_application* app, f64 frame_time) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+    ImGui::DockSpaceOverViewport();
     
     // Setup Viewport
     DrawViewport(app);
@@ -293,6 +316,7 @@ void render(theta_application* app, f64 frame_time) {
     DrawProfiler(app, frame_time);
     DrawCreateObject(app);
     DrawObjectWizard(app);
+    DrawSceneHierarchy(app);
     
     
     

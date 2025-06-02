@@ -122,6 +122,33 @@ theta_game_object* theta_scene_get_game_object_by_tag(theta_scene* scene, const 
     return object;
 }
 
+u32 theta_scene_get_game_object_count(theta_scene* scene) {
+    return arrlen(scene->game_objects);
+}
+
+theta_game_object* theta_scene_get_game_objects(theta_scene* scene) {
+    return scene->game_objects;
+}
+
+u32 theta_scene_get_index_by_game_object(theta_scene* scene, theta_game_object* object) {
+    for(u32 i = 0; i < arrlen(scene->game_objects); i++) {
+        if(memcmp(scene->game_objects + i, object, sizeof(theta_game_object)) == 0) {
+            return i;
+        }
+    }
+
+    THETA_ERROR("theta_scene_get_index_by_game_object has failed. The reason being, the game object supplied is not in the scene's game object list\n");
+    return -1;
+}
+
+void theta_scene_remove_game_object(theta_scene* scene, theta_game_object* object) {
+    arrdel(scene->game_objects, theta_scene_get_index_by_game_object(scene, object));
+}
+
+void theta_scene_remove_game_object_by_index(theta_scene* scene, u32 index) {
+    arrdel(scene->game_objects, index);
+}
+
 void theta_scene_destroy(theta_scene* scene) {
     arrfree(scene->game_objects);
 
