@@ -65,14 +65,9 @@ void theta_game_object_get_model(theta_game_object* obj, mat4 model) {
     glm_mat4_identity(model_matrix);
 
     glm_scale(model_matrix, obj->transform.scale);
-
-    vec3 normalized;
-    glm_vec3_copy(obj->transform.rotation, normalized);
-    glm_normalize(normalized);
-    f32 magnitude = glm_vec3_norm(obj->transform.rotation);
-    
-    glm_rotate(model_matrix, magnitude, normalized);
-
+    mat4 rotation;
+    glm_euler_xyz(obj->transform.rotation, rotation);
+    glm_mat4_mul(model_matrix, rotation, model_matrix);
     glm_translate(model_matrix, obj->transform.position);
 
     glm_mat4_copy(model_matrix, model);

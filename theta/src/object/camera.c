@@ -1,4 +1,6 @@
 #include "camera.h"
+#include "cglm/euler.h"
+#include "cglm/mat4.h"
 
 #include <memory.h>
 #include <malloc.h>
@@ -21,11 +23,9 @@ void theta_camera_get_view(theta_camera* camera, mat4 view) {
     glm_mat4_identity(view_matrix);
 
     glm_scale(view_matrix, camera->transform.scale);
-    //glm_rotate(view_matrix, camera->transform.rotation);
-    vec3 normalized;
-    glm_vec3_copy(camera->transform.rotation, normalized); glm_normalize(normalized);
-    f32 norm = glm_vec3_norm(camera->transform.rotation);
-    glm_rotate(view_matrix, norm, normalized);
+    mat4 rotation;
+    glm_euler_xyz(camera->transform.rotation, rotation);
+    glm_mat4_mul(view_matrix, rotation, view_matrix);
     glm_translate(view_matrix, camera->transform.position);
 
     glm_mat4_copy(view_matrix, view);
