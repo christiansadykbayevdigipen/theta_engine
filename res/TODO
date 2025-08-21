@@ -3,7 +3,7 @@ Key
 [I]=Working On
 [ ]=Not started on yet
 ----------------------
-[ ] URGENT. Migrate timer system to be data oriented rather than a single instance of timer all across the entire scope. A little oversight from old me I guess.
+[X] URGENT. Migrate timer system to be data oriented rather than a single instance of timer all across the entire scope. A little oversight from old me I guess.
 [X] Migrate to CGLM
 [X] Make shaders directly bind materials rather than a material binding properties to a shader. Weird level of redunancy that causes issues with adding new features.
 [ ] Remove a lot of unnecessary heap allocations
